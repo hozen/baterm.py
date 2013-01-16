@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding:gbk -*-
 
 import pygtk
 pygtk.require('2.0')
@@ -310,6 +311,10 @@ class CaliTest:
             start, end = self.TextBufferOfLog.get_bounds()
             self.TextBufferOfLog.delete(start, end)
         else:
+            #import chardet
+            #print chardet.detect(str)
+            str = str.decode('GB2312')  # decode() means decode the wanted format to unicode format.
+                                        # the string format can be detected by module chardet.
             self.TextBufferOfLog.insert_at_cursor(str + "\n")
         gtk.threads_leave()
     
@@ -402,6 +407,7 @@ class CaliTest:
         
     
         self.TextBufferOfLog = builder.get_object("textbuffer1")
+        self.TextBufferOfLog.create_tag("big", size= 14 * pango.SCALE)
         self.EntryOfCommand = builder.get_object("EntryOfCommand")
         self.ScrolledWindowOfLog = builder.get_object("ScrolledWindowOfLog")
         self.FileChooserButton = builder.get_object("FileChooserButton")

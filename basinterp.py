@@ -257,7 +257,13 @@ class BasicInterpreter:
                 
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
-                time.sleep(cmd)
+                if cmd == 0:
+                    while True:
+                        if self.cali.get_check_status() != 2:
+                            self.cali.set_check_status(2)
+                            break
+                else:
+                    time.sleep(cmd)
             
             elif op == 'LETSTR':
                 var = instr[1][0]
