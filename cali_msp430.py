@@ -4,13 +4,13 @@ import subprocess
 
 class Msp430():   
     def on_ButtonOfMspErase_clicked(self, widget, data=None):
-        proc = subprocess.Popen(['python', 'msp430-jtag.py', '--time', '-p', self.device, '-e'], 
+        proc = subprocess.Popen(['python', 'msp430-jtag.pyc', '--time', '-p', self.device, '-e'], 
                                 shell=False, 
                                 stderr=subprocess.PIPE)
         self.TextBufferOfMsp.insert_at_cursor(proc.communicate()[1])
 
     def on_ButtonOfEraseCheck_clicked(self, widget, data=None):
-        proc = subprocess.Popen(['python', 'msp430-jtag.py', '--time', '-p', self.device, '-E'], 
+        proc = subprocess.Popen(['python', 'msp430-jtag.pyc', '--time', '-p', self.device, '-E'], 
                                 shell=False, 
                                 stderr=subprocess.PIPE)
         self.TextBufferOfMsp.insert_at_cursor(proc.communicate()[1])
@@ -20,13 +20,13 @@ class Msp430():
         if file != None:
             filename, fileext = os.path.splitext(file)
             if fileext == ".hex" or fileext == ".ihex":
-                proc = subprocess.Popen(['python', 'msp430-jtag.py', '--time', '-p', self.device, '-P', '-i', 'ihex', file], 
+                proc = subprocess.Popen(['python', 'msp430-jtag.pyc', '--time', '-p', self.device, '-P', '-i', 'ihex', file], 
                                 shell=False, 
                                 stderr=subprocess.PIPE)
                 self.TextBufferOfMsp.insert_at_cursor(proc.communicate()[1])
         
     def on_ButtonOfMspReset_clicked(self, widget, data=None):
-        proc = subprocess.Popen(['python', 'msp430-jtag.py', '-p', self.device, '-r'], 
+        proc = subprocess.Popen(['python', 'msp430-jtag.pyc', '-p', self.device, '-r'], 
                                 shell=False, 
                                 stderr=subprocess.PIPE)
         self.TextBufferOfMsp.insert_at_cursor(proc.communicate()[1])
@@ -36,7 +36,7 @@ class Msp430():
         if file != None:
             filename, fileext = os.path.splitext(file)
             if fileext == ".hex" or fileext == ".ihex":
-                proc = subprocess.Popen(['python', 'msp430-jtag.py', '--time', '-p', self.device, '-eE', '-PV', '-r', '-i', 'ihex', self.FileChooserButtonOfHex.get_filename()], 
+                proc = subprocess.Popen(['python', 'msp430-jtag.pyc', '--time', '-p', self.device, '-eE', '-PV', '-r', '-i', 'ihex', self.FileChooserButtonOfHex.get_filename()], 
                                         shell=False, 
                                         stderr=subprocess.PIPE)
                 self.TextBufferOfMsp.insert_at_cursor(proc.communicate()[1])        

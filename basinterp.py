@@ -267,6 +267,7 @@ class BasicInterpreter:
                         if self.cali.get_check_status() != 2:
                             self.cali.set_check_status(2)
                             break
+                        time.sleep(0.01)
                 else:
                     time.sleep(cmd)
             

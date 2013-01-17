@@ -42,7 +42,6 @@ class CaliTest:
         
     def on_window_key_press_event(self, widget, event):
         key = gtk.gdk.keyval_name(event.keyval)
-        print event
         if key == "Return":
             self.on_ButtonYes_clicked(0, None)
         elif key == "space":

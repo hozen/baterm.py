@@ -25,7 +25,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="border_width">3</property>
-    <property name="title" translatable="yes">哈希 Cali Tool v0.4</property>
+    <property name="title" translatable="yes">Lavida校准工具 v0.4</property>
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <signal name="key-press-event" handler="on_window_key_press_event" swapped="no"/>
     <child>
@@ -181,7 +181,7 @@
                                   <object class="GtkLabel" id="label5">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Test Mode</property>
+                                    <property name="label" translatable="yes">Script Area 脚本区</property>
                                     <property name="use_markup">True</property>
                                   </object>
                                 </child>
@@ -236,7 +236,7 @@
                               <object class="GtkLabel" id="label4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Console</property>
+                                <property name="label" translatable="yes">Console 控制台</property>
                                 <property name="use_markup">True</property>
                               </object>
                             </child>
@@ -302,7 +302,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Working Area&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Working Area 工作区&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
@@ -315,8 +315,8 @@
             </child>
             <child>
               <object class="GtkFrame" id="FrameOfDebug">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
                 <property name="label_xalign">0</property>
                 <child>
                   <object class="GtkAlignment" id="alignment2">
@@ -495,7 +495,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Debug Area&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Debug Area 调试区&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
@@ -539,7 +539,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;Tutorial Area&lt;/b&gt;</property>
+                <property name="label" translatable="yes">&lt;b&gt;Tutorial Area 教程区&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
             </child>
