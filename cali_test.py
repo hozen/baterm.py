@@ -150,10 +150,14 @@ class CaliTest:
                 elif cmd[0] == '_ply':
                     if len(cmd) > 1:
                         if os.path.isfile(cmd[1]):
-                            self.TextBufferOfLog.insert_at_cursor("PLY processing with file " + cmd[1] + "\n")
-                            self.cmds = cmd[1]
-                            self.ply_need_start = 1
-                            self.ply_mode = 1
+                            if self.ThreadOfReceiving == None or not self.ThreadOfReceiving.is_alive():
+                                self.TextBufferOfLog.insert_at_cursor("Please check the UART connection and restart the program.\n")
+                                self.set_check_status(1)
+                            else:
+                                self.TextBufferOfLog.insert_at_cursor("PLY processing with file " + cmd[1] + "\n")
+                                self.cmds = cmd[1]
+                                self.ply_need_start = 1
+                                self.ply_mode = 1
                                                           
             else:   # device's command
                 model = self.ComboBoxOfUart.get_model()
@@ -286,11 +290,15 @@ class CaliTest:
                 #time.sleep(0.01)
         else:
             prog = basparse.parse(open(self.cmds).read())
-            if not prog: print "basparse import error."
-            try:
-                basinterp.BasicInterpreter(prog, self).run()
-            except RuntimeError:
-                print "basinterp error"  
+            if not prog: 
+                self.set_console_text("*.BAS script basparse import error.")
+                self.set_check_status(1)
+            else:
+                try:
+                    basinterp.BasicInterpreter(prog, self).run()
+                except RuntimeError:
+                    self.set_console_text("*.BAS script basinterp error.")
+                    self.set_check_status(1)
     
     def get_check_status(self):        
         return self.check_status
