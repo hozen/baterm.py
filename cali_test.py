@@ -29,6 +29,7 @@ class CaliTest:
         return s.encode('gb18030')  
 
     def on_window_destroy(self, widget, data=None):
+        self.on_ButtonSend_clicked(0, "_stop")
         self.serial_close_all()
         gtk.main_quit()
         print "leaving..."
@@ -40,7 +41,8 @@ class CaliTest:
         self.on_ButtonSend_clicked(0, "_msp430")
         
     def on_window_key_press_event(self, widget, event):
-        key =  gtk.gdk.keyval_name(event.keyval)
+        key = gtk.gdk.keyval_name(event.keyval)
+        print event
         if key == "Return":
             self.on_ButtonYes_clicked(0, None)
         elif key == "space":
@@ -132,9 +134,11 @@ class CaliTest:
                     self.set_check_status(0x80000000)                    
                     self.TextBufferOfLog.insert_at_cursor("The calibration process is stopped.\n")
                 elif cmd[0] == '_yes':
-                    self.set_check_status(0)
+                    if self.get_check_status() != 0:    # avoid twice key-event issue in Linux
+                        self.set_check_status(0)
                 elif cmd[0] == '_no':
-                    self.set_check_status(1)
+                    if self.get_check_status() != 1:
+                        self.set_check_status(1)
                 elif cmd[0] == '_batch':
                     if len(cmd) > 1:
                         if os.path.isfile(cmd[1]):
@@ -265,6 +269,7 @@ class CaliTest:
                         gtk.threads_enter()
                         self.TextBufferOfLog.insert_at_cursor(line)
                         gtk.threads_leave()
+        print "thread batching stopped.\n"
 
     def plying(self, port=0, method=0):   # 0: line by line 1: Lex-Yacc method    
 
@@ -299,6 +304,7 @@ class CaliTest:
                 except RuntimeError:
                     self.set_console_text("*.BAS script basinterp error.")
                     self.set_check_status(1)
+        print "thread plying stopped"
     
     def get_check_status(self):        
         return self.check_status
@@ -340,6 +346,7 @@ class CaliTest:
 #        if check_mode == "AUTO": # auto check
         if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
             #self.cmds = [str]
+            self.set_check_status(2)
             self.ThreadOfBatch = Thread(target=self.batching, args=(port, cmd, check_mode))
             self.ThreadOfBatch.start()
             time.sleep(0.1)

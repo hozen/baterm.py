@@ -250,12 +250,12 @@ class BasicInterpreter:
                             if st != 2:
                                 if st == 0:
                                     self.cali.set_console_text("PASSED")
-                                    self.cali.set_check_status(0)
+                                    #self.cali.set_check_status(0)
                                 else:
                                     self.cali.set_console_text("FAILED")                            
                                     self.pc = line_of_end - 1   
-                                    self.cali.set_check_status(1)
-                                self.cali.set_check_status(2)
+                                    #self.cali.set_check_status(1)
+                                #self.cali.set_check_status(2)
                                 break           
                             
                             time.sleep(0.01)
