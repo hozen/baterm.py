@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding:gbk -*-
 
 import pygtk
 pygtk.require('2.0')
@@ -311,17 +310,22 @@ class CaliTest:
             start, end = self.TextBufferOfLog.get_bounds()
             self.TextBufferOfLog.delete(start, end)
         else:
-            #import chardet
-            #print chardet.detect(str)
-            str = str.decode('GB2312')  # decode() means decode the wanted format to unicode format.
+            import chardet
+            str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.
                                         # the string format can be detected by module chardet.
             self.TextBufferOfLog.insert_at_cursor(str + "\n")
         gtk.threads_leave()
     
     def set_uart_text(self, port, rates, cmd, check_mode):
-        if self.ser[port][0] == None or not self.ser[port][0].isOpen():
+        try:
+            comport = self.ser[port]
+        except KeyError:
+            self.set_console_text("The COM port " + port + " is not existed.\n")
+            return 1
+        
+        if comport[0] == None or not comport[0].isOpen():
             self.serial_connect(port, rates)
-        elif self.ser[port][1] != rates:
+        elif comport[1] != rates:
             self.serial_close_all()
             self.serial_connect(port, rates)
         
@@ -338,6 +342,7 @@ class CaliTest:
             print "thread batch is in use.."
 #        else: # manually check
 #            self.ser[port][0].write(cmd + "\n")
+        return 0
     
     def set_tutorial(self, src):
         if(os.path.isfile(src)):
@@ -407,7 +412,6 @@ class CaliTest:
         
     
         self.TextBufferOfLog = builder.get_object("textbuffer1")
-        self.TextBufferOfLog.create_tag("big", size= 14 * pango.SCALE)
         self.EntryOfCommand = builder.get_object("EntryOfCommand")
         self.ScrolledWindowOfLog = builder.get_object("ScrolledWindowOfLog")
         self.FileChooserButton = builder.get_object("FileChooserButton")

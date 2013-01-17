@@ -235,25 +235,30 @@ class BasicInterpreter:
                         self.vars["MCUBAUD"] = 9600
                     if not self.vars.has_key("DEVICEBAUD"):
                         self.vars["DEVICEBAUD"] = 9600
-                           
+                    #print self.vars['CHECK']
+
                     if portvar == "MCUPORT":
-                        self.cali.set_uart_text(port, self.vars['MCUBAUD'], str(cmd), self.vars['CHECK'])
+                        uart_conn_result = self.cali.set_uart_text(port, self.vars['MCUBAUD'], str(cmd), self.vars['CHECK'])
                     else:
-                        self.cali.set_uart_text(port, self.vars['DEVICEBAUD'], str(cmd), self.vars['CHECK'])
-                    while True:
-                        st = 0x3 & self.cali.get_check_status()
-                        if st != 2:
-                            if st == 0:
-                                self.cali.set_console_text("PASSED")
-                                self.cali.set_check_status(0)
-                            else:
-                                self.cali.set_console_text("FAILED")                            
-                                self.pc = line_of_end - 1   
-                                self.cali.set_check_status(1)
-                            self.cali.set_check_status(2)
-                            break           
-                        
-                        time.sleep(0.01)
+                        uart_conn_result = self.cali.set_uart_text(port, self.vars['DEVICEBAUD'], str(cmd), self.vars['CHECK'])
+                    if uart_conn_result == 1:
+                        self.pc = line_of_end - 1   
+                        self.cali.set_check_status(1)
+                    else:
+                        while True:
+                            st = 0x3 & self.cali.get_check_status()
+                            if st != 2:
+                                if st == 0:
+                                    self.cali.set_console_text("PASSED")
+                                    self.cali.set_check_status(0)
+                                else:
+                                    self.cali.set_console_text("FAILED")                            
+                                    self.pc = line_of_end - 1   
+                                    self.cali.set_check_status(1)
+                                self.cali.set_check_status(2)
+                                break           
+                            
+                            time.sleep(0.01)
                 
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
