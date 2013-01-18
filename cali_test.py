@@ -128,7 +128,7 @@ class CaliTest:
                                        printer_settings_mutable = self.ListOfPrinterSettings
                                        ).run(parent_window = self.window)       
                 elif cmd[0] == '_msp430': # should be deleted before release.
-                    cali_msp430.Msp430(portlist = self.ListStoreOfScan).run(parent_window = self.window)                                                               
+                    cali_msp430.Msp430().run(parent_window = self.window)                                                               
                 elif cmd[0] == '_stop':
                     self.set_check_status(0x80000000)                    
                     self.TextBufferOfLog.insert_at_cursor("The calibration process is stopped.\n")
@@ -455,9 +455,13 @@ class CaliTest:
         self.window.show_all()
 
     def main(self):
-        gtk.gdk.threads_init()
-        gtk.threads_enter()
-        gtk.main()
+        gtk.gdk.threads_init()  # use GIL to switch the multi-threads
+        
+        # NEVER directly operate GTK related resources but use
+        # 1) put threads_enter()/leave() to wrap gtk.main() and other gtk_operations in your threads. 
+        # 2) use gobject.idle_add(function_of_gtk_operation, counter) in your threads. (Recommended) 
+        gtk.threads_enter()      
+        gtk.main()               
         gtk.threads_leave()
         
 if __name__ == "__main__":

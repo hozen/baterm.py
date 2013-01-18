@@ -2,7 +2,6 @@
 <interface>
   <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkFileFilter" id="filefilter1"/>
   <object class="GtkWindow" id="WindowOfMsp430">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">MSP430 Flash Tool v0.1</property>
@@ -263,7 +262,7 @@
                       <object class="GtkLabel" id="label8">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Operation Area&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Operation Area by script&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
                     </child>
@@ -273,6 +272,325 @@
                     <property name="fill">True</property>
                     <property name="padding">5</property>
                     <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFrame" id="FrameOfMspApi">
+                    <property name="can_focus">False</property>
+                    <property name="no_show_all">True</property>
+                    <property name="label_xalign">0</property>
+                    <child>
+                      <object class="GtkAlignment" id="alignment5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="top_padding">5</property>
+                        <property name="bottom_padding">8</property>
+                        <property name="left_padding">12</property>
+                        <property name="right_padding">12</property>
+                        <child>
+                          <object class="GtkTable" id="table1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="n_rows">5</property>
+                            <child>
+                              <object class="GtkFrame" id="frame11">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label_xalign">0</property>
+                                <child>
+                                  <object class="GtkAlignment" id="alignment11">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="bottom_padding">3</property>
+                                    <property name="left_padding">12</property>
+                                    <property name="right_padding">12</property>
+                                    <child>
+                                      <object class="GtkButton" id="ButtonOfMspProgramAllByApi">
+                                        <property name="label" translatable="yes">Erase&amp;Check + Program&amp;Verify + Reset</property>
+                                        <property name="use_action_appearance">False</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel" id="label10">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;All-in-one&lt;/b&gt;</property>
+                                    <property name="use_markup">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="top_attach">4</property>
+                                <property name="bottom_attach">5</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkFrame" id="frame10">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label_xalign">0</property>
+                                <child>
+                                  <object class="GtkAlignment" id="alignment10">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="bottom_padding">3</property>
+                                    <property name="left_padding">12</property>
+                                    <property name="right_padding">12</property>
+                                    <child>
+                                      <object class="GtkButton" id="ButtonOfMspResetByApi">
+                                        <property name="label" translatable="yes">Reset MCU</property>
+                                        <property name="use_action_appearance">False</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel" id="label9">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Step 3 :  Reset</property>
+                                    <property name="use_markup">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkFrame" id="frame9">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label_xalign">0</property>
+                                <child>
+                                  <object class="GtkAlignment" id="alignment9">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="bottom_padding">3</property>
+                                    <property name="left_padding">12</property>
+                                    <property name="right_padding">12</property>
+                                    <child>
+                                      <object class="GtkHBox" id="hbox7">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="homogeneous">True</property>
+                                        <child>
+                                          <object class="GtkFileChooserButton" id="FileChooserButtonOfApiHex">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="filter">filefilter1</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="ButtonOfMspProgramByApi">
+                                            <property name="label" translatable="yes">Program</property>
+                                            <property name="use_action_appearance">False</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel" id="label7">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Step 2 : Program</property>
+                                    <property name="use_markup">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="top_attach">2</property>
+                                <property name="bottom_attach">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkFrame" id="frame8">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label_xalign">0</property>
+                                <child>
+                                  <object class="GtkAlignment" id="alignment8">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="bottom_padding">3</property>
+                                    <property name="left_padding">12</property>
+                                    <property name="right_padding">12</property>
+                                    <child>
+                                      <object class="GtkHBox" id="hbox5">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="homogeneous">True</property>
+                                        <child>
+                                          <object class="GtkHBox" id="hbox6">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="homogeneous">True</property>
+                                            <child>
+                                              <object class="GtkButton" id="ButtonOfMspEraseByApi">
+                                                <property name="label" translatable="yes">Mass Erase</property>
+                                                <property name="use_action_appearance">False</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <signal name="clicked" handler="on_ButtonOfMspEraseByApi_clicked" swapped="no"/>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="ButtonOfEraseCheckByApi">
+                                                <property name="label" translatable="yes">Erase Check</property>
+                                                <property name="use_action_appearance">False</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel" id="label2">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Step 1 : Erase</property>
+                                    <property name="use_markup">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="top_attach">1</property>
+                                <property name="bottom_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkFrame" id="frame12">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label_xalign">0</property>
+                                <child>
+                                  <object class="GtkAlignment" id="alignment12">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="bottom_padding">3</property>
+                                    <property name="left_padding">12</property>
+                                    <property name="right_padding">12</property>
+                                    <child>
+                                      <object class="GtkHBox" id="hbox8">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="homogeneous">True</property>
+                                        <child>
+                                          <object class="GtkHBox" id="hbox9">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="homogeneous">True</property>
+                                            <child>
+                                              <object class="GtkButton" id="ButtonOfMspConnectByApi">
+                                                <property name="label" translatable="yes">Connect</property>
+                                                <property name="use_action_appearance">False</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <signal name="clicked" handler="on_ButtonOfMspConnectByApi_clicked" swapped="no"/>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel" id="LabelOfMspModel">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="label" translatable="yes">Model</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel" id="label12">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Step 0 : Connect</property>
+                                    <property name="use_markup">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="label11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Operation Area by API&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="padding">5</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -360,7 +678,7 @@
                   <packing>
                     <property name="expand">True</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
@@ -388,5 +706,6 @@
       </object>
     </child>
   </object>
+  <object class="GtkFileFilter" id="filefilter1"/>
   <object class="GtkTextBuffer" id="textbuffer1"/>
 </interface>
