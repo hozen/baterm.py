@@ -242,32 +242,33 @@ class CaliTest:
                 if ch.isdigit() or self.batch_is_timeout == 1:
                     break
 
-        if self.batch_is_timeout == 1:
-            self.batch_is_timeout = 0
-            ch = '1'
-            print "thread batching is timeout."
-        else:
-            time.sleep(0.5)
-            if check_mode == "AUTO":
-                self.ser[port][0].flushInput()
-                if ch == '0':
-                    self.set_check_status(0)
-                    text = " is succeed\n"
-                else:
-                    self.set_check_status(1)
-                    text = " is failed\n"      
-                #gtk.threads_enter()
-                self.TextBufferOfLog.insert_at_cursor(cmd.upper() + text)
-                #gtk.threads_leave()              
+        time.sleep(0.5)
+        text = ''
+        if check_mode == "AUTO":
+            if self.batch_is_timeout == 1:
+                self.batch_is_timeout = 0
+                ch = '1'
+                text = "(timeout)"
+            
+            self.ser[port][0].flushInput()
+            if ch == '0':
+                self.set_check_status(0)
+                text += " is succeed\n"
             else:
-                line = ""
-                left = self.ser[port][0].inWaiting()
-                if left > 0:
-                    line += self.ser[port][0].read(left)   
-                    if line != '' :
-                        gtk.threads_enter()
-                        self.TextBufferOfLog.insert_at_cursor(line)
-                        gtk.threads_leave()
+                self.set_check_status(1)
+                text += " is failed\n"      
+            #gtk.threads_enter()
+            self.TextBufferOfLog.insert_at_cursor(cmd.upper() + text)
+            #gtk.threads_leave()              
+        else:
+            line = ""
+            left = self.ser[port][0].inWaiting()
+            if left > 0:
+                line += self.ser[port][0].read(left)   
+                if line != '' :
+                    gtk.threads_enter()
+                    self.TextBufferOfLog.insert_at_cursor(line)
+                    gtk.threads_leave()
         print "thread batching stopped.\n"
 
     def plying(self, port=0, method=0):   # 0: line by line 1: Lex-Yacc method    
