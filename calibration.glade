@@ -262,6 +262,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">F1</property>
                                 <signal name="clicked" handler="on_ButtonYes_clicked" swapped="no"/>
                               </object>
                               <packing>
@@ -278,6 +279,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">F2</property>
                                 <signal name="clicked" handler="on_ButtonNo_clicked" swapped="no"/>
                               </object>
                               <packing>
