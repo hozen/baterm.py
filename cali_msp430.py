@@ -28,6 +28,7 @@ class ProcessLog(Thread):
             for cmd in self.cmds:
                 command += cmd
                 command += ' '
+            start_time = time.time()
             child = pexpect.spawn(command)
        
             while True:
@@ -39,6 +40,7 @@ class ProcessLog(Thread):
                 except:
                     gtk.threads_enter()
                     print child.after
+                    self.msp430.TextBufferOfMsp.insert_at_cursor("\nTime: " + str(time.time() - start_time) + 's\n')
                     gtk.threads_leave()
                     break
                                     

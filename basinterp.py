@@ -248,14 +248,10 @@ class BasicInterpreter:
                         while True:
                             st = 0x3 & self.cali.get_check_status()
                             if st != 2:
-                                if st == 0:
-                                    self.cali.set_console_text("PASSED")
-                                    #self.cali.set_check_status(0)
-                                else:
-                                    self.cali.set_console_text("FAILED")                            
+                                if st != 0:                                    
+                                    #self.cali.set_console_text("FAILED")                            
                                     self.pc = line_of_end - 1   
-                                    #self.cali.set_check_status(1)
-                                #self.cali.set_check_status(2)
+                                self.cali.set_check_status(2)
                                 break           
                             
                             time.sleep(0.01)
@@ -263,6 +259,7 @@ class BasicInterpreter:
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
                 if cmd == 0:
+                    print self.cali.get_check_status()
                     while True:
                         if self.cali.get_check_status() != 2:
                             self.cali.set_check_status(2)

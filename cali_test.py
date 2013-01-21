@@ -42,9 +42,9 @@ class CaliTest:
         
     def on_window_key_press_event(self, widget, event):
         key = gtk.gdk.keyval_name(event.keyval)
-        if key == "Return":
+        if key == "F1":
             self.on_ButtonYes_clicked(0, None)
-        elif key == "space":
+        elif key == "F2":
             self.on_ButtonNo_clicked(0, None)
 
     def on_ToggleButtonOfDebug_toggled(self, widget, data=None):
@@ -52,8 +52,6 @@ class CaliTest:
         self.EntryOfCommand.grab_focus()
                          
     def on_ButtonStart_clicked(self, widget, data=None):     
-        #voltage = self.ComboBoxOfVoltage.get_active_text()
-        #self.on_ButtonSend_clicked(0, '_start ' + voltage)
         file = self.FileChooserButtonOfTestMode.get_filename()
         if file != None:
             filename, fileext = os.path.splitext(file)
@@ -229,7 +227,8 @@ class CaliTest:
 
     def batching(self, port, cmd, check_mode):
         print "thread batching starts...\n"
-        
+        #self.set_check_status(2)
+
         self.ser[port][0].flushInput()
         self.ser[port][0].flushOutput()
         
@@ -261,7 +260,7 @@ class CaliTest:
             self.TextBufferOfLog.insert_at_cursor(cmd.upper() + text)
             #gtk.threads_leave()              
         else:
-            line = ""
+            line = cmd.upper() + " "
             left = self.ser[port][0].inWaiting()
             if left > 0:
                 line += self.ser[port][0].read(left)   
@@ -269,6 +268,7 @@ class CaliTest:
                     gtk.threads_enter()
                     self.TextBufferOfLog.insert_at_cursor(line)
                     gtk.threads_leave()
+
         print "thread batching stopped.\n"
 
     def plying(self, port=0, method=0):   # 0: line by line 1: Lex-Yacc method    
@@ -346,7 +346,6 @@ class CaliTest:
 #        if check_mode == "AUTO": # auto check
         if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
             #self.cmds = [str]
-            self.set_check_status(2)
             self.ThreadOfBatch = Thread(target=self.batching, args=(port, cmd, check_mode))
             self.ThreadOfBatch.start()
             time.sleep(0.1)
@@ -375,12 +374,13 @@ class CaliTest:
         
         port_num = 0
         for port, desc, hwid in ports:
-            self.ListStoreOfUart.append([port, '115200'])
-            self.ListStoreOfUart.append([port, '9600'])
-            self.ListStoreOfScan.append([port, '1200'])
-            self.ser[port] = None, 0          
-            port_num += 1 
-            
+            if port.find('ttyACM') == -1:
+                #self.ListStoreOfUart.append([port, '115200'])
+                self.ListStoreOfUart.append([port, '9600'])
+                self.ListStoreOfScan.append([port, '1200'])
+                self.ser[port] = None, 0          
+                port_num += 1 
+                
         if port_num == 0 :
             self.ComboBoxOfUart.insert_text(0, "NONE")
             
