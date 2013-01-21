@@ -7,6 +7,7 @@
     <property name="title" translatable="yes">MSP430 Flash Tool v0.1</property>
     <property name="default_width">440</property>
     <property name="default_height">250</property>
+    <signal name="destroy" handler="on_WindowOfMsp430_destroy" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox3">
         <property name="visible">True</property>
