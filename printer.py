@@ -92,6 +92,9 @@ class GtkPrinter:
         import datetime
         CERT_VALUE = datetime.datetime.now()
         CERT_VALUE = CERT_VALUE.strftime("%Y-%m-%d %H:%M:%S")
+        import re
+        filename = str(self.sn) + str(CERT_VALUE)
+        filename = re.sub(r'[^a-zA-Z0-9]', '', filename)
         CERT_TITLE = "Date of the analyse:"
         self.cairo_context.set_font_size(CERT_FONT_SIZE_OF_ITEM)    
         x_bearing, y_bearing, width, height = self.cairo_context.text_extents(CERT_TITLE)[:4]  
@@ -153,6 +156,23 @@ class GtkPrinter:
         self.cairo_context.show_text(CERT_NAME)     
         x, y = self.cairo_context.get_current_point()   
         self.print_with_underline(start_x = x, start_y = y, content = CERT_NAME_VALUE)
+        
+        # print to file for backup
+        self.print_to_pdf(filename, self.cairo_context.get_target(), context.get_width(), context.get_height())
+        
+    def print_to_pdf(self, filename, sourcesurface, width_of_sourcesurface, height_of_sourcesurface):
+        dir_of_cert = './certification/'
+        import os
+        if not os.path.exists(dir_of_cert):
+            os.makedirs(dir_of_cert)
+        # How to output exist context to other surface(the target canvas)
+        # 1. create a new surface(pdf, png, etc.) and its context
+        # 2. set the new context with the existed context's surface as input.
+        # 3. paint it.
+        surface = cairo.PDFSurface(dir_of_cert + filename + ".pdf", width_of_sourcesurface, height_of_sourcesurface)
+        context = cairo.Context(surface)
+        context.set_source_surface(sourcesurface)
+        context.paint()
         
     def get_width_of_char(self, chars="X"):
         x_bearing, y_bearing, width_of_char, height = self.cairo_context.text_extents(chars)[:4]
