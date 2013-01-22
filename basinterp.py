@@ -213,17 +213,30 @@ class BasicInterpreter:
             # END and STOP statements
             if op == 'END' or op == 'STOP':
                  break           # We're done                        
-                    
+            
+            elif op == 'OUTVAR':
+                print instr
+                
             elif op == 'OUT':
-                text = ""        
+                text = ""      
                 port = self.eval(instr[1])
                 portvar = instr[1][1][0]
-                for label, val in instr[2]:
-                    if label == '':
-                        cmd = self.eval(val)
-                    else:
-                        cmd = label
-
+                #for label, val in instr[2]:
+                #    if label == '':
+                #        cmd = self.eval(val)
+                #    else:
+                #        cmd = label
+                plist = instr[2]
+                out = ""
+                for label,val in plist:
+                    if out:
+                         out += ' '*(15 - (len(out) % 15))
+                    out += label
+                    if val:
+                         if label: out += " "
+                         eval = self.eval(val)
+                         out += str(eval)
+                cmd = out
                 if portvar == "CONSOLE":
                     self.cali.set_console_text(str(cmd))
                 elif portvar == "TUTORIAL":
@@ -255,7 +268,7 @@ class BasicInterpreter:
                                 break           
                             
                             time.sleep(0.01)
-                
+
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
                 if cmd == 0:
@@ -272,12 +285,19 @@ class BasicInterpreter:
                 for label, val in instr[2]:
                     value = label
                 self.vars[var] = value
-
+            
+            elif op == 'READDATA':
+                print instr
+                var = instr[1][0]
+                for label, val in instr[2]:
+                    value = label                
+                self.vars[var] = self.cali.get_batching_result(value)
+                
             elif op == 'CHECK':
                 for label, val in instr[1]:
                     method = label
                 self.vars['CHECK'] = method
-
+                
             elif op == 'CLEAR':
                 for label, val in instr[1]:
                     cmd = label
@@ -292,7 +312,6 @@ class BasicInterpreter:
 
             # PRINT statement
             elif op == 'PRINT':
-                 #print instr
                  plist = instr[1]
                  out = ""
                  for label,val in plist:

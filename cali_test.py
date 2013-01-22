@@ -224,7 +224,13 @@ class CaliTest:
                 #todo: need usb plug/unplug signal
             
             time.sleep(0.01)    # avoid too much cpu resource cost
-
+            
+    def get_batching_result(self, keywords):
+        if len(self.batching_result) > 1:
+            if keywords.upper() == self.batching_result[0].upper():
+                return self.batching_result[1]  
+        return None
+        
     def batching(self, port, cmd, check_mode):
         print "thread batching starts...\n"
         #self.set_check_status(2)
@@ -249,7 +255,7 @@ class CaliTest:
                 ch = '1'
                 text = "(timeout)"
             
-            self.ser[port][0].flushInput()
+            #self.ser[port][0].flushInput()
             if ch == '0':
                 self.set_check_status(0)
                 text += " is succeed\n"
@@ -259,16 +265,16 @@ class CaliTest:
             #gtk.threads_enter()
             self.TextBufferOfLog.insert_at_cursor(cmd.upper() + text)
             #gtk.threads_leave()              
-        else:
-            line = cmd.upper() + " "
-            left = self.ser[port][0].inWaiting()
-            if left > 0:
-                line += self.ser[port][0].read(left)   
-                if line != '' :
-                    gtk.threads_enter()
-                    self.TextBufferOfLog.insert_at_cursor(line)
-                    gtk.threads_leave()
-
+        #else:
+        line = cmd.upper() + " "
+        left = self.ser[port][0].inWaiting()
+        if left > 0:
+            line += self.ser[port][0].read(left)   
+            if check_mode != "AUTO":
+                gtk.threads_enter()
+                self.TextBufferOfLog.insert_at_cursor(line)
+                gtk.threads_leave()
+            self.batching_result = line.split()
         print "thread batching stopped.\n"
 
     def plying(self, port=0, method=0):   # 0: line by line 1: Lex-Yacc method    
@@ -450,6 +456,7 @@ class CaliTest:
         self.ThreadOfReceiving = None    
         self.ThreadOfPly = None 
         self.ThreadOfBatch = None
+        self.batching_result = None
         self.mutex = threading.Lock() 
         
         self.ComboxOfUart_init()

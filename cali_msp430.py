@@ -13,7 +13,10 @@ class ProcessLog(Thread):
     def __init__(self, msp430_instance, cmds):
         Thread.__init__(self)
         self.msp430 = msp430_instance
-        self.cmds = ['python', 'msp430-jtag.pyc', '--time', '-p']
+        jtagfile = './msp430-jtag.py'
+        if not os.path.isfile(jtagfile):
+            jtagfile = './msp430-jtag.pyc'
+        self.cmds = ['python', jtagfile, '--time', '-p']
         if os.name == 'posix':
             self.cmds.append('/dev/ttyACM0')
         else:

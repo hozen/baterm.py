@@ -126,6 +126,10 @@ def p_command_letstr(p):
     '''command : LETSTR variable EQUALS plist'''
     p[0] = ('LETSTR', p[2], p[4])
     
+def p_command_readdata(p):
+    '''command : READDATA variable EQUALS plist'''
+    p[0] = ('READDATA', p[2], p[4])
+        
 def p_command_check(p):
     '''command : CHECK plist'''
     p[0] = ('CHECK', p[2])
