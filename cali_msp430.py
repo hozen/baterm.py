@@ -109,7 +109,7 @@ class Msp430():
         if os.name == 'posix' :
             os.environ['LIBMSPGCC_PATH'] = '/usr/lib'
         builder = gtk.Builder()
-        builder.add_from_file("msp430.glade")
+        builder.add_from_file("./glades/msp430.glade")
         builder.connect_signals(self)
         self.window = builder.get_object("WindowOfMsp430")
         self.TextBufferOfMsp= builder.get_object("textbuffer1")
@@ -122,7 +122,7 @@ class Msp430():
         self.FileChooserButtonOfHex = builder.get_object("FileChooserButtonOfHex")
         self.FileChooserButtonOfApiHex = builder.get_object("FileChooserButtonOfApiHex")
         
-        default_hex_file = './lavida.hex'
+        default_hex_file = './ihexfiles/lavida.hex'
         if os.path.isfile(default_hex_file):
             self.FileChooserButtonOfHex.set_filename(default_hex_file)
             self.FileChooserButtonOfApiHex.set_filename(default_hex_file)

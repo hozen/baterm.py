@@ -259,7 +259,6 @@ class BasicInterpreter:
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
                 if cmd == 0:
-                    print self.cali.get_check_status()
                     while True:
                         if self.cali.get_check_status() != 2:
                             self.cali.set_check_status(2)

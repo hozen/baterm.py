@@ -32,7 +32,7 @@ class CaliScan():
         self.ListOfPrinterSettings = printer_settings_mutable   # mutable means: 1. to pass a var by reference, use list type var.
                                                                 #                2. otherwise, directly pass a var will only pass its copy
         builder = gtk.Builder()
-        builder.add_from_file("scanwindow.glade")
+        builder.add_from_file("./glades/scanwindow.glade")
         builder.connect_signals(self)
         self.window = builder.get_object("WindowOfScanning")
         self.EntryOfSN = builder.get_object("EntryOfSN")

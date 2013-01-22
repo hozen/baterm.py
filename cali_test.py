@@ -359,6 +359,7 @@ class CaliTest:
         return 0
     
     def set_tutorial(self, src):
+        src = './tutorials/' + src
         if(os.path.isfile(src)):
             ext = (src.split('.')[1]).upper()
             if ext == "JPG" or ext == "BMP" or ext == "PNG":
@@ -411,7 +412,7 @@ class CaliTest:
                        
     def __init__(self):
         builder = gtk.Builder()
-        builder.add_from_file("calibration.glade")
+        builder.add_from_file("./glades/calibration.glade")
         builder.connect_signals(self)
         
         self.ButtonResultByColor = builder.get_object("ButtonResultByColor")
