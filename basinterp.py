@@ -287,7 +287,6 @@ class BasicInterpreter:
                 self.vars[var] = value
             
             elif op == 'READDATA':
-                print instr
                 var = instr[1][0]
                 for label, val in instr[2]:
                     value = label                

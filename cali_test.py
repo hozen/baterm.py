@@ -226,10 +226,17 @@ class CaliTest:
             time.sleep(0.01)    # avoid too much cpu resource cost
             
     def get_batching_result(self, keywords):
-        if len(self.batching_result) > 1:
-            if keywords.upper() == self.batching_result[0].upper():
-                return self.batching_result[1]  
-        return None
+        keywords = keywords.upper()
+        if keywords in self.batching_result:
+            result = self.batching_result[keywords]
+            del self.batching_result[keywords]
+            return result
+        else:
+            return None
+    
+    def set_batching_result(self, data_with_2line):
+        if len(data_with_2line) > 1:
+            self.batching_result[data_with_2line[0]] = data_with_2line[1]
         
     def batching(self, port, cmd, check_mode):
         print "thread batching starts...\n"
@@ -274,7 +281,8 @@ class CaliTest:
                 gtk.threads_enter()
                 self.TextBufferOfLog.insert_at_cursor(line)
                 gtk.threads_leave()
-            self.batching_result = line.split()
+            self.set_batching_result(line.split())
+        self.ser[port][0].flushInput()
         print "thread batching stopped.\n"
 
     def plying(self, port=0, method=0):   # 0: line by line 1: Lex-Yacc method    
@@ -317,18 +325,22 @@ class CaliTest:
     
     def set_check_status(self, status):
         #if self.ThreadOfPly != None and self.ThreadOfPly.is_alive():
-        if status == 0:
-            self.ButtonResultByColor.set_color(gtk.gdk.Color('green'))
-        elif status != 2:
-            self.ButtonResultByColor.set_color(gtk.gdk.Color('red'))
         self.check_status &= 0x80000000
         self.check_status |= status
+        
+        if self.check_status == 0:            
+            self.ButtonResultByColor.set_color(gtk.gdk.Color('green'))
+        elif self.check_status != 2:
+            self.ButtonResultByColor.set_color(gtk.gdk.Color('red'))
     
     def set_console_text(self, str=None):
         gtk.threads_enter()
         if str == None:
             start, end = self.TextBufferOfLog.get_bounds()
             self.TextBufferOfLog.delete(start, end)
+        elif str == "CURRENTTIME":
+            import datetime
+            self.TextBufferOfLog.insert_at_cursor(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n')
         else:
             import chardet
             str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.
@@ -456,7 +468,7 @@ class CaliTest:
         self.ThreadOfReceiving = None    
         self.ThreadOfPly = None 
         self.ThreadOfBatch = None
-        self.batching_result = None
+        self.batching_result = {}
         self.mutex = threading.Lock() 
         
         self.ComboxOfUart_init()
