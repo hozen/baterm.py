@@ -34,7 +34,7 @@ class BasicInterpreter:
               if self.prog[lineno][0] == 'DATA':
                   self.data = self.data + self.prog[lineno][1]
          self.dc = 0                  # Initialize the data counter
-
+         
     # Check for end statements
     def check_end(self):
          has_end = 0
@@ -230,7 +230,7 @@ class BasicInterpreter:
                 out = ""
                 for label,val in plist:
                     if out:
-                         out += ' '*(15 - (len(out) % 15))
+                         out += ''*(15 - (len(out) % 15))
                     out += label
                     if val:
                          if label: out += " "
@@ -336,6 +336,8 @@ class BasicInterpreter:
 
             # READ statement
             elif op == 'READ':
+                 print instr
+                 print self.data
                  for target in instr[1]:
                       if self.dc < len(self.data):
                           value = ('NUM',self.data[self.dc])
