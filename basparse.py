@@ -133,10 +133,6 @@ def p_command_readdata(p):
 def p_command_check(p):
     '''command : CHECK plist'''
     p[0] = ('CHECK', p[2])
-
-def p_command_clear(p):
-    '''command : CLEAR plist'''
-    p[0] = ('CLEAR', p[2])
                     
 def p_command_print_bad(p):
     '''command : PRINT error'''

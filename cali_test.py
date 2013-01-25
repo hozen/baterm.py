@@ -353,13 +353,15 @@ class CaliTest:
         
     def set_console_text(self, str=None):
         gtk.threads_enter()
-        if str == None:
+        if str == "_CLEAR":
             start, end = self.TextBufferOfLog.get_bounds()
             self.TextBufferOfLog.delete(start, end)
         elif str == "_CURRENTTIME":
             self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
         elif str == "_ERROR":
             self.set_check_status(1)
+        elif str == '_SCAN':
+            self.on_ButtonSend_clicked('_scan')
         else:
             import chardet
             str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.

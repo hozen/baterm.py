@@ -289,12 +289,6 @@ class BasicInterpreter:
                     method = label
                 self.vars['CHECK'] = method
                 
-            elif op == 'CLEAR':
-                for label, val in instr[1]:
-                    cmd = label
-                if cmd == "CONSOLE":
-                    self.cali.set_console_text(None)
-
             # GOTO statement
             elif op == 'GOTO':
                  newline = instr[1]
