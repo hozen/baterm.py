@@ -123,7 +123,8 @@ class CaliTest:
                 elif cmd[0] == '_scan': # should be deleted before release.
                     #Thread(target=cali_scan.CaliScan(self.ListStoreOfScan, self.ListOfPrinterSettings).run, args=(self.window, )).start()
                     #time.sleep(0.1)
-                    cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings).run(parent_window = self.window)       
+                    start, end = self.TextBufferOfLog.get_bounds()
+                    cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings, console_log = self.TextBufferOfLog.get_text(start, end)).run(parent_window = self.window)       
                 elif cmd[0] == '_msp430': # should be deleted before release.
                     cali_msp430.Msp430().run(parent_window = self.window)                                                               
                 elif cmd[0] == '_stop':

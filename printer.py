@@ -9,11 +9,12 @@ class GtkPrinter:
     #def end_printer(self, operation=None, context=None, user_param1=None):
     #    print "end printer"
         
-    def __init__(self, printer_settings, tester, sn):
+    def __init__(self, printer_settings, tester, sn, console_log):
         self.printer = gtk.PrintOperation()
         self.settings = printer_settings
         self.tester = tester
         self.sn = sn
+        self.console_log = console_log
                 
     def run(self, mode="setup"):    
         if mode == "setup":
@@ -174,6 +175,16 @@ class GtkPrinter:
         context.set_source_surface(sourcesurface)
         context.paint()
         
+        try:
+            file = None
+            file = open(dir_of_cert + filename + ".log", 'w')
+            file.write(self.console_log)
+        except:
+            if file != None:
+                file.close()
+        finally:
+            file.close()
+    
     def get_width_of_char(self, chars="X"):
         x_bearing, y_bearing, width_of_char, height = self.cairo_context.text_extents(chars)[:4]
         return width_of_char
