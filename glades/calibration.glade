@@ -12,14 +12,6 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkListStore" id="liststore3">
-    <columns>
-      <!-- column-name port -->
-      <column type="gchararray"/>
-      <!-- column-name baudrate -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkTextBuffer" id="textbuffer1"/>
   <object class="GtkWindow" id="window">
     <property name="visible">True</property>

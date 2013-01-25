@@ -122,9 +122,7 @@ class CaliTest:
                 elif cmd[0] == '_scan': # should be deleted before release.
                     #Thread(target=cali_scan.CaliScan(self.ListStoreOfScan, self.ListOfPrinterSettings).run, args=(self.window, )).start()
                     #time.sleep(0.1)
-                    cali_scan.CaliScan(scan_portlist = self.ListStoreOfScan, 
-                                       printer_settings_mutable = self.ListOfPrinterSettings
-                                       ).run(parent_window = self.window)       
+                    cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings).run(parent_window = self.window)       
                 elif cmd[0] == '_msp430': # should be deleted before release.
                     cali_msp430.Msp430().run(parent_window = self.window)                                                               
                 elif cmd[0] == '_stop':
@@ -133,9 +131,13 @@ class CaliTest:
                 elif cmd[0] == '_yes':
                     if self.get_check_status() != 0:    # avoid twice key-event issue in Linux
                         self.set_check_status(0)
+                    if self.ack_to_plying != 0:
+                        self.ack_to_plying = 0
                 elif cmd[0] == '_no':
                     if self.get_check_status() != 1:
                         self.set_check_status(1)
+                    if self.ack_to_plying != 0:
+                        self.ack_to_plying = 0
                 elif cmd[0] == '_batch':
                     if len(cmd) > 1:
                         if os.path.isfile(cmd[1]):
@@ -240,7 +242,6 @@ class CaliTest:
         
     def batching(self, port, cmd, check_mode):
         print "thread batching starts...\n"
-        #self.set_check_status(2)
 
         self.ser[port][0].flushInput()
         self.ser[port][0].flushOutput()
@@ -268,7 +269,8 @@ class CaliTest:
                 text += " is succeed\n"
             else:
                 self.set_check_status(1)
-                text += " is failed\n"      
+                text += " is failed\n"   
+            self.ack_to_plying = 0   
             #gtk.threads_enter()
             self.TextBufferOfLog.insert_at_cursor(cmd.upper() + text)
             #gtk.threads_leave()              
@@ -288,8 +290,7 @@ class CaliTest:
     def plying(self, port=0, method=0):   # 0: line by line 1: Lex-Yacc method    
 
         print "thread plying starts.."
-        self.check_status = 2
-                
+        self.clear_status()       
         if method == 0:
             for cmd in self.cmds:
                 if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
@@ -318,21 +319,37 @@ class CaliTest:
                 except RuntimeError:
                     self.set_console_text("*.BAS script basinterp error.")
                     self.set_check_status(1)
+        self.set_check_status_led()        
         print "thread plying stopped"
+    
+    def get_ack_to_plying(self):
+        return self.ack_to_plying
     
     def get_check_status(self):        
         return self.check_status
     
     def set_check_status(self, status):
-        #if self.ThreadOfPly != None and self.ThreadOfPly.is_alive():
         self.check_status &= 0x80000000
         self.check_status |= status
-        
-        if self.check_status == 0:            
-            self.ButtonResultByColor.set_color(gtk.gdk.Color('green'))
-        elif self.check_status != 2:
-            self.ButtonResultByColor.set_color(gtk.gdk.Color('red'))
     
+    def clear_status(self):
+        self.check_status = 0
+        self.set_check_status_led(2)
+         
+    def set_check_status_led(self, status=None):
+        if status == None:
+            status = self.get_check_status()
+        
+        if status == 0:
+            color = 'green'
+        elif status == 1:
+            color = 'red'
+        elif status == 2:
+            color = 'gray'            
+        else:
+            color = 'yellow'
+        self.ButtonResultByColor.set_color(gtk.gdk.Color(color))
+        
     def set_console_text(self, str=None):
         gtk.threads_enter()
         if str == None:
@@ -353,6 +370,7 @@ class CaliTest:
             comport = self.ser[port]
         except KeyError:
             self.set_console_text("The COM port " + port + " is not existed.\n")
+            self.set_check_status(2)
             return 1
         
         if comport[0] == None or not comport[0].isOpen():
@@ -396,7 +414,6 @@ class CaliTest:
             if port.find('ttyACM') == -1:
                 #self.ListStoreOfUart.append([port, '115200'])
                 self.ListStoreOfUart.append([port, '9600'])
-                self.ListStoreOfScan.append([port, '1200'])
                 self.ser[port] = None, 0          
                 port_num += 1 
                 
@@ -440,7 +457,6 @@ class CaliTest:
         self.ButtonYes.child.modify_font(pango.FontDescription("sans 48"))
         self.ButtonNo.child.modify_font(pango.FontDescription("sans 48"))
         self.ListStoreOfUart = builder.get_object("liststore2")
-        self.ListStoreOfScan = builder.get_object("liststore3")
         self.ComboBoxOfUart = builder.get_object("ComboBoxOfUart")
         self.window = builder.get_object("window")
         
@@ -460,11 +476,11 @@ class CaliTest:
         # init for multiple threading        
         self.ply_need_start = 0
         self.ply_mode = 0   # 0: line by line 1: yacc mode
+        self.ack_to_plying = 1  # 0 ack 1 not ack
         self.batch_is_timeout = 0
-        self.check_status = 2   # 2: init value, not checked 
-                                # 1: failed 
+        self.check_status = 0   # 1: failed 
                                 # 0: success 
-                                # 0x8000000x: stopped
+                                # 0x8000000x: terminated
         self.ThreadOfReceiving = None    
         self.ThreadOfPly = None 
         self.ThreadOfBatch = None

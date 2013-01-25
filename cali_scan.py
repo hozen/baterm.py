@@ -5,7 +5,6 @@ import gtk
 import cali_test
 
 class CaliScan():
-
     def on_WindowOfScanning_expose_event(self, widget, data=None):
         if self.EntryOfTester.get_text().rstrip() == "":
             self.EntryOfTester.set_text("Hach")
@@ -27,7 +26,7 @@ class CaliScan():
         self.window.set_transient_for(parent_window)   # will make the child window located at center of main window. why??
         self.window.show_all()
         
-    def __init__(self, scan_portlist, printer_settings_mutable):
+    def __init__(self, printer_settings_mutable):
 
         self.ListOfPrinterSettings = printer_settings_mutable   # mutable means: 1. to pass a var by reference, use list type var.
                                                                 #                2. otherwise, directly pass a var will only pass its copy
@@ -37,5 +36,4 @@ class CaliScan():
         self.window = builder.get_object("WindowOfScanning")
         self.EntryOfSN = builder.get_object("EntryOfSN")
         self.EntryOfTester = builder.get_object("EntryOfTester")        
-        self.ComboBoxOfScan = builder.get_object("ComboBoxOfScan")
-        self.ComboBoxOfScan.set_model(scan_portlist)
+        

@@ -203,8 +203,7 @@ class BasicInterpreter:
             line  = self.stat[self.pc]
             instr = self.prog[line]
             
-            if (self.cali.get_check_status()>>31) == 1:
-#                self.cali.check_status = 2
+            if self.cali.get_check_status() != 0:
                 break
 
                        
@@ -248,33 +247,26 @@ class BasicInterpreter:
                         self.vars["MCUBAUD"] = 9600
                     if not self.vars.has_key("DEVICEBAUD"):
                         self.vars["DEVICEBAUD"] = 9600
-                    #print self.vars['CHECK']
 
+                    self.cali.ack_to_plying = 1
                     if portvar == "MCUPORT":
                         uart_conn_result = self.cali.set_uart_text(port, self.vars['MCUBAUD'], str(cmd), self.vars['CHECK'])
                     else:
                         uart_conn_result = self.cali.set_uart_text(port, self.vars['DEVICEBAUD'], str(cmd), self.vars['CHECK'])
                     if uart_conn_result == 1:
                         self.pc = line_of_end - 1   
-                        self.cali.set_check_status(1)
                     else:
-                        while True:
-                            st = 0x3 & self.cali.get_check_status()
-                            if st != 2:
-                                if st != 0:                                    
-                                    #self.cali.set_console_text("FAILED")                            
-                                    self.pc = line_of_end - 1   
-                                self.cali.set_check_status(2)
-                                break           
-                            
+                        while True:                            
+                            if self.cali.ack_to_plying == 0 or self.cali.get_check_status() != 0:
+                                break
                             time.sleep(0.01)
 
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
                 if cmd == 0:
+                    self.cali.ack_to_plying = 1
                     while True:
-                        if self.cali.get_check_status() != 2:
-                            self.cali.set_check_status(2)
+                        if self.cali.ack_to_plying == 0 or self.cali.get_check_status() != 0:
                             break
                         time.sleep(0.01)
                 else:
@@ -336,8 +328,8 @@ class BasicInterpreter:
 
             # READ statement
             elif op == 'READ':
-                 print instr
-                 print self.data
+                 #print instr
+                 #print self.data
                  for target in instr[1]:
                       if self.dc < len(self.data):
                           value = ('NUM',self.data[self.dc])
