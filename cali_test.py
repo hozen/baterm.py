@@ -362,7 +362,7 @@ class CaliTest:
         elif str == "_ERROR":
             self.set_check_status(1)
         elif str == '_SCAN':
-            self.on_ButtonSend_clicked('_scan')
+            self.on_ButtonSend_clicked(0, '_scan')
         else:
             import chardet
             str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.
