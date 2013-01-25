@@ -8,6 +8,7 @@ import threading
 from threading import Thread
 import serial
 import time
+import datetime
 import os
 
 import basiclex
@@ -112,7 +113,7 @@ class CaliTest:
                         start, end = self.TextBufferOfLog.get_bounds()
                         self.TextBufferOfLog.delete(start, end)
                 elif cmd[0] == '_ver':
-                    self.TextBufferOfLog.insert_at_cursor(self.window.get_title() + '\n')
+                    self.insert_into_console(self.window.get_title() + '\n')
 #                elif cmd[0] == '_start':
 #                    if len(cmd) > 1:
 #                        if cmd[1].isdigit():
@@ -127,7 +128,7 @@ class CaliTest:
                     cali_msp430.Msp430().run(parent_window = self.window)                                                               
                 elif cmd[0] == '_stop':
                     self.set_check_status(0x80000000)                    
-                    self.TextBufferOfLog.insert_at_cursor("The calibration process is stopped.\n")
+                    self.insert_into_console("The calibration process is stopped.\n")
                 elif cmd[0] == '_yes':
                     if self.get_check_status() != 0:    # avoid twice key-event issue in Linux
                         self.set_check_status(0)
@@ -141,7 +142,7 @@ class CaliTest:
                 elif cmd[0] == '_batch':
                     if len(cmd) > 1:
                         if os.path.isfile(cmd[1]):
-                            self.TextBufferOfLog.insert_at_cursor("Batch processing with file " + cmd[1] + '\n')
+                            self.insert_into_console("Batch processing with file " + cmd[1] + '\n')
                             file = open(cmd[1], 'r')
                             self.cmds = file.readlines()
                             file.close() 
@@ -154,10 +155,10 @@ class CaliTest:
                     if len(cmd) > 1:
                         if os.path.isfile(cmd[1]):
                             if self.ThreadOfReceiving == None or not self.ThreadOfReceiving.is_alive():
-                                self.TextBufferOfLog.insert_at_cursor("Please check the UART connection and restart the program.\n")
+                                self.insert_into_console("Please check the UART connection and restart the program.\n")
                                 self.set_check_status(1)
                             else:
-                                self.TextBufferOfLog.insert_at_cursor("PLY processing with file " + cmd[1] + "\n")
+                                self.insert_into_console("PLY processing with file " + cmd[1] + "\n")
                                 self.cmds = cmd[1]
                                 self.ply_need_start = 1
                                 self.ply_mode = 1
@@ -209,14 +210,14 @@ class CaliTest:
                 except serial.serialutil.SerialException:
                     self.serial_close_all()
                     gtk.threads_enter()
-                    self.TextBufferOfLog.insert_at_cursor("\nPlease connect the serial device and reboot the program.\n")
+                    self.insert_into_console("\nPlease connect the serial device and reboot the program.\n")
                     gtk.threads_leave()
                 else:
                     if left > 0 :
                         line += self.ser[port][0].read(left)   
                         if line != '' :
                             gtk.threads_enter()
-                            self.TextBufferOfLog.insert_at_cursor(line)
+                            self.insert_into_console(line)
                             gtk.threads_leave()
                         line = ''
                 
@@ -272,7 +273,7 @@ class CaliTest:
                 text += " is failed\n"   
             self.ack_to_plying = 0   
             #gtk.threads_enter()
-            self.TextBufferOfLog.insert_at_cursor(cmd.upper() + text)
+            self.insert_into_console(cmd.upper() + text)
             #gtk.threads_leave()              
         #else:
         line = cmd.upper() + " "
@@ -281,7 +282,7 @@ class CaliTest:
             line += self.ser[port][0].read(left)   
             if check_mode != "AUTO":
                 gtk.threads_enter()
-                self.TextBufferOfLog.insert_at_cursor(line)
+                self.insert_into_console(line)
                 gtk.threads_leave()
             self.set_batching_result(line.split())
         self.ser[port][0].flushInput()
@@ -355,16 +356,21 @@ class CaliTest:
         if str == None:
             start, end = self.TextBufferOfLog.get_bounds()
             self.TextBufferOfLog.delete(start, end)
-        elif str == "CURRENTTIME":
-            import datetime
-            self.TextBufferOfLog.insert_at_cursor(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n')
+        elif str == "_CURRENTTIME":
+            self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
+        elif str == "_ERROR":
+            self.set_check_status(1)
         else:
             import chardet
             str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.
                                         # the string format can be detected by module chardet.
-            self.TextBufferOfLog.insert_at_cursor(str + "\n")
+            self.insert_into_console(str + "\n")
         gtk.threads_leave()
     
+    def insert_into_console(self, str=None):
+        if str != None:
+            self.TextBufferOfLog.insert_at_cursor(str)
+            
     def set_uart_text(self, port, rates, cmd, check_mode):
         try:
             comport = self.ser[port]
