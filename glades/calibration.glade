@@ -17,7 +17,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="border_width">3</property>
-    <property name="title" translatable="yes">Lavida校准工具 v0.4</property>
+    <property name="title" translatable="yes">Lavida校准工具 v0.4a</property>
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <signal name="key-press-event" handler="on_window_key_press_event" swapped="no"/>
     <child>
@@ -518,13 +518,36 @@
                 <property name="can_focus">False</property>
                 <property name="left_padding">12</property>
                 <child>
-                  <object class="GtkImage" id="ImageOfTutorial">
-                    <property name="width_request">500</property>
-                    <property name="height_request">375</property>
+                  <object class="GtkVBox" id="vbox3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="ypad">4</property>
-                    <property name="pixbuf">Danaher_logo_STACK.jpg</property>
+                    <child>
+                      <object class="GtkLabel" id="LabelOfInstruction">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Lavida operation instruction.</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="ImageOfTutorial">
+                        <property name="width_request">500</property>
+                        <property name="height_request">375</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="ypad">4</property>
+                        <property name="pixbuf">Danaher_logo_STACK.jpg</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                 </child>
               </object>

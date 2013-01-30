@@ -10,6 +10,7 @@ import serial
 import time
 import datetime
 import os
+import chardet
 
 import basiclex
 import basparse
@@ -364,9 +365,7 @@ class CaliTest:
         elif str == '_SCAN':
             self.on_ButtonSend_clicked(0, '_scan')
         else:
-            import chardet
             str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.
-                                        # the string format can be detected by module chardet.
             self.insert_into_console(str + "\n")
         gtk.threads_leave()
     
@@ -410,7 +409,18 @@ class CaliTest:
             if ext == "JPG" or ext == "BMP" or ext == "PNG":
                 self.ImageOfTutorial.set_from_file(src)
       #  self.ImageOfTutorial.set_from_file("xx.jpg")
-        
+    
+    def set_instruction(self, words):
+        words = words.decode(chardet.detect(words)['encoding'])
+        words = words.split('\\n')
+        display_words = ''
+        if len(words) > 1:            
+            for word in words:
+                display_words += word + '\n'
+        else:
+            display_words += words[0]
+        self.LabelOfInstruction.set_text(display_words)
+            
     def ComboxOfUart_init(self):
         self.ser = {}   #{reference, instance, is_alive}
         ports = sorted(comports())
@@ -465,6 +475,8 @@ class CaliTest:
         self.ButtonPrinting = builder.get_object("ButtonPrinting")
         self.ButtonYes.child.modify_font(pango.FontDescription("sans 48"))
         self.ButtonNo.child.modify_font(pango.FontDescription("sans 48"))
+        self.LabelOfInstruction = builder.get_object("LabelOfInstruction")
+        self.LabelOfInstruction.modify_font(pango.FontDescription("sans 24"))
         self.ListStoreOfUart = builder.get_object("liststore2")
         self.ComboBoxOfUart = builder.get_object("ComboBoxOfUart")
         self.window = builder.get_object("window")

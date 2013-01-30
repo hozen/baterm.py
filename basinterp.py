@@ -240,6 +240,8 @@ class BasicInterpreter:
                     self.cali.set_console_text(str(cmd))
                 elif portvar == "TUTORIAL":
                     self.cali.set_tutorial(str(cmd))
+                elif portvar == "INSTRUCTION":
+                    self.cali.set_instruction(str(cmd))
                 else:
                     if not self.vars.has_key("CHECK"):
                         self.vars['CHECK'] = "AUTO"
