@@ -3,6 +3,7 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import cairo, pango
+import os
 
 class GtkPrinter:
     
@@ -159,31 +160,34 @@ class GtkPrinter:
         self.print_with_underline(start_x = x, start_y = y, content = CERT_NAME_VALUE)
         
         # print to file for backup
-        self.print_to_pdf(filename, self.cairo_context.get_target(), context.get_width(), context.get_height())
+        directory = './certification/'
+        self.print_to_pdf(directory, filename, self.cairo_context.get_target(), context.get_width(), context.get_height())
+        self.save_to_log(directory, filename)
         
-    def print_to_pdf(self, filename, sourcesurface, width_of_sourcesurface, height_of_sourcesurface):
-        dir_of_cert = './certification/'
-        import os
-        if not os.path.exists(dir_of_cert):
-            os.makedirs(dir_of_cert)
+    def print_to_pdf(self, directory, filename, sourcesurface, width_of_sourcesurface, height_of_sourcesurface):
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         # How to output exist context to other surface(the target canvas)
         # 1. create a new surface(pdf, png, etc.) and its context
         # 2. set the new context with the existed context's surface as input.
         # 3. paint it.
-        surface = cairo.PDFSurface(dir_of_cert + filename + ".pdf", width_of_sourcesurface, height_of_sourcesurface)
+        surface = cairo.PDFSurface(directory + filename + ".pdf", width_of_sourcesurface, height_of_sourcesurface)
         context = cairo.Context(surface)
         context.set_source_surface(sourcesurface)
         context.paint()
-        
+    
+    def save_to_log(self, directory, filename):
+        if not os.path.exists(directory):
+            os.makedirs(directory)        
         try:
-            file = None
-            file = open(dir_of_cert + filename + ".log", 'w')
-            file.write(self.console_log)
+            logfile = None
+            logfile = open(directory + filename + ".log", 'w')
+            logfile.write(self.console_log)
         except:
-            if file != None:
-                file.close()
+            if logfile != None:
+                logfile.close()
         finally:
-            file.close()
+            logfile.close()
     
     def get_width_of_char(self, chars="X"):
         x_bearing, y_bearing, width_of_char, height = self.cairo_context.text_extents(chars)[:4]

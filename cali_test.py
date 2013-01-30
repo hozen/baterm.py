@@ -9,6 +9,7 @@ from threading import Thread
 import serial
 import time
 import datetime
+import re
 import os
 import chardet
 
@@ -29,7 +30,13 @@ else :
 class CaliTest:
     def ConvertCN(self, s):  
         return s.encode('gb18030')  
-
+    
+    def on_FileChooserButtonOfTestMode_file_activated(self, widget, data=None):
+        self.EntryOfSerialNumber.grab_focus()
+        
+    def on_window_expose_event(self, widget, data=None):
+        self.EntryOfSerialNumber.grab_focus()
+        
     def on_window_destroy(self, widget, data=None):
         self.on_ButtonSend_clicked(0, "_stop")
         self.serial_close_all()
@@ -54,6 +61,12 @@ class CaliTest:
         self.EntryOfCommand.grab_focus()
                          
     def on_ButtonStart_clicked(self, widget, data=None):     
+        serial_number = self.EntryOfSerialNumber.get_text()
+        if not serial_number.isdigit():
+            self.insert_into_console("Please scan barcode first.\n")
+            self.EntryOfSerialNumber.grab_focus()
+            return 
+        self.serial_number = serial_number
         file = self.FileChooserButtonOfTestMode.get_filename()
         if file != None:
             filename, fileext = os.path.splitext(file)
@@ -125,9 +138,7 @@ class CaliTest:
                     #Thread(target=cali_scan.CaliScan(self.ListStoreOfScan, self.ListOfPrinterSettings).run, args=(self.window, )).start()
                     #time.sleep(0.1)
                     start, end = self.TextBufferOfLog.get_bounds()
-                    print "scan 1"
                     cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings, console_log = self.TextBufferOfLog.get_text(start, end)).run(parent_window = self.window)
-                    print "scan 2"       
                 elif cmd[0] == '_msp430': # should be deleted before release.
                     cali_msp430.Msp430().run(parent_window = self.window)                                                               
                 elif cmd[0] == '_stop':
@@ -324,9 +335,38 @@ class CaliTest:
                 except RuntimeError:
                     self.set_console_text("*.BAS script basinterp error.")
                     self.set_check_status(1)
-        self.set_check_status_led()        
+
+        CERT_VALUE = datetime.datetime.now()
+        CERT_VALUE = CERT_VALUE.strftime("%Y-%m-%d %H:%M:%S")                
+        filename = str(self.serial_number) + str(CERT_VALUE)
+        filename = re.sub(r'[^a-zA-Z0-9]', '', filename)
+        start, end = self.TextBufferOfLog.get_bounds()
+        console_log = self.TextBufferOfLog.get_text(start, end)
+        
+        if self.save_to_log('./certification/', filename, console_log) == 1:
+            self.set_console_text("LOG failed.")    
+            self.set_check_status_led(1)
+        else:
+            self.set_check_status_led()
+        self.EntryOfSerialNumber.set_text('')
         print "thread plying stopped"
-    
+        
+    def save_to_log(self, directory, filename, logcontent):
+        try:
+            if not os.path.exists(directory):
+                os.makedirs(directory)        
+            
+            logfile = None
+            logfile = open(directory + filename + ".log", 'w')
+            logfile.write(logcontent)
+        except:
+            if logfile != None:
+                logfile.close()
+            return 1
+        finally:
+            return 0
+            logfile.close()
+                
     def get_ack_to_plying(self):
         return self.ack_to_plying
     
@@ -366,6 +406,8 @@ class CaliTest:
             self.set_check_status(1)
         elif str == '_SCAN':
             self.on_ButtonSend_clicked(0, '_scan')
+        elif str == '_MSP430':
+            self.on_ButtonSend_clicked(0, '_msp430')
         else:
             str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.
             self.insert_into_console(str + "\n")
@@ -501,12 +543,19 @@ class CaliTest:
     
         self.TextBufferOfLog = builder.get_object("textbuffer1")
         self.EntryOfCommand = builder.get_object("EntryOfCommand")
+        self.EntryOfSerialNumber = builder.get_object("EntryOfSerialNumber")
+        self.serial_number = 777
         self.ScrolledWindowOfLog = builder.get_object("ScrolledWindowOfLog")
         self.FileChooserButton = builder.get_object("FileChooserButton")
         self.FileChooserButtonOfTestMode = builder.get_object("FileChooserButtonOfTestMode")
         self.FileFilterForView = builder.get_object("filefilter1")
         self.FileFilterForView.add_pattern("*.cali")
         self.FileFilterForView.add_pattern("*.bas")
+        default_script = './scripts/ntc.bas'
+        if os.path.isfile(default_script):
+            self.FileChooserButtonOfTestMode.set_filename(default_script)
+            self.FileChooserButtonOfTestMode.set_filename(default_script)
+                    
         self.ImageOfTutorial = builder.get_object("ImageOfTutorial") 
         self.FrameOfDebug = builder.get_object("FrameOfDebug")
         
