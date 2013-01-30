@@ -125,7 +125,9 @@ class CaliTest:
                     #Thread(target=cali_scan.CaliScan(self.ListStoreOfScan, self.ListOfPrinterSettings).run, args=(self.window, )).start()
                     #time.sleep(0.1)
                     start, end = self.TextBufferOfLog.get_bounds()
-                    cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings, console_log = self.TextBufferOfLog.get_text(start, end)).run(parent_window = self.window)       
+                    print "scan 1"
+                    cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings, console_log = self.TextBufferOfLog.get_text(start, end)).run(parent_window = self.window)
+                    print "scan 2"       
                 elif cmd[0] == '_msp430': # should be deleted before release.
                     cali_msp430.Msp430().run(parent_window = self.window)                                                               
                 elif cmd[0] == '_stop':
@@ -413,13 +415,27 @@ class CaliTest:
     def set_instruction(self, words):
         words = words.decode(chardet.detect(words)['encoding'])
         words = words.split('\\n')
+        color_list = {'BLACK', 'RED', 'BLUE'}
+        font_size = 24
+        font_color = 'black'
         display_words = ''
         if len(words) > 1:            
             for word in words:
-                display_words += word + '\n'
+                if 'FONTCOLOR=' in word:
+                    fcolor = word.split('=')[1].upper()
+                    if fcolor in color_list:
+                        font_color = fcolor
+                elif 'FONTSIZE=' in word:
+                    fsize = word.split('=')[1]
+                    if fsize.isdigit():
+                        font_size = fsize
+                else:
+                    display_words += word + '\n'
         else:
             display_words += words[0]
         self.LabelOfInstruction.set_text(display_words)
+        self.LabelOfInstruction.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse(font_color))
+        self.LabelOfInstruction.modify_font(pango.FontDescription("sans " + str(font_size)))
             
     def ComboxOfUart_init(self):
         self.ser = {}   #{reference, instance, is_alive}
@@ -477,6 +493,7 @@ class CaliTest:
         self.ButtonNo.child.modify_font(pango.FontDescription("sans 48"))
         self.LabelOfInstruction = builder.get_object("LabelOfInstruction")
         self.LabelOfInstruction.modify_font(pango.FontDescription("sans 24"))
+    
         self.ListStoreOfUart = builder.get_object("liststore2")
         self.ComboBoxOfUart = builder.get_object("ComboBoxOfUart")
         self.window = builder.get_object("window")
