@@ -19,7 +19,11 @@ import basinterp
 
 import cali_scan
 import cali_msp430
-
+if os.name == 'posix' :
+    import pexpect
+else:
+    import subprocess
+    
 if os.name == 'nt' :
     from serial.tools.list_ports_windows import *
 elif os.name == 'posix' :
@@ -78,6 +82,7 @@ class CaliTest:
     def on_ButtonStop_clicked(self, widget, data=None):
         if self.ThreadOfPly != None and self.ThreadOfPly.is_alive():
             self.on_ButtonSend_clicked(0, '_stop')
+        self.EntryOfSerialNumber.grab_focus()
     
     def on_ButtonYes_clicked(self, widget, data=None):
         if self.ThreadOfPly != None and self.ThreadOfPly.is_alive():
@@ -333,7 +338,7 @@ class CaliTest:
                 try:
                     basinterp.BasicInterpreter(prog, self).run()
                 except RuntimeError:
-                    self.set_console_text("*.BAS script basinterp error.")
+                    self.set_console_text("*.BAS script basinterp error." + str(self.errorcode))
                     self.set_check_status(1)
 
         CERT_VALUE = datetime.datetime.now()
@@ -478,7 +483,59 @@ class CaliTest:
         self.LabelOfInstruction.set_text(display_words)
         self.LabelOfInstruction.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse(font_color))
         self.LabelOfInstruction.modify_font(pango.FontDescription("sans " + str(font_size)))
+    
+    def flash_msp430(self, hexfile):
+        cmds = ['-eE', '-PV', '-r', '-i', 'ihex', hexfile]
+        jtagfile = './msp430-jtag.py'
+        if not os.path.isfile(jtagfile):
+            jtagfile = './msp430-jtag.pyc'
+        self.cmds = ['python', jtagfile, '--time', '-p']
+        if os.name == 'posix':
+            os.environ['LIBMSPGCC_PATH'] = '/usr/lib'
+            self.cmds.append('/dev/ttyACM0')
+        else:
+            self.cmds.append('TIUSB')
             
+        self.cmds += cmds
+        
+        if os.name == 'posix':
+            command = ''
+            for cmd in self.cmds:
+                command += cmd
+                command += ' '
+            start_time = time.time()
+            child = pexpect.spawn(command)
+            result = ''
+            while True:
+                try:       
+                    child.expect('\r')
+                    result += child.before
+                    #gtk.threads_enter()                    
+                    self.insert_into_console(child.before)
+                    #gtk.threads_leave()
+                except:
+                    #gtk.threads_enter()
+                    self.insert_into_console("\nTime: " + str(time.time() - start_time) + 's\n')
+                    #gtk.threads_leave()
+                    break
+                time.sleep(0.1)
+            print "after while loop"
+        else:        
+            proc = subprocess.Popen(self.cmds, 
+                            shell=False, 
+                            stderr=subprocess.PIPE)
+            gtk.threads_enter()
+            result = proc.communicate()[1]
+            self.insert_into_console(result)
+            gtk.threads_leave()
+
+        if ('Erase check by file: OK' or 'Programming: OK' or 'Verify by file: OK') not in result:
+            gtk.threads_enter()
+            self.insert_into_console("flash failed.\n")
+            gtk.threads_leave()
+            self.set_check_status(1)
+
+        
     def ComboxOfUart_init(self):
         self.ser = {}   #{reference, instance, is_alive}
         ports = sorted(comports())
@@ -568,6 +625,7 @@ class CaliTest:
         self.check_status = 0   # 1: failed 
                                 # 0: success 
                                 # 0x8000000x: terminated
+        self.errorcode = 0 # should be removed after debug
         self.ThreadOfReceiving = None    
         self.ThreadOfPly = None 
         self.ThreadOfBatch = None

@@ -2,7 +2,6 @@
 
 import printer
 import gtk
-import cali_test
 
 class CaliScan():
     def on_WindowOfScanning_expose_event(self, widget, data=None):
