@@ -220,7 +220,8 @@ class BasicInterpreter:
 
             # END and STOP statements
             if op == 'END' or op == 'STOP':
-                 break           # We're done                        
+                #print "ply end"    
+                break           # We're done                        
             
             elif op == 'OUTVAR':
                 print instr
@@ -277,15 +278,25 @@ class BasicInterpreter:
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
                 if cmd == 0:
-                    self.cali.set_ack_to_plying(1)
-                    while True:
-                        if self.cali.get_ack_to_plying() == 0 or self.cali.get_check_status() != 0:
-                            print "8"
-                            break
-                        time.sleep(1)
-                    print "9"
+                    #self.cali.set_ack_to_plying(1)
+                    self.cali.condition.acquire()                    
+                    #print "ply condition acquired"
+                    #while (self.cali.get_ack_to_plying() != 0 and self.cali.get_check_status() == 0):
+                    try:
+                        #print "ply condition waiting"                        
+                        self.cali.condition.wait()
+                        self.cali.condition.release()
+                    except: 
+                        print "ply condition wait error.."
+                    #print "ply condition released"
+                    #while True:
+                    #    if self.cali.get_ack_to_plying() == 0 or self.cali.get_check_status() != 0:
+                    #        print "8"
+                    #        break
+                    #    time.sleep(1)
                 else:
-                    time.sleep(cmd)
+                    if cmd.isdigit():
+                        time.sleep(cmd)
             
             elif op == 'LETSTR':
                 var = instr[1][0]

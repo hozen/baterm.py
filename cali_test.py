@@ -157,33 +157,27 @@ class CaliTest:
                     self.set_check_status(0x80000000)                    
                     self.insert_into_console("The calibration process is stopped.\n")
                 elif cmd[0] == '_yes':
-                    print "1"
-                    self.mutex_of_plyack.acquire()
-                    print "2"
+                    self.condition.acquire()
+                    #print "cond acquired"
                     if self.get_check_status() != 0:    # avoid twice key-event issue in Linux
-                        print "3"
                         self.set_check_status(0)
-                    print "4"
                     if self.get_ack_to_plying() != 0:
-                        print "5"
                         self.set_ack_to_plying(0)
-                    print "6"
-                    self.mutex_of_plyack.release()
-                    print "7"
+                    #print "cond notifying"
+                    self.condition.notifyAll()
+                    self.condition.release()
+                    #print "cond notified and released"                    
                 elif cmd[0] == '_no':
-                    print "_1"
-                    self.mutex_of_plyack.acquire()
-                    print "_2"
+                    self.condition.acquire()
+                    #print "cond_ acquired"                    
                     if self.get_check_status() != 1:
-                        print "_3"
                         self.set_check_status(1)
-                    print "_4"
                     if self.get_ack_to_plying() != 0:
-                        print "_5"
                         self.set_ack_to_plying(0)
-                    print "_6"
-                    self.mutex_of_plyack.release()
-                    print "_7"
+                    #print "cond_ notifying"
+                    self.condition.notifyAll()
+                    self.condition.release()
+                    #print "cond_ notified and released"
                 elif cmd[0] == '_batch':
                     if len(cmd) > 1:
                         if os.path.isfile(cmd[1]):
@@ -378,7 +372,10 @@ class CaliTest:
             self.set_check_status_led(1)
         else:
             self.set_check_status_led()
+
+        gtk.threads_enter()                    
         self.EntryOfSerialNumber.set_text('')
+        gtk.threads_leave()                    
         print "thread plying stopped"
         
     def save_to_log(self, directory, filename, logcontent):
@@ -680,8 +677,8 @@ class CaliTest:
         self.batching_result = {}
         self.mutex = threading.Lock()
         self.mutex_of_plyack = threading.Lock()
-        self.mutex_of_checkstatus = threading.Lock() 
-        
+        #self.mutex_of_ply = threading.Lock() 
+        self.condition = threading.Condition(threading.Lock())
         self.ComboxOfUart_init()
         
         self.window.show_all()
