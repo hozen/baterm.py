@@ -86,7 +86,6 @@ class BasicInterpreter:
                        return self.vars[var]
                   else:
                        print("UNDEFINED VARIABLE %s AT LINE %s" % (var, self.stat[self.pc]))
-                       self.cali.errorcode = 2
                        raise RuntimeError
              # May be a list lookup or a function evaluation
              if dim1 and not dim2:
@@ -99,7 +98,6 @@ class BasicInterpreter:
                             dim1val = self.eval(dim1)
                             if dim1val < 1 or dim1val > len(self.lists[var]):
                                  print("LIST INDEX OUT OF BOUNDS AT LINE %s" % self.stat[self.pc])
-                                 self.cali.errorcode = 3
                                  raise RuntimeError
                             return self.lists[var][dim1val-1]
              if dim1 and dim2:
@@ -108,11 +106,9 @@ class BasicInterpreter:
                       dim2val = self.eval(dim2)
                       if dim1val < 1 or dim1val > len(self.tables[var]) or dim2val < 1 or dim2val > len(self.tables[var][0]):
                            print("TABLE INDEX OUT OUT BOUNDS AT LINE %s" % self.stat[self.pc])
-                           self.cali.errorcode = 4
                            raise RuntimeError
                       return self.tables[var][dim1val-1][dim2val-1]
              print("UNDEFINED VARIABLE %s AT LINE %s" % (var, self.stat[self.pc]))
-             self.cali.errorcode = 5
              raise RuntimeError
 
     # Evaluate a relational expression
@@ -157,7 +153,6 @@ class BasicInterpreter:
 
             if dim1val > len(self.lists[var]):
                  print ("DIMENSION TOO LARGE AT LINE %s" % self.stat[self.pc])
-                 self.cali.errorcode = 6
                  raise RuntimeError
             self.lists[var][dim1val-1] = self.eval(value)
         elif dim1 and dim2:
@@ -171,7 +166,6 @@ class BasicInterpreter:
             # Variable already exists
             if dim1val > len(self.tables[var]) or dim2val > len(self.tables[var][0]):
                  print("DIMENSION TOO LARGE AT LINE %s" % self.stat[self.pc])
-                 self.cali.errorcode = 7
                  raise RuntimeError
             self.tables[var][dim1val-1][dim2val-1] = self.eval(value)
 
@@ -179,7 +173,6 @@ class BasicInterpreter:
     def goto(self,linenum):
          if not linenum in self.prog:
               print("UNDEFINED LINE NUMBER %d AT LINE %d" % (linenum, self.stat[self.pc]))
-              self.cali.errorcode = 8
               raise RuntimeError
          self.pc = self.stat.index(linenum)
 
@@ -205,7 +198,6 @@ class BasicInterpreter:
         self.check_loops()
 
         if self.error: 
-            self.cali.errorcode = 1
             raise RuntimeError
 
         while 1:
@@ -278,7 +270,6 @@ class BasicInterpreter:
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
                 if cmd == 0:
-                    #self.cali.set_ack_to_plying(1)
                     self.cali.condition.acquire()                    
                     #print "ply condition acquired"
                     #while (self.cali.get_ack_to_plying() != 0 and self.cali.get_check_status() == 0):
@@ -289,14 +280,8 @@ class BasicInterpreter:
                     except: 
                         print "ply condition wait error.."
                     #print "ply condition released"
-                    #while True:
-                    #    if self.cali.get_ack_to_plying() == 0 or self.cali.get_check_status() != 0:
-                    #        print "8"
-                    #        break
-                    #    time.sleep(1)
                 else:
-                    if cmd.isdigit():
-                        time.sleep(cmd)
+                    time.sleep(cmd)
             
             elif op == 'LETSTR':
                 var = instr[1][0]

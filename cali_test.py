@@ -3,6 +3,7 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
+import gobject
 import pango
 import threading
 from threading import Thread
@@ -36,12 +37,15 @@ class CaliTest:
         return s.encode('gb18030')  
     
     def on_FileChooserButtonOfTestMode_selection_changed(self, widget, data=None):
+        # TODO:  1. There are 3 events happened at init
+        #        2. No need to write configure file even the filename is not changed.
         try:
-            with open("./cali.conf", "w") as file:
-                content = "DEFAULT_SCRIPT=" + str(self.FileChooserButtonOfTestMode.get_filename()) + "\n"
-                file.write(content)
-        finally:
-            self.EntryOfSerialNumber.grab_focus()
+            with open("./cali.conf", "w") as f:
+                content = "DEFAULT_SCRIPT=" + str(self.FileChooserButtonOfTestMode.get_filename())
+                f.write(content)
+        except:
+            print "cali.conf create failed."
+        self.EntryOfSerialNumber.grab_focus()
         
     def on_window_expose_event(self, widget, data=None):
         self.EntryOfSerialNumber.grab_focus()
@@ -134,10 +138,9 @@ class CaliTest:
             cmd[0] = cmd[0].lower()
             if cmd[0].startswith('_'):  # local and mcu's command
                 if cmd[0] == '_clear':
-                    if self.ThreadOfPly == None or not self.ThreadOfPly.is_alive():    # avoid accessing the shared resource: CONSOLE
-                        #self.TextBufferOfLog.set_text('')
-                        start, end = self.TextBufferOfLog.get_bounds()
-                        self.TextBufferOfLog.delete(start, end)
+                    #if self.ThreadOfPly == None or not self.ThreadOfPly.is_alive():    # avoid accessing the shared resource: CONSOLE
+                    start, end = self.TextBufferOfLog.get_bounds()
+                    gobject.idle_add(self.TextBufferOfLog.delete, start, end)
                 elif cmd[0] == '_ver':
                     self.insert_into_console(self.window.get_title() + '\n')
 #                elif cmd[0] == '_start':
@@ -154,6 +157,9 @@ class CaliTest:
                 elif cmd[0] == '_msp430': # should be deleted before release.
                     cali_msp430.Msp430().run(parent_window = self.window)                                                               
                 elif cmd[0] == '_stop':
+                    self.condition.acquire()
+                    self.condition.notifyAll()
+                    self.condition.release()
                     self.set_check_status(0x80000000)                    
                     self.insert_into_console("The calibration process is stopped.\n")
                 elif cmd[0] == '_yes':
@@ -248,16 +254,16 @@ class CaliTest:
                     
                 except serial.serialutil.SerialException:
                     self.serial_close_all()
-                    gtk.threads_enter()
+                    ###gtk.threads_enter()
                     self.insert_into_console("\nPlease connect the serial device and reboot the program.\n")
-                    gtk.threads_leave()
+                    ###gtk.threads_leave()
                 else:
                     if left > 0 :
                         line += self.ser[port][0].read(left)   
                         if line != '' :
-                            gtk.threads_enter()
+                            ###gtk.threads_enter()
                             self.insert_into_console(line)
-                            gtk.threads_leave()
+                            ###gtk.threads_leave()
                         line = ''
                 
             else:
@@ -320,9 +326,9 @@ class CaliTest:
         if left > 0:
             line += self.ser[port][0].read(left)   
             if check_mode != "AUTO":
-                gtk.threads_enter()
+                ###gtk.threads_enter()
                 self.insert_into_console(line)
-                gtk.threads_leave()
+                ###gtk.threads_leave()
             self.set_batching_result(line.split())
         self.ser[port][0].flushInput()
         print "thread batching stopped.\n"
@@ -357,7 +363,7 @@ class CaliTest:
                 try:
                     basinterp.BasicInterpreter(prog, self).run()
                 except RuntimeError:
-                    self.set_console_text("*.BAS script basinterp error." + str(self.errorcode))
+                    self.set_console_text("*.BAS script basinterp error.")
                     self.set_check_status(1)
 
         CERT_VALUE = datetime.datetime.now()
@@ -373,9 +379,9 @@ class CaliTest:
         else:
             self.set_check_status_led()
 
-        gtk.threads_enter()                    
-        self.EntryOfSerialNumber.set_text('')
-        gtk.threads_leave()                    
+        #gtk.threads_enter()                    
+        gobject.idle_add(self.EntryOfSerialNumber.set_text, '')
+        #gtk.threads_leave()
         print "thread plying stopped"
         
     def save_to_log(self, directory, filename, logcontent):
@@ -436,10 +442,11 @@ class CaliTest:
         self.ButtonResultByColor.set_color(gtk.gdk.Color(color))
         
     def set_console_text(self, str=None):
-        gtk.threads_enter()
+        ###gtk.threads_enter()
         if str == "_CLEAR":
-            start, end = self.TextBufferOfLog.get_bounds()
-            self.TextBufferOfLog.delete(start, end)
+            #start, end = self.TextBufferOfLog.get_bounds()
+            #gobject.idle_add(self.TextBufferOfLog.delete, start, end)
+            self.on_ButtonSend_clicked(0, "_clear")
         elif str == "_CURRENTTIME":
             self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
         elif str == "_ERROR":
@@ -451,17 +458,17 @@ class CaliTest:
         else:
             str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.
             self.insert_into_console(str + "\n")
-        gtk.threads_leave()
+        ###gtk.threads_leave()
     
     def insert_into_console(self, str=None):
         if str != None:
-            self.TextBufferOfLog.insert_at_cursor(str)
+            gobject.idle_add(self.TextBufferOfLog.insert_at_cursor, str)
             
     def set_uart_text(self, port, rates, cmd, check_mode):
         try:
             comport = self.ser[port]
         except KeyError:
-            self.set_console_text("The COM port " + port + " is not existed.\n")
+            gobject.idle_add(self.set_console_text, "The COM port " + port + " is not existed.\n")
             self.set_check_status(2)
             return 1
         
@@ -491,7 +498,7 @@ class CaliTest:
         if(os.path.isfile(src)):
             ext = (src.split('.')[1]).upper()
             if ext == "JPG" or ext == "BMP" or ext == "PNG":
-                self.ImageOfTutorial.set_from_file(src)
+                gobject.idle_add(self.ImageOfTutorial.set_from_file, src)
       #  self.ImageOfTutorial.set_from_file("xx.jpg")
     
     def set_instruction(self, words):
@@ -515,9 +522,9 @@ class CaliTest:
                     display_words += word + '\n'
         else:
             display_words += words[0]
-        self.LabelOfInstruction.set_text(display_words)
-        self.LabelOfInstruction.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse(font_color))
-        self.LabelOfInstruction.modify_font(pango.FontDescription("sans " + str(font_size)))
+        gobject.idle_add(self.LabelOfInstruction.set_text, display_words)
+        gobject.idle_add(self.LabelOfInstruction.modify_fg, gtk.STATE_NORMAL, gtk.gdk.color_parse(font_color))
+        gobject.idle_add(self.LabelOfInstruction.modify_font, pango.FontDescription("sans " + str(font_size)))
     
     def flash_msp430(self, hexfile):
         cmds = ['-eE', '-PV', '-r', '-i', 'ihex', hexfile]
@@ -554,20 +561,20 @@ class CaliTest:
                     #gtk.threads_leave()
                     break
                 time.sleep(0.1)
-            print "after while loop"
+            
         else:        
             proc = subprocess.Popen(self.cmds, 
                             shell=False, 
                             stderr=subprocess.PIPE)
-            gtk.threads_enter()
+            ###gtk.threads_enter()
             result = proc.communicate()[1]
             self.insert_into_console(result)
-            gtk.threads_leave()
+            ###gtk.threads_leave()
 
         if ('Erase check by file: OK' or 'Programming: OK' or 'Verify by file: OK') not in result:
-            gtk.threads_enter()
+            #gtk.threads_enter()
             self.insert_into_console("flash failed.\n")
-            gtk.threads_leave()
+            ###gtk.threads_leave()
             self.set_check_status(1)
 
         
@@ -645,6 +652,7 @@ class CaliTest:
         self.FileFilterForView.add_pattern("*.bas")
         
         try: 
+            default_script = './scripts/ntc.bas'
             with open("./cali.conf") as file:
                 for line in file:
                     val_list = line.split("=") 
@@ -652,12 +660,10 @@ class CaliTest:
                         default_script = val_list[1].rstrip()
                         break
         except:
-            default_script = './scripts/ntc.bas'
-        
+            print "cali.conf open failed."
         if os.path.isfile(default_script):
             self.FileChooserButtonOfTestMode.set_filename(default_script)
             self.FileChooserButtonOfTestMode.set_filename(default_script)
-                    
         self.ImageOfTutorial = builder.get_object("ImageOfTutorial") 
         self.FrameOfDebug = builder.get_object("FrameOfDebug")
         
@@ -670,7 +676,6 @@ class CaliTest:
         self.check_status = 0   # 1: failed 
                                 # 0: success 
                                 # 0x8000000x: terminated
-        self.errorcode = 0 # should be removed after debug
         self.ThreadOfReceiving = None    
         self.ThreadOfPly = None 
         self.ThreadOfBatch = None
@@ -684,6 +689,7 @@ class CaliTest:
         self.window.show_all()
 
     def main(self):
+        gobject.threads_init()
         gtk.gdk.threads_init()  # use GIL to switch the multi-threads
         
         # NEVER directly operate GTK related resources but use
