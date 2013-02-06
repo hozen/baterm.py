@@ -88,7 +88,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="filter">filefilter1</property>
-                                            <signal name="file-activated" handler="on_FileChooserButtonOfTestMode_file_activated" swapped="no"/>
+                                            <signal name="selection-changed" handler="on_FileChooserButtonOfTestMode_selection_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>

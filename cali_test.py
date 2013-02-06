@@ -35,8 +35,13 @@ class CaliTest:
     def ConvertCN(self, s):  
         return s.encode('gb18030')  
     
-    def on_FileChooserButtonOfTestMode_file_activated(self, widget, data=None):
-        self.EntryOfSerialNumber.grab_focus()
+    def on_FileChooserButtonOfTestMode_selection_changed(self, widget, data=None):
+        try:
+            with open("./cali.conf", "w") as file:
+                content = "DEFAULT_SCRIPT=" + str(self.FileChooserButtonOfTestMode.get_filename()) + "\n"
+                file.write(content)
+        finally:
+            self.EntryOfSerialNumber.grab_focus()
         
     def on_window_expose_event(self, widget, data=None):
         self.EntryOfSerialNumber.grab_focus()
@@ -59,6 +64,8 @@ class CaliTest:
             self.on_ButtonYes_clicked(0, None)
         elif key == "F2":
             self.on_ButtonNo_clicked(0, None)
+        elif key == "Return":
+            self.on_ButtonStart_clicked(0, None)
 
     def on_ToggleButtonOfDebug_toggled(self, widget, data=None):
         self.FrameOfDebug.set_visible(not self.FrameOfDebug.get_visible())   
@@ -150,15 +157,33 @@ class CaliTest:
                     self.set_check_status(0x80000000)                    
                     self.insert_into_console("The calibration process is stopped.\n")
                 elif cmd[0] == '_yes':
+                    print "1"
+                    self.mutex_of_plyack.acquire()
+                    print "2"
                     if self.get_check_status() != 0:    # avoid twice key-event issue in Linux
+                        print "3"
                         self.set_check_status(0)
-                    if self.ack_to_plying != 0:
-                        self.ack_to_plying = 0
+                    print "4"
+                    if self.get_ack_to_plying() != 0:
+                        print "5"
+                        self.set_ack_to_plying(0)
+                    print "6"
+                    self.mutex_of_plyack.release()
+                    print "7"
                 elif cmd[0] == '_no':
+                    print "_1"
+                    self.mutex_of_plyack.acquire()
+                    print "_2"
                     if self.get_check_status() != 1:
+                        print "_3"
                         self.set_check_status(1)
-                    if self.ack_to_plying != 0:
-                        self.ack_to_plying = 0
+                    print "_4"
+                    if self.get_ack_to_plying() != 0:
+                        print "_5"
+                        self.set_ack_to_plying(0)
+                    print "_6"
+                    self.mutex_of_plyack.release()
+                    print "_7"
                 elif cmd[0] == '_batch':
                     if len(cmd) > 1:
                         if os.path.isfile(cmd[1]):
@@ -371,17 +396,30 @@ class CaliTest:
         finally:
             return 0
             logfile.close()
-                
-    def get_ack_to_plying(self):
-        return self.ack_to_plying
-    
-    def get_check_status(self):        
-        return self.check_status
+                    
+    def get_check_status(self):  
+        #self.mutex_of_checkstatus.acquire()  
+        status = self.check_status
+        #self.mutex_of_checkstatus.release()    
+        return status
     
     def set_check_status(self, status):
+        #self.mutex_of_checkstatus.acquire()
         self.check_status &= 0x80000000
         self.check_status |= status
+       # self.mutex_of_checkstatus.release()
     
+    def get_ack_to_plying(self):
+        #self.mutex_of_plyack.acquire()
+        ack = self.ack_to_plying
+        #self.mutex_of_plyack.release()
+        return ack
+    
+    def set_ack_to_plying(self, ack):
+        #self.mutex_of_plyack.acquire()
+        self.ack_to_plying = ack
+        #self.mutex_of_plyack.release()
+        
     def clear_status(self):
         self.check_status = 0
         self.set_check_status_led(2)
@@ -608,7 +646,17 @@ class CaliTest:
         self.FileFilterForView = builder.get_object("filefilter1")
         self.FileFilterForView.add_pattern("*.cali")
         self.FileFilterForView.add_pattern("*.bas")
-        default_script = './scripts/ntc.bas'
+        
+        try: 
+            with open("./cali.conf") as file:
+                for line in file:
+                    val_list = line.split("=") 
+                    if val_list[0] == "DEFAULT_SCRIPT":
+                        default_script = val_list[1].rstrip()
+                        break
+        except:
+            default_script = './scripts/ntc.bas'
+        
         if os.path.isfile(default_script):
             self.FileChooserButtonOfTestMode.set_filename(default_script)
             self.FileChooserButtonOfTestMode.set_filename(default_script)
@@ -630,7 +678,9 @@ class CaliTest:
         self.ThreadOfPly = None 
         self.ThreadOfBatch = None
         self.batching_result = {}
-        self.mutex = threading.Lock() 
+        self.mutex = threading.Lock()
+        self.mutex_of_plyack = threading.Lock()
+        self.mutex_of_checkstatus = threading.Lock() 
         
         self.ComboxOfUart_init()
         

@@ -277,11 +277,13 @@ class BasicInterpreter:
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
                 if cmd == 0:
-                    self.cali.ack_to_plying = 1
+                    self.cali.set_ack_to_plying(1)
                     while True:
-                        if self.cali.ack_to_plying == 0 or self.cali.get_check_status() != 0:
+                        if self.cali.get_ack_to_plying() == 0 or self.cali.get_check_status() != 0:
+                            print "8"
                             break
-                        time.sleep(0.01)
+                        time.sleep(1)
+                    print "9"
                 else:
                     time.sleep(cmd)
             
