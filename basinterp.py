@@ -116,6 +116,7 @@ class BasicInterpreter:
          etype = expr[1]
          lhs   = self.eval(expr[2])
          rhs   = self.eval(expr[3])
+
          if etype == '<':
              if lhs < rhs: return 1
              else: return 0
@@ -285,15 +286,36 @@ class BasicInterpreter:
             
             elif op == 'LETSTR':
                 var = instr[1][0]
-                for label, val in instr[2]:
-                    value = label
-                self.vars[var] = value
+                
+                #for label, val in instr[2]:
+                #    value = label
+                
+                plist = instr[2]
+                out = ""
+                for label,val in plist:
+                    if out:
+                         out += ''*(15 - (len(out) % 15))
+                    out += label
+                    if val:
+                         if label: out += " "
+                         eval = self.eval(val)
+                         out += str(eval)
+                cmd = out
+                self.vars[var] = cmd
             
             elif op == 'READDATA':
                 var = instr[1][0]
                 for label, val in instr[2]:
                     value = label                
-                self.vars[var] = self.cali.get_batching_result(value)
+                #self.vars[var] = self.cali.get_batching_result(value)
+                try:
+                    result = self.cali.get_batching_result(value)
+                    if result.isdigit():
+                        result = int(result)
+                except:
+                    print "is digit"
+                finally:
+                    self.vars[var] = result
                 
             elif op == 'CHECK':
                 for label, val in instr[1]:

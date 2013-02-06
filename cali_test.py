@@ -76,12 +76,12 @@ class CaliTest:
         self.EntryOfCommand.grab_focus()
                          
     def on_ButtonStart_clicked(self, widget, data=None):     
-        serial_number = self.EntryOfSerialNumber.get_text()
-        if not serial_number.isdigit():
-            self.insert_into_console("Please scan barcode first.\n")
-            self.EntryOfSerialNumber.grab_focus()
-            return 
-        self.serial_number = serial_number
+        #serial_number = self.EntryOfSerialNumber.get_text()
+        #if not serial_number.isdigit():
+        #    self.insert_into_console("Please scan barcode first.\n")
+        #    self.EntryOfSerialNumber.grab_focus()
+        #    return 
+        #self.serial_number = serial_number
         file = self.FileChooserButtonOfTestMode.get_filename()
         if file != None:
             filename, fileext = os.path.splitext(file)
@@ -453,6 +453,12 @@ class CaliTest:
             self.set_check_status(1)
         elif str == '_SCAN':
             self.on_ButtonSend_clicked(0, '_scan')
+        elif str == "_BARCODE":
+            self.serial_number = self.EntryOfSerialNumber.get_text()
+            if not self.serial_number.isdigit():
+                self.serial_number = "1234567890"
+            data_with_2line = ('_BARCODE ' + self.serial_number).split()
+            self.set_batching_result(data_with_2line)
         elif str == '_MSP430':
             self.on_ButtonSend_clicked(0, '_msp430')
         else:

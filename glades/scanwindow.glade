@@ -11,6 +11,7 @@
     <property name="default_height">250</property>
     <property name="destroy_with_parent">True</property>
     <signal name="expose-event" handler="on_WindowOfScanning_expose_event" swapped="no"/>
+    <signal name="key-press-event" handler="on_WindowOfScanning_key_press_event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox3">
         <property name="visible">True</property>

@@ -8,6 +8,11 @@ class CaliScan():
         if self.EntryOfTester.get_text().rstrip() == "":
             self.EntryOfTester.set_text("Hach")
             
+    def on_WindowOfScanning_key_press_event(self, widget, event):
+        key = gtk.gdk.keyval_name(event.keyval)
+        if key == "Return":
+            self.on_ButtonPrinting_clicked(0, None)      
+                  
     def on_ComboBoxOfScan_changed(self, widget, data=None):
         print self.ComboBoxOfScan.get_active_text()
 
@@ -16,7 +21,7 @@ class CaliScan():
         tester = self.EntryOfTester.get_text().rstrip()
         if sn != "" and tester != "":
             self.ListOfPrinterSettings[0] = printer.GtkPrinter(self.ListOfPrinterSettings[0], tester, sn, self.console_log).run(mode="print")
-        self.EntryOfSN.grab_focus()
+        self.window.destroy()
             
     def on_ButtonPrinter_clicked(self, widget, data=None):
         self.ListOfPrinterSettings[0] = printer.GtkPrinter(self.ListOfPrinterSettings[0], None, None, None).run(mode="setup")
