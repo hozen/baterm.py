@@ -284,7 +284,7 @@ class CaliTest:
     
     def set_batching_result(self, data_with_2line):
         if len(data_with_2line) > 1:
-            self.batching_result[data_with_2line[0]] = data_with_2line[1]
+            self.batching_result[data_with_2line[0]] = data_with_2line[2]
         
     def batching(self, port, cmd, check_mode):
         print "thread batching starts...\n"
@@ -303,6 +303,7 @@ class CaliTest:
 
         time.sleep(0.5)
         text = ''
+        line = cmd.upper() + " "
         if check_mode == "AUTO":
             if self.batch_is_timeout == 1:
                 self.batch_is_timeout = 0
@@ -319,9 +320,10 @@ class CaliTest:
             self.ack_to_plying = 0   
             #gtk.threads_enter()
             self.insert_into_console(cmd.upper() + text)
-            #gtk.threads_leave()              
+            #gtk.threads_leave()            
+            line = line + ch + ' '  
         #else:
-        line = cmd.upper() + " "
+        #line = cmd.upper() + " "
         left = self.ser[port][0].inWaiting()
         if left > 0:
             line += self.ser[port][0].read(left)   
