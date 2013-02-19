@@ -72,7 +72,8 @@ class CaliTest:
             self.on_ButtonStart_clicked(0, None)
 
     def on_ToggleButtonOfDebug_toggled(self, widget, data=None):
-        self.FrameOfDebug.set_visible(not self.FrameOfDebug.get_visible())   
+        self.FrameOfDebug.set_visible(not self.FrameOfDebug.get_visible())
+        self.HboxOfPassFail.set_visible(not self.HboxOfPassFail.get_visible())   
         self.EntryOfCommand.grab_focus()
                          
     def on_ButtonStart_clicked(self, widget, data=None):     
@@ -455,7 +456,8 @@ class CaliTest:
         elif str == "_ERROR":
             self.set_check_status(1)
         elif str == '_SCAN':
-            self.on_ButtonSend_clicked(0, '_scan')
+            #self.on_ButtonSend_clicked(0, '_scan')
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan')
         elif str == "_BARCODE":
             self.serial_number = self.EntryOfSerialNumber.get_text()
             if not self.serial_number.isdigit():
@@ -638,9 +640,13 @@ class CaliTest:
         self.ButtonResultByColor = builder.get_object("ButtonResultByColor")
         self.ButtonYes = builder.get_object("ButtonYes")
         self.ButtonNo = builder.get_object("ButtonNo")
+        self.ButtonYes1 = builder.get_object("ButtonYes1")
+        self.ButtonNo1 = builder.get_object("ButtonNo1")
         self.ButtonPrinting = builder.get_object("ButtonPrinting")
         self.ButtonYes.child.modify_font(pango.FontDescription("sans 48"))
         self.ButtonNo.child.modify_font(pango.FontDescription("sans 48"))
+        self.ButtonYes1.child.modify_font(pango.FontDescription("sans 48"))
+        self.ButtonNo1.child.modify_font(pango.FontDescription("sans 48"))
         self.LabelOfInstruction = builder.get_object("LabelOfInstruction")
         self.LabelOfInstruction.modify_font(pango.FontDescription("sans 24"))
     
@@ -675,7 +681,7 @@ class CaliTest:
             self.FileChooserButtonOfTestMode.set_filename(default_script)
         self.ImageOfTutorial = builder.get_object("ImageOfTutorial") 
         self.FrameOfDebug = builder.get_object("FrameOfDebug")
-        
+        self.HboxOfPassFail = builder.get_object("HboxOfPassFail")
         self.ListOfPrinterSettings = [None]
         # init for multiple threading        
         self.ply_need_start = 0
