@@ -507,7 +507,7 @@ class CaliTest:
     def set_tutorial(self, src):
         src = './tutorials/' + src
         if(os.path.isfile(src)):
-            ext = (src.split('.')[1]).upper()
+            ext = (src.rsplit('.', 1)[1]).upper()
             if ext == "JPG" or ext == "BMP" or ext == "PNG":
                 gobject.idle_add(self.ImageOfTutorial.set_from_file, src)
       #  self.ImageOfTutorial.set_from_file("xx.jpg")

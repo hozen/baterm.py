@@ -48,7 +48,19 @@ class BasicInterpreter:
          if has_end != lineno:
              print("END IS NOT LAST")
              self.error = 1
+    
+    def get_stop_pc(self):  # get and check
+        has_stop = 0
+        pc = 0
+        for lineno in self.stat:
+            pc += 1
+            if self.prog[lineno][0] == 'STOP':
+                has_stop = 1
+                break
+        if not has_stop: return 0
+        else: return (pc-1)
 
+        
     # Check loops
     def check_loops(self):
          for pc in range(len(self.stat)):
@@ -191,7 +203,9 @@ class BasicInterpreter:
 
         self.stat.sort()
         self.pc = 0                  # Current program counter
-        line_of_end = len(self.stat) - 1
+        pc_of_end = len(self.stat) - 1
+        pc_of_stop = self.get_stop_pc()
+        if not pc_of_stop: pc_of_stop = pc_of_end
         # Processing prior to running
 
         self.collect_data()          # Collect all of the data statements
@@ -200,24 +214,22 @@ class BasicInterpreter:
 
         if self.error: 
             raise RuntimeError
-
+        has_error = 0
         while 1:
+            if self.cali.get_check_status() != 0 and not has_error:
+                #break
+                has_error = 1
+                self.pc = pc_of_stop
+                            
             line  = self.stat[self.pc]
-            instr = self.prog[line]
-            
-            if self.cali.get_check_status() != 0:
-                break
-
-                       
+            instr = self.prog[line]            
             op = instr[0]
 
             # END and STOP statements
-            if op == 'END' or op == 'STOP':
+            #if op == 'END' or op == 'STOP':
+            if op == 'END':
                 #print "ply end"    
                 break           # We're done                        
-            
-            elif op == 'OUTVAR':
-                print instr
                 
             elif op == 'OUT':
                 text = ""      
@@ -261,7 +273,7 @@ class BasicInterpreter:
                     else:
                         uart_conn_result = self.cali.set_uart_text(port, self.vars['DEVICEBAUD'], str(cmd), self.vars['CHECK'])
                     if uart_conn_result == 1:
-                        self.pc = line_of_end - 1   
+                        self.pc = pc_of_end - 1
                     else:
                         while True:                            
                             if self.cali.ack_to_plying == 0 or self.cali.get_check_status() != 0:
@@ -281,6 +293,9 @@ class BasicInterpreter:
                     except: 
                         print "ply condition wait error.."
                     #print "ply condition released"
+                    #if self.cali.get_check_status() != 0:
+                    #    self.pc = pc_of_stop - 1
+                    #    print self.pc
                 else:
                     time.sleep(cmd)
             

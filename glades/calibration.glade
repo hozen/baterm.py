@@ -565,6 +565,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="top_padding">3</property>
+                <property name="bottom_padding">6</property>
                 <property name="left_padding">5</property>
                 <property name="right_padding">5</property>
                 <child>
@@ -613,6 +614,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">F1</property>
+                            <property name="border_width">1</property>
                             <signal name="clicked" handler="on_ButtonYes_clicked" swapped="no"/>
                           </object>
                           <packing>
@@ -629,6 +632,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">F2</property>
+                            <property name="border_width">1</property>
                             <signal name="clicked" handler="on_ButtonNo_clicked" swapped="no"/>
                           </object>
                           <packing>

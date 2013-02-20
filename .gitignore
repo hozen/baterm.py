@@ -1,1 +1,4 @@
-*.pyc
+/certification
+/.settings
+/parser.out
+/parsetab.py
