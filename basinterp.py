@@ -5,6 +5,7 @@ import sys
 import math
 import random
 import time
+import re
 
 class BasicInterpreter:
 
@@ -319,18 +320,30 @@ class BasicInterpreter:
                 self.vars[var] = cmd
             
             elif op == 'READDATA':
+                print instr
                 var = instr[1][0]
-                for label, val in instr[2]:
-                    value = label                
+                plist = instr[2]
+                out = ""
+                for label,val in plist:
+                    if out:
+                         out += ''*(15 - (len(out) % 15))
+                    out += label
+                    if val:
+                         if label: out += " "
+                         eval = self.eval(val)
+                         out += str(eval)
+                cmd = out
+                #for label, val in instr[2]:
+                #    value = label                
                 #self.vars[var] = self.cali.get_batching_result(value)
-                try:
-                    result = self.cali.get_batching_result(value)
-                    if result.isdigit():
-                        result = int(result)
-                except:
-                    print "is digit"
-                finally:
-                    self.vars[var] = result
+                result = self.cali.get_batching_result(cmd)
+                if result != None:
+                    result = result.strip() #remove leading/ending spaces
+                    cond = re.search(r'[^0-9\+\-\.]', result)   # found non digits
+                    if cond == None:
+                        result = float(result)
+
+                self.vars[var] = result
                 
             elif op == 'CHECK':
                 for label, val in instr[1]:

@@ -275,6 +275,9 @@ class CaliTest:
             time.sleep(0.01)    # avoid too much cpu resource cost
             
     def get_batching_result(self, keywords):
+        #print keywords.upper(), 'upper'
+        #print "---"
+        #print self.batching_result
         keywords = keywords.upper()
         if keywords in self.batching_result:
             result = self.batching_result[keywords]
@@ -284,6 +287,7 @@ class CaliTest:
             return None
     
     def set_batching_result(self, data_with_2line):
+        #print "set, ", data_with_2line
         if len(data_with_2line) > 1:
             self.batching_result[data_with_2line[0]] = data_with_2line[1]
         
