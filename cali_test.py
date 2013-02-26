@@ -279,12 +279,15 @@ class CaliTest:
         #print "---"
         #print self.batching_result
         keywords = keywords.upper()
+        result = None
         if keywords in self.batching_result:
             result = self.batching_result[keywords]
             del self.batching_result[keywords]
-            return result
-        else:
-            return None
+            result = result.strip() #remove leading/ending spaces
+            regular = re.compile(r'[-+]?[0-9]+\.?[0-9]*$')   # match numbers
+            if regular.match(result) != None:
+                result = float(result)
+        return result
     
     def set_batching_result(self, data_with_2line):
         #print "set, ", data_with_2line
@@ -335,7 +338,7 @@ class CaliTest:
             line += self.ser[port][0].read(left)   
             if check_mode != "AUTO":
                 ###gtk.threads_enter()
-                self.insert_into_console(line)
+                self.insert_into_console(ch + ' ' + line)
                 ###gtk.threads_leave()
             self.set_batching_result(line.split())
         self.ser[port][0].flushInput()

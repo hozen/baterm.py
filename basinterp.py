@@ -335,15 +335,7 @@ class BasicInterpreter:
                 cmd = out
                 #for label, val in instr[2]:
                 #    value = label                
-                #self.vars[var] = self.cali.get_batching_result(value)
-                result = self.cali.get_batching_result(cmd)
-                if result != None:
-                    result = result.strip() #remove leading/ending spaces
-                    cond = re.search(r'[^0-9\+\-\.]', result)   # found non digits
-                    if cond == None:
-                        result = float(result)
-
-                self.vars[var] = result
+                self.vars[var] = self.cali.get_batching_result(value)
                 
             elif op == 'CHECK':
                 for label, val in instr[1]:
