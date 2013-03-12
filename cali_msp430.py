@@ -89,7 +89,7 @@ class Msp430():
                 ProcessLog(self, cmds).start() 
                 
     def on_ButtonOfMspReset_clicked(self, widget, data=None):
-        cmds = ['-r'], 
+        cmds = ['-r'] 
         ProcessLog(self, cmds).start() 
                         
     def on_ButtonOfMspProgramAll_clicked(self, widget, data=None):
