@@ -36,6 +36,12 @@ class CaliTest:
     def ConvertCN(self, s):  
         return s.encode('gb18030')  
     
+    def timer_event(self):
+        if self.led_check_status > 1 and self.check_status != 0x80000000:
+            self.set_check_status_led((self.led_check_status & 2) + 2)
+            t = threading.Timer(1, self.timer_event)
+            t.start()
+    
     def on_FileChooserButtonOfTestMode_selection_changed(self, widget, data=None):
         # TODO:  1. There are 3 events happened at init
         #        2. No need to write configure file even the filename is not changed.
@@ -275,10 +281,9 @@ class CaliTest:
             time.sleep(0.01)    # avoid too much cpu resource cost
             
     def get_batching_result(self, keywords):
-        #print keywords.upper(), 'upper'
-        #print "---"
-        #print self.batching_result
-        keywords = keywords.upper()
+        print 'get', keywords
+        print "in", self.batching_result
+        #keywords = keywords.upper()
         result = None
         if keywords in self.batching_result:
             result = self.batching_result[keywords]
@@ -290,7 +295,7 @@ class CaliTest:
         return result
     
     def set_batching_result(self, data_with_2line):
-        #print "set, ", data_with_2line
+        print "set, ", data_with_2line
         if len(data_with_2line) > 1:
             self.batching_result[data_with_2line[0]] = data_with_2line[1]
         
@@ -312,34 +317,32 @@ class CaliTest:
         if check_mode == "MANUAL":
             ch = self.ser[port][0].read(1)
         text = ''
-        line = cmd.upper() + " "
+        line = cmd + " "
         if check_mode == "AUTO":
             if self.batch_is_timeout == 1:
                 self.batch_is_timeout = 0
-                ch = '1'
+                #ch = '1'
                 text = "(timeout)"
             
             #self.ser[port][0].flushInput()
             if ch == '0':
                 self.set_check_status(0)
-                text += " is succeed\n"
+                text += " is succeed"
             else:
                 self.set_check_status(1)
-                text += " is failed\n"   
+                text += " is failed" 
+            text += '(' + ch + ')'  
             self.ack_to_plying = 0   
             #gtk.threads_enter()
-            self.insert_into_console(cmd.upper() + text)
+            self.insert_into_console(cmd + text)
             #gtk.threads_leave()            
             #line = line + ch + ' '  
         #else:
-        #line = cmd.upper() + " "
         left = self.ser[port][0].inWaiting()
         if left > 0:
             line += self.ser[port][0].read(left)   
-            if check_mode != "AUTO":
-                ###gtk.threads_enter()
-                self.insert_into_console(ch + ' ' + line)
-                ###gtk.threads_leave()
+            #if check_mode != "AUTO":
+            self.insert_into_console('\n Read from slave:' + line)
             self.set_batching_result(line.split())
         self.ser[port][0].flushInput()
         print "thread batching stopped.\n"
@@ -347,7 +350,8 @@ class CaliTest:
     def plying(self, port=0, method=0):   # 0: line by line 1: Lex-Yacc method    
 
         print "thread plying starts.."
-        self.clear_status()       
+        self.clear_status()  
+        self.timer_event()     
         if method == 0:
             for cmd in self.cmds:
                 if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
@@ -378,8 +382,12 @@ class CaliTest:
                     self.set_check_status(1)
 
         CERT_VALUE = datetime.datetime.now()
-        CERT_VALUE = CERT_VALUE.strftime("%Y-%m-%d %H:%M:%S")                
-        filename = str(self.serial_number) + str(CERT_VALUE)
+        CERT_VALUE = CERT_VALUE.strftime("%Y-%m-%d %H:%M:%S")  
+        if self.get_check_status() == 0:
+            filename = "PASS"
+        else:
+            filename = "FAIL"              
+        filename = str(self.serial_number) + filename + str(CERT_VALUE)
         filename = re.sub(r'[^a-zA-Z0-9]', '', filename)
         start, end = self.TextBufferOfLog.get_bounds()
         console_log = self.TextBufferOfLog.get_text(start, end)
@@ -450,6 +458,7 @@ class CaliTest:
             color = 'gray'            
         else:
             color = 'yellow'
+        self.led_check_status = status
         self.ButtonResultByColor.set_color(gtk.gdk.Color(color))
         
     def set_console_text(self, str=None):
@@ -497,16 +506,20 @@ class CaliTest:
             self.serial_connect(port, rates)
         
 #        if check_mode == "AUTO": # auto check
-        if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
-            #self.cmds = [str]
-            self.ThreadOfBatch = Thread(target=self.batching, args=(port, cmd, check_mode))
-            self.ThreadOfBatch.start()
-            time.sleep(0.1)
-            self.ThreadOfBatch.join(1) 
-            if self.ThreadOfBatch.is_alive():
-                self.batch_is_timeout = 1
-        else:
-            print "thread batch is in use.."
+        for i in range(1,3):
+            if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
+                print "batching times:", i
+                self.ThreadOfBatch = Thread(target=self.batching, args=(port, cmd, check_mode))
+                self.ThreadOfBatch.start()
+                time.sleep(0.1)
+                self.ThreadOfBatch.join(2) 
+                if self.ThreadOfBatch.is_alive():
+                    self.batch_is_timeout = 1
+                    time.sleep(2)
+                else:
+                    break
+            else:
+                print "thread batch is in use.."
 #        else: # manually check
 #            self.ser[port][0].write(cmd + "\n")
         return 0
@@ -698,6 +711,7 @@ class CaliTest:
         self.check_status = 0   # 1: failed 
                                 # 0: success 
                                 # 0x8000000x: terminated
+        self.led_check_status = 0
         self.ThreadOfReceiving = None    
         self.ThreadOfPly = None 
         self.ThreadOfBatch = None
