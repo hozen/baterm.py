@@ -10,12 +10,13 @@ class GtkPrinter:
     #def end_printer(self, operation=None, context=None, user_param1=None):
     #    print "end printer"
         
-    def __init__(self, printer_settings, tester, sn, console_log):
+    def __init__(self, printer_settings, tester, sn, console_log, cert_format):
         self.printer = gtk.PrintOperation()
         self.settings = printer_settings
         self.tester = tester
         self.sn = sn
         self.console_log = console_log
+        self.cert_format = cert_format
                 
     def run(self, mode="setup"):    
         if mode == "setup":
@@ -39,6 +40,7 @@ class GtkPrinter:
 
 
     def draw_certification(self, operation=None, context=None, page_nr=None):
+        #print "draw_certification", self.cert_format
         CERT_LEFT_CORNER_X = context.get_width() / 20
         CERT_LEFT_CORNER_Y = context.get_height() / 30
         CERT_FONT_SIZE_OF_TITLE = 0.043 * context.get_width()
@@ -69,7 +71,12 @@ class GtkPrinter:
         
         # draw the model name
         CERT_LINE_NUMBER += 2
-        CERT_VALUE = "LAVIDA 777"
+        if self.cert_format == "PH":
+            CERT_VALUE = "LA-pH10"
+        elif self.cert_format == "EC":
+            CERT_VALUE = "LA-EC20"
+        else:
+            CERT_VALUE = "LAVIDA 777"
         CERT_TITLE = "Model Name:"
         self.cairo_context.set_font_size(CERT_FONT_SIZE_OF_ITEM)  
         x_bearing, y_bearing, width, height = self.cairo_context.text_extents(CERT_TITLE)[:4]   
@@ -108,18 +115,40 @@ class GtkPrinter:
         
         # draw the voltage table
         CERT_LINE_NUMBER += 2
-        CERT_VOLTAGE  = (   ("Voltage",     "±1mV"),
-                            ("-5000mV",     "Pass"),
-                            ("-4000mV",     "Pass"),
-                            ("-3000mV",     "Pass"),
-                            ("-2000mV",     "Pass"),
+        if self.cert_format == "PH":
+            CERT_VOLTAGE  = (   ("Voltage",     "±0mV"),                         
+                            ("1000mV",     "Pass"),
                             ("-1000mV",     "Pass"),
-                            ("0mV",         "Pass"),
-                            ("+1000mV",     "Pass"),
-                            ("+2000mV",     "Pass"),      
-                            ("+3000mV",     "Pass"),     
-                            ("+4000mV",     "Pass"),     
-                            ("+5000mV",     "Pass") )        
+                            ("500mV",     "Pass"),
+                            ("-500mV",     "Pass"),
+                            ("0mV",     "Pass")  )  
+        elif self.cert_format == "EC":
+            CERT_VOLTAGE  = (   ("Conductivity",     "±0.5%F.S"),                         
+                            ("0.045 uS/cm",     "Pass"),
+                            ("0.225 uS/cm",     "Pass"),
+                            ("0.90 uS/cm",     "Pass"),
+                            ("2.25 uS/cm",     "Pass"),
+                            ("4.50 uS/cm",     "Pass"),
+                            ("22.5 uS/cm",     "Pass"),
+                            ("45.0 uS/cm",     "Pass"),
+                            ("225 uS/cm",     "Pass"),
+                            ("450 uS/cm",     "Pass"),
+                            ("2.25 mS/cm",     "Pass"),
+                            ("9.00 mS/cm",     "Pass"),
+                            ("90.0 mS/cm",     "Pass"),  ) 
+        else:
+            CERT_VOLTAGE  = (   ("Voltage",     "±1mV"),
+                                ("-5000mV",     "Pass"),
+                                ("-4000mV",     "Pass"),
+                                ("-3000mV",     "Pass"),
+                                ("-2000mV",     "Pass"),
+                                ("-1000mV",     "Pass"),
+                                ("0mV",         "Pass"),
+                                ("+1000mV",     "Pass"),
+                                ("+2000mV",     "Pass"),      
+                                ("+3000mV",     "Pass"),     
+                                ("+4000mV",     "Pass"),     
+                                ("+5000mV",     "Pass") )        
         self.cairo_context.set_font_size(CERT_FONT_SIZE_OF_ITEM_DATA)
         self.print_table_2(start_x = context.get_width() / 2 - context.get_width() / 3 - CERT_LEFT_CORNER_X / 2, 
                            start_y = CERT_LEFT_CORNER_Y * CERT_LINE_NUMBER, 
@@ -133,16 +162,29 @@ class GtkPrinter:
         self.cairo_context.stroke()
         
         # draw the temperature table
-        CERT_TEMPERATURE = (    ("Temp", "±0.1deg"),
-                                ("-40deg",     "Pass"),
-                                ("-30deg",     "Pass"),
-                                ("-20deg",     "Pass"),
-                                ("-10deg",     "Pass"),
-                                ("0deg",       "Pass"),
-                                ("10deg",      "Pass"),
-                                ("+20deg",     "Pass"),
-                                ("+30deg",     "Pass"),      
-                                ("+40deg",     "Pass") )    
+        if self.cert_format == "PH":  
+            CERT_TEMPERATURE = (    ("Temperature", "±0.2℃"),
+                                ("0.9℃",     "Pass"),
+                                ("25.0℃",     "Pass"),
+                                ("98.8℃",     "Pass")  )
+        elif self.cert_format == "EC":
+            CERT_TEMPERATURE = (    ("Temperature", "±0.2℃"),
+                                ("3.0℃",     "Pass"),
+                                ("15.0℃",     "Pass"),
+                                ("25.0℃",     "Pass"),
+                                ("37.0℃",     "Pass"),
+                                ("95.0℃",     "Pass"),  )
+        else:
+            CERT_TEMPERATURE = (    ("Temp", "±0.1deg"),
+                                    ("-40deg",     "Pass"),
+                                    ("-30deg",     "Pass"),
+                                    ("-20deg",     "Pass"),
+                                    ("-10deg",     "Pass"),
+                                    ("0deg",       "Pass"),
+                                    ("10deg",      "Pass"),
+                                    ("+20deg",     "Pass"),
+                                    ("+30deg",     "Pass"),      
+                                    ("+40deg",     "Pass") )    
         self.cairo_context.set_font_size(CERT_FONT_SIZE_OF_ITEM_DATA)
         self.print_table_2(start_x = context.get_width() / 2 + CERT_LEFT_CORNER_X / 2, 
                            start_y = CERT_LEFT_CORNER_Y * CERT_LINE_NUMBER, 

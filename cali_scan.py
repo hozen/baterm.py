@@ -20,21 +20,26 @@ class CaliScan():
         sn = self.EntryOfSN.get_text().rstrip()
         tester = self.EntryOfTester.get_text().rstrip()
         if sn != "" and tester != "":
-            self.ListOfPrinterSettings[0] = printer.GtkPrinter(self.ListOfPrinterSettings[0], tester, sn, self.console_log).run(mode="print")
+            self.ListOfPrinterSettings[0] = printer.GtkPrinter(self.ListOfPrinterSettings[0], tester, sn, self.console_log, self.cert_format).run(mode="print")
         self.window.destroy()
             
     def on_ButtonPrinter_clicked(self, widget, data=None):
-        self.ListOfPrinterSettings[0] = printer.GtkPrinter(self.ListOfPrinterSettings[0], None, None, None).run(mode="setup")
+        self.ListOfPrinterSettings[0] = printer.GtkPrinter(self.ListOfPrinterSettings[0], None, None, None, None).run(mode="setup")
 
     def run(self, parent_window):
         self.window.set_transient_for(parent_window)   # will make the child window located at center of main window. why??
         self.window.show_all()
         
-    def __init__(self, printer_settings_mutable, console_log):
+    def __init__(self, printer_settings_mutable, console_log, cert_format="EC"):
 
         self.ListOfPrinterSettings = printer_settings_mutable   # mutable means: 1. to pass a var by reference, use list type var.
                                                                 #                2. otherwise, directly pass a var will only pass its copy
         self.console_log = console_log
+        
+        if cert_format != "EC" and cert_format != "PH":
+            cert_format = "EC"
+        self.cert_format = cert_format
+        
         builder = gtk.Builder()
         builder.add_from_file("./glades/scanwindow.glade")
         builder.connect_signals(self)

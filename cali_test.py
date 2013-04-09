@@ -136,7 +136,7 @@ class CaliTest:
 
         self.EntryOfCommand.grab_focus()
  
-    def on_ButtonSend_clicked(self, widget, cmd=None):        
+    def on_ButtonSend_clicked(self, widget, cmd=None, para=None):        
         if cmd == None:
             cmd = self.EntryOfCommand.get_text()
        
@@ -160,7 +160,7 @@ class CaliTest:
                     #Thread(target=cali_scan.CaliScan(self.ListStoreOfScan, self.ListOfPrinterSettings).run, args=(self.window, )).start()
                     #time.sleep(0.1)
                     start, end = self.TextBufferOfLog.get_bounds()
-                    cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings, console_log = self.TextBufferOfLog.get_text(start, end)).run(parent_window = self.window)
+                    cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings, console_log = self.TextBufferOfLog.get_text(start, end), cert_format=para).run(parent_window = self.window)
                 elif cmd[0] == '_msp430': # should be deleted before release.
                     cali_msp430.Msp430().run(parent_window = self.window)                                                               
                 elif cmd[0] == '_stop':
@@ -474,6 +474,10 @@ class CaliTest:
         elif str == '_SCAN':
             #self.on_ButtonSend_clicked(0, '_scan')
             gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan')
+        elif str == '_SCANEC':
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'EC')
+        elif str == '_SCANPH':
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'PH')
         elif str == "_BARCODE":
             self.serial_number = self.EntryOfSerialNumber.get_text()
             if not self.serial_number.isdigit():
