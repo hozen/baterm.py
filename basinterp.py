@@ -334,8 +334,8 @@ class BasicInterpreter:
                          out += str(eval)
                 cmd = out
                 #for label, val in instr[2]:
-                #    value = label                
-                self.vars[var] = self.cali.get_batching_result(value)
+                #    value = label        
+                self.vars[var] = self.cali.get_batching_result(cmd)
                 
             elif op == 'CHECK':
                 for label, val in instr[1]:
