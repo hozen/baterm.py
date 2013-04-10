@@ -12,18 +12,18 @@ import time
 import datetime
 import re
 import os
-import chardet
+#import chardet
 
-import basiclex
-import basparse
-import basinterp
+#import basiclex
+#import basparse
+#import basinterp
 
-import cali_scan
-import cali_msp430
-if os.name == 'posix' :
-    import pexpect
-else:
-    import subprocess
+#import cali_scan
+#import cali_msp430
+#if os.name == 'posix' :
+#    import pexpect
+#else:
+#    import subprocess
     
 if os.name == 'nt' :
     from serial.tools.list_ports_windows import *
@@ -75,7 +75,7 @@ class CaliTest:
         elif key == "F2":
             self.on_ButtonNo_clicked(0, None)
         elif key == "Return":
-            self.on_ButtonStart_clicked(0, None)
+            self.on_ButtonSend_clicked(0, None)
 
     def on_ToggleButtonOfDebug_toggled(self, widget, data=None):
         self.FrameOfDebug.set_visible(not self.FrameOfDebug.get_visible())
@@ -157,11 +157,13 @@ class CaliTest:
 #                            self.TextBufferOfLog.insert_at_cursor("Start to calibrate at " + str(voltage) + "mV.\n")
 #                            self.ButtonResultByColor.set_color(gtk.gdk.Color('green'))
                 elif cmd[0] == '_scan': # should be deleted before release.
+                    import cali_scan
                     #Thread(target=cali_scan.CaliScan(self.ListStoreOfScan, self.ListOfPrinterSettings).run, args=(self.window, )).start()
                     #time.sleep(0.1)
                     start, end = self.TextBufferOfLog.get_bounds()
                     cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings, console_log = self.TextBufferOfLog.get_text(start, end), cert_format=para).run(parent_window = self.window)
                 elif cmd[0] == '_msp430': # should be deleted before release.
+                    import cali_msp430
                     cali_msp430.Msp430().run(parent_window = self.window)                                                               
                 elif cmd[0] == '_stop':
                     self.condition.acquire()
@@ -370,6 +372,8 @@ class CaliTest:
                     break
                 #time.sleep(0.01)
         else:
+            import basparse
+            import basinterp
             prog = basparse.parse(open(self.cmds).read())
             if not prog: 
                 self.set_console_text("*.BAS script basparse import error.")
@@ -487,6 +491,7 @@ class CaliTest:
         elif str == '_MSP430':
             self.on_ButtonSend_clicked(0, '_msp430')
         else:
+            import chardet
             str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.
             self.insert_into_console(str + "\n")
         ###gtk.threads_leave()
@@ -537,6 +542,9 @@ class CaliTest:
       #  self.ImageOfTutorial.set_from_file("xx.jpg")
     
     def set_instruction(self, words):
+        import chardet
+        if words == None:
+            words = ' '
         words = words.decode(chardet.detect(words)['encoding'])
         words = words.split('\\n')
         color_list = {'BLACK', 'RED', 'BLUE'}
@@ -581,6 +589,7 @@ class CaliTest:
                 command += cmd
                 command += ' '
             start_time = time.time()
+            import pexpect
             child = pexpect.spawn(command)
             result = ''
             while True:
@@ -597,7 +606,8 @@ class CaliTest:
                     break
                 time.sleep(0.1)
             
-        else:        
+        else:    
+            import subprocess    
             proc = subprocess.Popen(self.cmds, 
                             shell=False, 
                             stderr=subprocess.PIPE)
@@ -657,6 +667,11 @@ class CaliTest:
                 self.mutex.release()
                        
     def __init__(self):
+        import sys
+        self.running_mode = 'calibration'
+        if len(sys.argv) > 1:
+            self.running_mode = sys.argv[1]
+        
         builder = gtk.Builder()
         builder.add_from_file("./glades/calibration.glade")
         builder.connect_signals(self)
@@ -690,6 +705,16 @@ class CaliTest:
         self.FileFilterForView.add_pattern("*.cali")
         self.FileFilterForView.add_pattern("*.bas")
         
+        if self.running_mode == 'serial':
+            tutorial_frame = builder.get_object('frame3')
+            passfail_hbox = builder.get_object('HboxOfPassFail')
+            debug_frame = builder.get_object('FrameOfDebug')
+            status_hbox = builder.get_object('hbox5')
+            tutorial_frame.set_visible(0)
+            passfail_hbox.set_visible(0)
+            debug_frame.set_visible(1)
+            status_hbox.set_visible(0)
+            
         try: 
             default_script = './scripts/ntc.bas'
             with open("./cali.conf") as file:
