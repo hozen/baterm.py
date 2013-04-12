@@ -465,40 +465,43 @@ class CaliTest:
         self.led_check_status = status
         self.ButtonResultByColor.set_color(gtk.gdk.Color(color))
         
-    def set_console_text(self, str=None):
+    def set_console_text(self, cmd=None):
         ###gtk.threads_enter()
-        if str == "_CLEAR":
+        if cmd == "_CLEAR":
             #start, end = self.TextBufferOfLog.get_bounds()
             #gobject.idle_add(self.TextBufferOfLog.delete, start, end)
             self.on_ButtonSend_clicked(0, "_clear")
-        elif str == "_CURRENTTIME":
+        elif cmd == "_CURRENTTIME":
             self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
-        elif str == "_ERROR":
+        elif cmd == "_ERROR":
             self.set_check_status(1)
-        elif str == '_SCAN':
+        elif cmd == '_SCAN':
             #self.on_ButtonSend_clicked(0, '_scan')
             gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan')
-        elif str == '_SCANEC':
+        elif cmd == '_SCANEC':
             gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'EC')
-        elif str == '_SCANPH':
+        elif cmd == '_SCANPH':
             gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'PH')
-        elif str == "_BARCODE":
+        elif cmd == "_BARCODE":
             self.serial_number = self.EntryOfSerialNumber.get_text()
             if not self.serial_number.isdigit():
                 self.serial_number = "1234567890"
             data_with_2line = ('_BARCODE ' + self.serial_number).split()
             self.set_batching_result(data_with_2line)
-        elif str == '_MSP430':
+        elif cmd == '_MSP430':
             self.on_ButtonSend_clicked(0, '_msp430')
+        elif cmd == '_PORTCOUNT':
+            data_with_2line = ('_PORTCOUNT ' + str(len(self.ser))).split()
+            self.set_batching_result(data_with_2line)
         else:
             import chardet
-            str = str.decode(chardet.detect(str)['encoding'])  # decode() means decode the wanted format to unicode format.
-            self.insert_into_console(str + "\n")
+            cmd = cmd.decode(chardet.detect(cmd)['encoding'])  # decode() means decode the wanted format to unicode format.
+            self.insert_into_console(cmd + "\n")
         ###gtk.threads_leave()
     
-    def insert_into_console(self, str=None):
-        if str != None:
-            gobject.idle_add(self.TextBufferOfLog.insert_at_cursor, str)
+    def insert_into_console(self, cmd=None):
+        if cmd != None:
+            gobject.idle_add(self.TextBufferOfLog.insert_at_cursor, cmd)
             
     def set_uart_text(self, port, rates, cmd, check_mode):
         try:
