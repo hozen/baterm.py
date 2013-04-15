@@ -286,7 +286,7 @@ class CaliTest:
         print 'get', keywords
         print "in", self.batching_result
         #keywords = keywords.upper()
-        result = None
+        result = "None"
         if keywords in self.batching_result:
             result = self.batching_result[keywords]
             del self.batching_result[keywords]
@@ -310,7 +310,8 @@ class CaliTest:
         #for cmd in self.cmds:
         cmd = cmd.strip()
         self.ser[port][0].write(cmd + "\n")
-        if check_mode == "AUTO":
+        #if check_mode == "AUTO":
+        if check_mode.startswith("AUTO"):
             while True:
                 ch = self.ser[port][0].read(1)                
                 if ch.isdigit() or self.batch_is_timeout == 1:
@@ -320,19 +321,21 @@ class CaliTest:
             ch = self.ser[port][0].read(1)
         text = ''
         line = cmd + " "
-        if check_mode == "AUTO":
+        #if check_mode == "AUTO":
+        if check_mode.startswith("AUTO"):
             if self.batch_is_timeout == 1:
                 self.batch_is_timeout = 0
                 #ch = '1'
                 text = "(timeout)"
             
             #self.ser[port][0].flushInput()
-            if ch == '0':
-                self.set_check_status(0)
-                text += " is succeed"
-            else:
-                self.set_check_status(1)
-                text += " is failed" 
+            if check_mode == "AUTO":
+                if ch == '0':
+                    self.set_check_status(0)
+                    text += " is succeed"
+                else:
+                    self.set_check_status(1)
+                    text += " is failed" 
             text += '(' + ch + ')'  
             self.ack_to_plying = 0   
             #gtk.threads_enter()
@@ -475,6 +478,10 @@ class CaliTest:
             self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
         elif cmd == "_ERROR":
             self.set_check_status(1)
+        elif cmd == "_YES":
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_yes')
+        elif cmd == "_NO":
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_no')
         elif cmd == '_SCAN':
             #self.on_ButtonSend_clicked(0, '_scan')
             gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan')
