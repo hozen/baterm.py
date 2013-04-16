@@ -53,8 +53,8 @@ class CaliTest:
             print "cali.conf create failed."
         self.EntryOfSerialNumber.grab_focus()
         
-    def on_window_expose_event(self, widget, data=None):
-        self.EntryOfSerialNumber.grab_focus()
+    #def on_window_expose_event(self, widget, data=None):
+    #    self.EntryOfSerialNumber.grab_focus()
         
     def on_window_destroy(self, widget, data=None):
         self.on_ButtonSend_clicked(0, "_stop")
@@ -407,6 +407,7 @@ class CaliTest:
 
         #gtk.threads_enter()                    
         gobject.idle_add(self.EntryOfSerialNumber.set_text, '')
+        gobject.idle_add(self.EntryOfSerialNumber.grab_focus)
         #gtk.threads_leave()
         print "thread plying stopped"
         

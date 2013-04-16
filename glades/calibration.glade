@@ -20,7 +20,6 @@
     <property name="title" translatable="yes">Lavida校准工具 v0.4a</property>
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <signal name="key-press-event" handler="on_window_key_press_event" swapped="no"/>
-    <signal name="expose-event" handler="on_window_expose_event" swapped="no"/>
     <child>
       <object class="GtkHBox" id="hbox1">
         <property name="visible">True</property>
