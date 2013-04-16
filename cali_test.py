@@ -96,6 +96,7 @@ class CaliTest:
                 self.on_ButtonSend_clicked(0, "_batch " + self.FileChooserButtonOfTestMode.get_filename())
             elif fileext == ".bas":
                 self.on_ButtonSend_clicked(0, "_ply " + self.FileChooserButtonOfTestMode.get_filename())
+        self.EntryOfSerialNumber.grab_focus()
 
     def on_ButtonStop_clicked(self, widget, data=None):
         if self.ThreadOfPly != None and self.ThreadOfPly.is_alive():
