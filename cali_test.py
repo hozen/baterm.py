@@ -480,6 +480,9 @@ class CaliTest:
             self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
         elif cmd == "_ERROR":
             self.set_check_status(1)
+        elif cmd == "_GETERRORCODE":
+            data_with_2line = ('_GETERRORCODE ' + str(self.get_check_status())).split()
+            self.set_batching_result(data_with_2line)
         elif cmd == "_YES":
             gobject.idle_add(self.on_ButtonSend_clicked, 0, '_yes')
         elif cmd == "_NO":
