@@ -702,7 +702,7 @@ class CaliTest:
         self.ButtonYes1.child.modify_font(pango.FontDescription("sans 48"))
         self.ButtonNo1.child.modify_font(pango.FontDescription("sans 48"))
         self.LabelOfInstruction = builder.get_object("LabelOfInstruction")
-        self.LabelOfInstruction.modify_font(pango.FontDescription("sans 24"))
+        self.LabelOfInstruction.modify_font(pango.FontDescription("sans 30"))
     
         self.ListStoreOfUart = builder.get_object("liststore2")
         self.ComboBoxOfUart = builder.get_object("ComboBoxOfUart")
