@@ -122,7 +122,7 @@ class CaliTest:
             self.serial_connect(port, baudrate)
             self.EntryOfCommand.grab_focus()
         
-    def on_TextOfLog_size_allocate(self, widget, event, data=None):
+    def on_TextViewOfLog_size_allocate(self, widget, event, data=None):
         adj = self.ScrolledWindowOfLog.get_vadjustment()
         adj.set_value(adj.upper - adj.page_size)
     
@@ -719,13 +719,15 @@ class CaliTest:
         self.FileFilterForView = builder.get_object("filefilter1")
         self.FileFilterForView.add_pattern("*.cali")
         self.FileFilterForView.add_pattern("*.bas")
-        
+        self.tutorial_frame = builder.get_object('frame3')
+        #self.tutorial_frame.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("blue"))
+
         if self.running_mode == 'serial':
-            tutorial_frame = builder.get_object('frame3')
+            
             passfail_hbox = builder.get_object('HboxOfPassFail')
             debug_frame = builder.get_object('FrameOfDebug')
             status_hbox = builder.get_object('hbox5')
-            tutorial_frame.set_visible(0)
+            self.tutorial_frame.set_visible(0)
             passfail_hbox.set_visible(0)
             debug_frame.set_visible(1)
             status_hbox.set_visible(0)

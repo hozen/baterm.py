@@ -263,9 +263,10 @@
                                         <property name="height_request">200</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="editable">False</property>
                                         <property name="cursor_visible">False</property>
                                         <property name="buffer">textbuffer1</property>
-                                        <signal name="size-allocate" handler="on_TextOfLog_size_allocate" swapped="no"/>
+                                        <signal name="size-allocate" handler="on_TextViewOfLog_size_allocate" swapped="no"/>
                                       </object>
                                     </child>
                                   </object>
@@ -575,9 +576,11 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkLabel" id="LabelOfInstruction">
+                        <property name="width_request">800</property>
+                        <property name="height_request">150</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Lavida operation instruction.</property>
+                        <property name="wrap">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -587,8 +590,8 @@
                     </child>
                     <child>
                       <object class="GtkImage" id="ImageOfTutorial">
-                        <property name="width_request">500</property>
-                        <property name="height_request">375</property>
+                        <property name="width_request">800</property>
+                        <property name="height_request">500</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="ypad">4</property>
