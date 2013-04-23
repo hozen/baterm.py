@@ -290,7 +290,8 @@ class CaliTest:
         result = "None"
         if keywords in self.batching_result:
             result = self.batching_result[keywords]
-            del self.batching_result[keywords]
+            #del self.batching_result[keywords]    #may cause glibc "double free" bug.
+            self.batching_result[keywords] = "None"
             result = result.strip() #remove leading/ending spaces
             regular = re.compile(r'[-+]?[0-9]+\.?[0-9]*$')   # match numbers
             if regular.match(result) != None:
@@ -406,6 +407,7 @@ class CaliTest:
         else:
             self.set_check_status_led()
 
+        self.batching_result = {}
         #gtk.threads_enter()                    
         gobject.idle_add(self.EntryOfSerialNumber.set_text, '')
         gobject.idle_add(self.EntryOfSerialNumber.grab_focus)

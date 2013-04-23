@@ -580,8 +580,9 @@
                         <property name="height_request">150</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">                   Lavida Calibration Tool	
+                        <property name="label" translatable="yes">              Lavida Calibration Tool	
 </property>
+                        <property name="justify">center</property>
                         <property name="wrap">True</property>
                       </object>
                       <packing>
