@@ -37,7 +37,7 @@ class CaliTest:
         return s.encode('gb18030')  
     
     def timer_event(self):
-        if self.led_check_status > 1 and self.check_status != 0x80000000:
+        if self.led_check_status > 1 and self.ThreadOfPly != None and self.ThreadOfPly.is_alive():   # and self.check_status != 0x80000000:
             self.set_check_status_led((self.led_check_status & 2) + 2)
             t = threading.Timer(1, self.timer_event)
             t.start()
@@ -725,7 +725,6 @@ class CaliTest:
         #self.tutorial_frame.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("blue"))
 
         if self.running_mode == 'serial':
-            
             passfail_hbox = builder.get_object('HboxOfPassFail')
             debug_frame = builder.get_object('FrameOfDebug')
             status_hbox = builder.get_object('hbox5')
@@ -733,6 +732,10 @@ class CaliTest:
             passfail_hbox.set_visible(0)
             debug_frame.set_visible(1)
             status_hbox.set_visible(0)
+        elif self.running_mode == 'debug':
+            print "(debug mode)"
+            import faulthandler
+            faulthandler.enable()
             
         try: 
             default_script = './scripts/ntc.bas'
