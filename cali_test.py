@@ -124,8 +124,9 @@ class CaliTest:
         
     def on_TextViewOfLog_size_allocate(self, widget, event, data=None):
         adj = self.ScrolledWindowOfLog.get_vadjustment()
-        adj.set_value(adj.upper - adj.page_size)
-    
+        #adj.set_value(adj.upper - adj.page_size)
+        gobject.idle_add(adj.set_value, (adj.upper - adj.page_size))
+        
     def on_FileChooserButton_file_set(self, widget):
         file = self.FileChooserButton.get_filename()
         filename, fileext = os.path.splitext(file)
