@@ -37,10 +37,13 @@ class CaliTest:
         return s.encode('gb18030')  
     
     def timer_event(self):
-        if self.led_check_status > 1 and self.ThreadOfPly != None and self.ThreadOfPly.is_alive():   # and self.check_status != 0x80000000:
-            self.set_check_status_led((self.led_check_status & 2) + 2)
-            t = threading.Timer(1, self.timer_event)
-            t.start()
+        if self.led_check_status > 1:
+            if self.ThreadOfPly != None and self.ThreadOfPly.is_alive():   # and self.check_status != 0x80000000:
+                self.set_check_status_led((self.led_check_status & 2) + 2)
+                t = threading.Timer(1, self.timer_event)
+                t.start()
+            else:
+                self.set_check_status_led()            
     
     def on_FileChooserButtonOfTestMode_selection_changed(self, widget, data=None):
         # TODO:  1. There are 3 events happened at init
@@ -439,7 +442,7 @@ class CaliTest:
     
     def set_check_status(self, status):
         #self.mutex_of_checkstatus.acquire()
-        self.check_status &= 0x80000000
+        self.check_status &= 0x80000001
         self.check_status |= status
        # self.mutex_of_checkstatus.release()
     
