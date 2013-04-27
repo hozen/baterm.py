@@ -116,7 +116,7 @@ class GtkPrinter:
         # draw the voltage table
         CERT_LINE_NUMBER += 2
         if self.cert_format == "PH":
-            CERT_VOLTAGE  = (   ("Voltage",     "±0mV"),                         
+            CERT_VOLTAGE  = (   ("Voltage",     "±1mV"),                         
                             ("1000mV",     "Pass"),
                             ("-1000mV",     "Pass"),
                             ("500mV",     "Pass"),
