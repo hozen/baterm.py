@@ -166,7 +166,7 @@ class CaliTest:
                     #Thread(target=cali_scan.CaliScan(self.ListStoreOfScan, self.ListOfPrinterSettings).run, args=(self.window, )).start()
                     #time.sleep(0.1)
                     start, end = self.TextBufferOfLog.get_bounds()
-                    cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings, console_log = self.TextBufferOfLog.get_text(start, end), cert_format=para).run(parent_window = self.window)
+                    cali_scan.CaliScan(printer_settings_mutable = self.ListOfPrinterSettings, console_log = self.TextBufferOfLog.get_text(start, end), cert_format=para, sn_len=self.sn_len).run(parent_window = self.window)
                 elif cmd[0] == '_msp430': # should be deleted before release.
                     import cali_msp430
                     cali_msp430.Msp430().run(parent_window = self.window)                                                               
@@ -506,6 +506,10 @@ class CaliTest:
                 self.serial_number = "1234567890"
             data_with_2line = ('_BARCODE ' + self.serial_number).split()
             self.set_batching_result(data_with_2line)
+        elif cmd.startswith("_BARCODELEN="):
+            sn_len = cmd.split('=')[1]
+            if sn_len.isdigit():
+                self.sn_len = int(sn_len)
         elif cmd == '_MSP430':
             self.on_ButtonSend_clicked(0, '_msp430')
         elif cmd == '_PORTCOUNT':
@@ -654,7 +658,7 @@ class CaliTest:
         port_num = 0
         for port, desc, hwid in ports:
             if port.find('ttyACM') == -1:
-                #self.ListStoreOfUart.append([port, '115200'])
+                self.ListStoreOfUart.append([port, '115200'])
                 self.ListStoreOfUart.append([port, '9600'])
                 self.ser[port] = None, 0          
                 port_num += 1 
@@ -719,6 +723,7 @@ class CaliTest:
         self.EntryOfCommand = builder.get_object("EntryOfCommand")
         self.EntryOfSerialNumber = builder.get_object("EntryOfSerialNumber")
         self.serial_number = 777
+        self.sn_len = 11
         self.ScrolledWindowOfLog = builder.get_object("ScrolledWindowOfLog")
         self.FileChooserButton = builder.get_object("FileChooserButton")
         self.FileChooserButtonOfTestMode = builder.get_object("FileChooserButtonOfTestMode")
