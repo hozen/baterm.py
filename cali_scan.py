@@ -7,7 +7,8 @@ class CaliScan():
     def on_WindowOfScanning_expose_event(self, widget, data=None):
         if self.EntryOfTester.get_text().rstrip() == "":
             self.EntryOfTester.set_text("Hach")
-        self.EntryOfSNLen.set_text(str(self.sn_len))
+        if self.EntryOfSNLen.get_text().rstrip() == "":
+            self.EntryOfSNLen.set_text(str(self.sn_len))
             
     def on_WindowOfScanning_key_press_event(self, widget, event):
         key = gtk.gdk.keyval_name(event.keyval)
