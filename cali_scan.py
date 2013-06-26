@@ -5,8 +5,8 @@ import gtk
 
 class CaliScan():
     def on_WindowOfScanning_expose_event(self, widget, data=None):
-        if self.EntryOfTester.get_text().rstrip() == "":
-            self.EntryOfTester.set_text("Hach")
+        #if self.EntryOfTester.get_text().rstrip() == "":
+        #    self.EntryOfTester.set_text("Hach")
         if self.EntryOfSNLen.get_text().rstrip() == "":
             self.EntryOfSNLen.set_text(str(self.sn_len))
             
@@ -24,7 +24,7 @@ class CaliScan():
         sn_len = self.EntryOfSNLen.get_text().rstrip()
         if not sn_len.isdigit():
             sn_len = 10
-        if len(sn) == int(sn_len) and tester != "":
+        if len(sn) == int(sn_len):  # and tester != "":
             self.ListOfPrinterSettings[0] = printer.GtkPrinter(self.ListOfPrinterSettings[0], tester, sn, self.console_log, self.cert_format).run(mode="print")
             self.window.destroy()
         else:
