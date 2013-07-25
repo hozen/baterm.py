@@ -20,6 +20,7 @@ class CaliScan():
 
     def on_ButtonPrinting_clicked(self, widget, data=None):
         sn = self.EntryOfSN.get_text().rstrip()
+        sn = str(sn).upper()
         tester = self.EntryOfTester.get_text().rstrip()
         sn_len = self.EntryOfSNLen.get_text().rstrip()
         if not sn_len.isdigit():
