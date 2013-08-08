@@ -35,29 +35,24 @@
 50 REM ======== DO NOT CHANGE BELOW VARIABLE NAME ========
 51 LETSTR TUTORIAL = "TUTORIALs"
 52 LETSTR CONSOLE = "CONSOLEs"
-53 LETSTR MCUPORT = "COM3"
+53 LETSTR MCUPORT = "COM31"
+54 LETSTR INSTRUCTION = "INSTRUCTIONs"
 55 LET MCUBAUD = 115200
 56 LETSTR DEVICEPORT = "COM17"
 57 LET DEVICEBAUD = 9600
 60 REM ======== DO NOT CHANGE ABOVE VARIABLE NAME ========
+65 OUT INSTRUCTION = "Welcome to Lavida's mass production line. \n欢迎来到 朗逸 生产线！", "\nFONTCOLOR=BLUE", "\nFONTSIZE=20"
+70 DELAY 0
+71 OUT TUTORIAL = "12082bb.bmp" 
+75 OUT INSTRUCTION = "Welcome to Lavida's massAAAAAAAAAAAAAAAAAAAAAAAA production line. \n欢迎来到 朗逸 生产线！", "\nFONTCOLOR=BLUE", "\nFONTSIZE=20"
+80 DELAY 0
+81 OUT TUTORIAL = "120826P-007.JPG" 
+85 OUT INSTRUCTION = "Welcome to Lavida's mass production line. \n欢迎来到 来到 来到 来到 来到 来到 来到 来到 来到 来到 来到 来到 来到 来到 来到 来到 朗逸 生产线！", "\nFONTCOLOR=BLUE", "\nFONTSIZE=20"
+90 DELAY 0
+91 OUT TUTORIAL = "130327-102934.jpg"
+95 OUT INSTRUCTION = "Welcomn line. \n欢迎来到 朗逸 生产线！", "\nFONTCOLOR=BLUE", "\nFONTSIZE=20"
+100 DELAY 0
+105 OUT INSTRUCTION = "Welcome to 迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到迎来到 来到 来到 来到 来到 来到 mass production line. \n欢迎来到 朗逸 生产线！", "\nFONTCOLOR=BLUE", "\nFONTSIZE=20"
 
-63 OUT TUTORIAL = "12082bb.bmp"
-64 OUT CONSOLE = "我SEE THE PICUTRE? Hit 回车  if yes"
-65 DELAY 0
-66 REM CHECK "MANUAL"
-67 REM OUT CONSOLE = "Please check the pwd command"
-68 REM OUT MCUPORT = "pwd"
-71 FOR I = 1 TO 4
-72 OUT CONSOLE = I
-73 CHECK "MANUAL"
-74 OUT CONSOLE = "Please Check SB function."
-75 OUT DEVICEPORT = "SB"
-76 REM IF I = 5 THEN 92
-77 CHECK "AUTO"
-78 OUT CONSOLE = "Check ID function automatically."
-79 OUT DEVICEPORT = "ID"
-90 NEXT I
-91 OUT TUTORIAL = "120826P-007.JPG"
-100 REM GUI "_stop"
-110 OUT CONSOLE = "Stopped."
+
 200 END

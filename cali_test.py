@@ -501,8 +501,9 @@ class CaliTest:
         elif cmd == '_SCANPH':
             gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'PH')
         elif cmd == "_BARCODE":
-            self.serial_number = self.EntryOfSerialNumber.get_text()
-            if not self.serial_number.isdigit():
+            self.serial_number = (self.EntryOfSerialNumber.get_text()).strip()
+            #if not self.serial_number.isdigit():
+            if len(self.serial_number) < 1:
                 self.serial_number = "1234567890"
             data_with_2line = ('_BARCODE ' + self.serial_number).split()
             self.set_batching_result(data_with_2line)
