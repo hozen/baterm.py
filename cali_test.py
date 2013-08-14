@@ -659,7 +659,8 @@ class CaliTest:
         port_num = 0
         for port, desc, hwid in ports:
             if port.find('ttyACM') == -1:
-                self.ListStoreOfUart.append([port, '115200'])
+                if self.running_mode == 'serial':
+                    self.ListStoreOfUart.append([port, '115200'])
                 self.ListStoreOfUart.append([port, '9600'])
                 self.ser[port] = None, 0          
                 port_num += 1 
