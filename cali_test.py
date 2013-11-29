@@ -695,7 +695,7 @@ class CaliTest:
                        
     def __init__(self):
         import sys
-        self.running_mode = 'calibration'
+        self.running_mode = 'serial'
         if len(sys.argv) > 1:
             self.running_mode = sys.argv[1]
         
