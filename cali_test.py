@@ -214,8 +214,17 @@ class CaliTest:
                     if len(cmd) > 1:
                         if os.path.isfile(cmd[1]):
                             if self.ThreadOfReceiving == None or not self.ThreadOfReceiving.is_alive():
-                                self.insert_into_console("Please check the UART connection and restart the program.\n")
-                                self.set_check_status(1)
+                                # Entering BASIC standalone mode
+                                #self.insert_into_console("Please check the UART connection and restart the program.\n")
+                                self.insert_into_console("PLY processing with file " + cmd[1] + "\n")
+                                self.cmds = cmd[1]
+                                self.ply_mode = 1
+                                if self.ThreadOfPly == None or not self.ThreadOfPly.is_alive():
+                                    self.ThreadOfPly = Thread(target=self.plying, args=(0, self.ply_mode,))
+                                    self.ThreadOfPly.start()
+                                    time.sleep(0.1)
+                                    self.ThreadOfPly.join()
+                                #self.set_check_status(1)
                             else:
                                 self.insert_into_console("PLY processing with file " + cmd[1] + "\n")
                                 self.cmds = cmd[1]
@@ -519,7 +528,7 @@ class CaliTest:
         else:
             import chardet
             cmd = cmd.decode(chardet.detect(cmd)['encoding'])  # decode() means decode the wanted format to unicode format.
-            self.insert_into_console(cmd + "\n")
+            self.insert_into_console(cmd)
         ###gtk.threads_leave()
     
     def insert_into_console(self, cmd=None):
@@ -708,19 +717,11 @@ class CaliTest:
         self.ButtonNo = builder.get_object("ButtonNo")
         self.ButtonYes1 = builder.get_object("ButtonYes1")
         self.ButtonNo1 = builder.get_object("ButtonNo1")
-        self.ButtonPrinting = builder.get_object("ButtonPrinting")
-        self.ButtonYes.child.modify_font(pango.FontDescription("sans 48"))
-        self.ButtonNo.child.modify_font(pango.FontDescription("sans 48"))
-        self.ButtonYes1.child.modify_font(pango.FontDescription("sans 48"))
-        self.ButtonNo1.child.modify_font(pango.FontDescription("sans 48"))
-        self.LabelOfInstruction = builder.get_object("LabelOfInstruction")
-        self.LabelOfInstruction.modify_font(pango.FontDescription("sans 30"))
-    
+        self.ButtonPrinting = builder.get_object("ButtonPrinting")    
         self.ListStoreOfUart = builder.get_object("liststore2")
         self.ComboBoxOfUart = builder.get_object("ComboBoxOfUart")
         self.window = builder.get_object("window")
         
-    
         self.TextBufferOfLog = builder.get_object("textbuffer1")
         self.EntryOfCommand = builder.get_object("EntryOfCommand")
         self.EntryOfSerialNumber = builder.get_object("EntryOfSerialNumber")
@@ -739,8 +740,6 @@ class CaliTest:
             passfail_hbox = builder.get_object('HboxOfPassFail')
             debug_frame = builder.get_object('FrameOfDebug')
             status_hbox = builder.get_object('hbox5')
-            self.tutorial_frame.set_visible(0)
-            passfail_hbox.set_visible(0)
             debug_frame.set_visible(1)
             status_hbox.set_visible(0)
         elif self.running_mode == 'debug':
