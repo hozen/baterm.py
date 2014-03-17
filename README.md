@@ -30,3 +30,9 @@ Before running the program, you need to install several python package by below 
 5. Get chardet
 
 	 easy_install chardet
+	 
+
+Wishing list: (Will be added in next version)
+---------
+1. Fixed width font support (or customized font selection window?) for well-formatted display.
+2. Command auto completion function.
