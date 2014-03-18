@@ -1,12 +1,17 @@
 baterm.py - Beyond the traditional Terminal program.
-=========
+========
 
-A standard UART terminal with built-in BASIC interpretor engine.
+A standard UART terminal with built-in BASIC interpretor engine. Supporting Windows/Linux, tested on WinXP/Win7/Raspberry Pi (Debian)
 
 
-For a quick overview of the code, please start from cali_test.py
+Running 
+========
+python cali_test.py serial
 
-Before running the program, you need to install several python package by below command. I assume you are using Windows here.
+
+Installation
+========
+You need to install several python package by below command. I assume you are using Windows here.
 
 
 1. Get the pygtk by installing pygtk all-in-one package (e.g. pygtk-all-in-one-2.24.0.win32-py2.7.msi) from http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.24/ 
