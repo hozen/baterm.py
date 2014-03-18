@@ -12,7 +12,7 @@ import time
 import datetime
 import re
 import os
-#import chardet
+import chardet
 
 #import basiclex
 #import basparse
@@ -285,6 +285,7 @@ class CaliTest:
                         line += self.ser[port][0].read(left)   
                         if line != '' :
                             ###gtk.threads_enter()
+                            line = line.decode(chardet.detect(line)['encoding'])
                             self.insert_into_console(line)
                             ###gtk.threads_leave()
                         line = ''
@@ -526,7 +527,6 @@ class CaliTest:
             data_with_2line = ('_PORTCOUNT ' + str(len(self.ser))).split()
             self.set_batching_result(data_with_2line)
         else:
-            import chardet
             cmd = cmd.decode(chardet.detect(cmd)['encoding'])  # decode() means decode the wanted format to unicode format.
             self.insert_into_console(cmd)
         ###gtk.threads_leave()
