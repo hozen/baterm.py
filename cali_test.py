@@ -79,7 +79,7 @@ class CaliTest:
             self.on_ButtonNo_clicked(0, None)
         elif key == "Return":
             self.on_ButtonSend_clicked(0, None)
-
+        
     def on_ToggleButtonOfDebug_toggled(self, widget, data=None):
         self.FrameOfDebug.set_visible(not self.FrameOfDebug.get_visible())
         self.HboxOfPassFail.set_visible(not self.HboxOfPassFail.get_visible())   
@@ -147,8 +147,8 @@ class CaliTest:
        
         if not cmd.isspace() and cmd != '':
             cmd = cmd.split()
-            cmd[0] = cmd[0].lower()
             if cmd[0].startswith('_'):  # local and mcu's command
+                cmd[0] = cmd[0].lower()
                 if cmd[0] == '_clear':
                     #if self.ThreadOfPly == None or not self.ThreadOfPly.is_alive():    # avoid accessing the shared resource: CONSOLE
                     start, end = self.TextBufferOfLog.get_bounds()
@@ -318,7 +318,7 @@ class CaliTest:
             self.batching_result[data_with_2line[0]] = data_with_2line[1]
         
     def batching(self, port, cmd, check_mode):
-        print "thread batching starts...\n"
+        #print "thread batching starts...\n"
 
         self.ser[port][0].flushInput()
         self.ser[port][0].flushOutput()
@@ -332,8 +332,9 @@ class CaliTest:
                 ch = self.ser[port][0].read(1)                
                 if ch.isdigit() or self.batch_is_timeout == 1:
                     break
-        time.sleep(0.5)
+        #time.sleep(0.5)
         if check_mode == "MANUAL":
+            time.sleep(0.5) # no wait when "NOCHECK"
             ch = self.ser[port][0].read(1)
         text = ''
         line = cmd + " "
@@ -358,15 +359,18 @@ class CaliTest:
             self.insert_into_console(cmd + text)
             #gtk.threads_leave()            
             #line = line + ch + ' '  
-        #else:
-        left = self.ser[port][0].inWaiting()
-        if left > 0:
-            line += self.ser[port][0].read(left)   
-            #if check_mode != "AUTO":
-            self.insert_into_console('\n Read from slave:' + line)
-            self.set_batching_result(line.split())
+        if check_mode == "NOCHECK":
+            self.set_check_status(0)
+            self.ack_to_plying = 0
+        else:
+            left = self.ser[port][0].inWaiting()
+            if left > 0:
+                line += self.ser[port][0].read(left)   
+                #if check_mode != "AUTO":
+                self.insert_into_console('\n Read from slave:' + line)
+                self.set_batching_result(line.split())
         self.ser[port][0].flushInput()
-        print "thread batching stopped.\n"
+        #print "thread batching stopped.\n"
 
     def plying(self, port=0, method=0):   # 0: line by line 1: Lex-Yacc method    
 
