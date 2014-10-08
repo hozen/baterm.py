@@ -232,7 +232,7 @@ class BasicInterpreter:
                 #print "ply end"    
                 break           # We're done                        
                 
-            elif op == 'OUT':
+            elif op == 'OUT':   # todo : it's better to use Console as the only comm tunnel between script and gui.
                 text = ""      
                 port = self.eval(instr[1])
                 portvar = instr[1][1][0]
@@ -261,25 +261,29 @@ class BasicInterpreter:
                 elif portvar == "FLASH":
                     self.cali.flash_msp430(str(cmd))
                 else:
-                    if not self.vars.has_key("CHECK"):
-                        self.vars['CHECK'] = "AUTO"
-                    if not self.vars.has_key("MCUBAUD"):
-                        self.vars["MCUBAUD"] = 9600
-                    if not self.vars.has_key("DEVICEBAUD"):
-                        self.vars["DEVICEBAUD"] = 9600
-
-                    self.cali.ack_to_plying = 1
-                    if portvar == "MCUPORT":
-                        uart_conn_result = self.cali.set_uart_text(port, self.vars['MCUBAUD'], str(cmd), self.vars['CHECK'])
-                    else:
-                        uart_conn_result = self.cali.set_uart_text(port, self.vars['DEVICEBAUD'], str(cmd), self.vars['CHECK'])
-                    if uart_conn_result == 1:
-                        self.pc = pc_of_end - 1
-                    else:
-                        while True:                            
-                            if self.cali.ack_to_plying == 0 or self.cali.get_check_status() != 0:
-                                break
-                            time.sleep(0.01)
+                    self.cali.set_console_text(port + " " + str(cmd))
+                    
+#                    if not self.vars.has_key("CHECK"):
+#                        self.vars['CHECK'] = "AUTO"
+#                    if not self.vars.has_key("MCUBAUD"):
+#                        self.vars["MCUBAUD"] = 9600
+#                    if not self.vars.has_key("DEVICEBAUD"):
+#                        self.vars["DEVICEBAUD"] = 9600
+#
+#                    self.cali.ack_to_plying = 1
+#                    if portvar == "MCUPORT":
+#                        uart_conn_result = self.cali.set_uart_text(port, self.vars['MCUBAUD'], self.vars['CHECK'], str(cmd))
+#                    elif portvar == "DEVICEPORT":
+#                        uart_conn_result = self.cali.set_uart_text(port, self.vars['DEVICEBAUD'], self.vars['CHECK'], str(cmd))
+#                    else:
+#                        uart_conn_result = 1
+#                    if uart_conn_result == 1:
+#                        self.pc = pc_of_end - 1
+#                    else:
+#                        while True:                            
+#                            if self.cali.ack_to_plying == 0 or self.cali.get_check_status() != 0:
+#                                break
+#                            time.sleep(0.01)
 
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])

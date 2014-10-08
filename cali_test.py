@@ -530,16 +530,61 @@ class CaliTest:
         elif cmd == '_PORTCOUNT':
             data_with_2line = ('_PORTCOUNT ' + str(len(self.ser))).split()
             self.set_batching_result(data_with_2line)
+        elif cmd.startswith("_UARTOPEN"):            
+            paras = cmd.lstrip('_UARTOPEN').strip()
+            if len(paras) > 0:
+                port = None
+                baudrate = 9600
+                parity = "N"
+                check = "AUTO"
+                
+                paras = paras.split(',')
+                for par in paras:
+                    arg = par.split('=')
+                    if len(arg) > 1:
+                        if arg[0] == "PORT":
+                            port = arg[1].strip()
+                        elif arg[0].startswith("BAUD"):
+                            baudrate = int(arg[1].strip())
+                        elif arg[0].startswith("PARI"):
+                            parity = arg[1].strip()
+                        elif arg[0] == "CHECK":
+                            check = arg[1].strip()
+                            
+                print port, baudrate, parity, check
+                if port != None:
+                    uart_conn_result = self.set_uart_text(port, baudrate, check, None, parity)
+                    if uart_conn_result == 0:
+                        data_with_2line = ('_UARTOPEN ' + str(port)).split()
+                        self.set_batching_result(data_with_2line)
+                
+                
+        elif cmd.startswith('_UARTCLOSE'):
+            port = cmd.lstrip('_UARTCLOSE').strip()
+            if port in self.ser:
+                if self.ser[port][0] != None:   # and self.ser[port][0].isOpen():
+                    self.mutex.acquire()    # to avoid mis-judging in thread receiving - ser.inWaiting()
+                    self.ser[port][0].close()
+                    self.ser[port] = None, 0
+                    self.mutex.release()
+                
         else:
-            cmd = cmd.decode(chardet.detect(cmd)['encoding'])  # decode() means decode the wanted format to unicode format.
-            self.insert_into_console(cmd)
+            # check if it is a uart port
+            port, command = cmd.split()
+            if port in self.ser:
+                baudrate = self.ser[port][1]
+                uart_conn_result = self.set_uart_text(port, baudrate, str(command))
+            else:
+                #otherwise, just print it on the Console window
+                cmd = cmd.decode(chardet.detect(cmd)['encoding'])  # decode() means decode the wanted format to unicode format.
+                self.insert_into_console(cmd)
         ###gtk.threads_leave()
     
     def insert_into_console(self, cmd=None):
         if cmd != None:
             gobject.idle_add(self.TextBufferOfLog.insert_at_cursor, cmd)
             
-    def set_uart_text(self, port, rates, cmd, check_mode):
+    def set_uart_text(self, port, rates, check_mode="AUTO", cmd=None, parity='N'):
         try:
             comport = self.ser[port]
         except KeyError:
@@ -548,28 +593,29 @@ class CaliTest:
             return 1
         
         if comport[0] == None or not comport[0].isOpen():
-            self.serial_connect(port, rates)
+            self.serial_connect(port, rates, parity)
         elif comport[1] != rates:
             self.serial_close_all()
-            self.serial_connect(port, rates)
+            self.serial_connect(port, rates, parity)
         
 #        if check_mode == "AUTO": # auto check
-        for i in range(1,3):
-            if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
-                print "batching times:", i
-                self.ThreadOfBatch = Thread(target=self.batching, args=(port, cmd, check_mode))
-                self.ThreadOfBatch.start()
-                time.sleep(0.1)
-                self.ThreadOfBatch.join(2) 
-                if self.ThreadOfBatch.is_alive():
-                    self.batch_is_timeout = 1
-                    time.sleep(2)
+        if cmd != None: # in case a new uart connection request without command transferring.
+            for i in range(1,3):
+                if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
+                    print "batching times:", i
+                    self.ThreadOfBatch = Thread(target=self.batching, args=(port, cmd, check_mode))
+                    self.ThreadOfBatch.start()
+                    time.sleep(0.1)
+                    self.ThreadOfBatch.join(2) 
+                    if self.ThreadOfBatch.is_alive():
+                        self.batch_is_timeout = 1
+                        time.sleep(2)
+                    else:
+                        break
                 else:
-                    break
-            else:
-                print "thread batch is in use.."
-#        else: # manually check
-#            self.ser[port][0].write(cmd + "\n")
+                    print "thread batch is in use.."
+    #        else: # manually check
+    #            self.ser[port][0].write(cmd + "\n")
         return 0
     
     def set_tutorial(self, src):
@@ -683,9 +729,9 @@ class CaliTest:
             
         self.ComboBoxOfUart.set_active(0)
         
-    def serial_connect(self, port, rates):
+    def serial_connect(self, port, rates, parity="N"):
         try: 
-            self.ser[port] = serial.Serial(port, rates, timeout=1), rates
+            self.ser[port] = serial.Serial(port, rates, parity=parity, timeout=1), rates
         except serial.serialutil.SerialException:
             self.ser[port] = None, 0
             #self.ser_is_alive = 0
