@@ -193,6 +193,7 @@ class BasicInterpreter:
     # Run it
     def run(self):
         self.vars   = { }            # All variables
+        self.curarr = [ ]            # Current 1 array only
         self.lists  = { }            # List variables
         self.tables = { }            # Tables
         self.loops  = [ ]            # Currently active loops
@@ -322,7 +323,6 @@ class BasicInterpreter:
                          out += str(eval)
                 cmd = out
                 self.vars[var] = cmd
-            
             elif op == 'READDATA':
                 print instr
                 var = instr[1][0]
@@ -339,8 +339,14 @@ class BasicInterpreter:
                 cmd = out
                 #for label, val in instr[2]:
                 #    value = label        
-                self.vars[var] = self.cali.get_batching_result(cmd)
-                
+                #self.vars[var] = self.cali.get_batching_result(cmd)
+                value = self.cali.get_batching_result(cmd)
+                if type(value) is list:
+                    self.curarr = value
+                    self.vars[var] = value[0]
+                else:                                        
+                    self.vars[var] = value
+                                
             elif op == 'CHECK':
                 for label, val in instr[1]:
                     method = label
@@ -384,6 +390,7 @@ class BasicInterpreter:
 
             # READ statement
             elif op == 'READ':
+                 #print "read instr" 
                  #print instr
                  #print self.data
                  for target in instr[1]:
@@ -393,7 +400,12 @@ class BasicInterpreter:
                           self.dc += 1
                       else:
                           # No more data.  Program ends
-                          return
+                          # todo : if use DATA 1 2 3 4 in script, need to check if it conflits
+                          if len(self.curarr) > 0:
+                              value = ('NUM', self.curarr.pop(0))
+                              self.assign(target, value)
+                          # todo : end
+                          #return
             elif op == 'IF':
                  relop = instr[1]
                  newline = instr[2]

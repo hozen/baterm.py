@@ -298,24 +298,37 @@ class CaliTest:
             time.sleep(0.01)    # avoid too much cpu resource cost
             
     def get_batching_result(self, keywords):
-        print 'get', keywords
-        print "in", self.batching_result
+        print 'key', keywords
+        print "val", self.batching_result
         #keywords = keywords.upper()
         result = "None"
         if keywords in self.batching_result:
             result = self.batching_result[keywords]
             #del self.batching_result[keywords]    #may cause glibc "double free" bug.
             self.batching_result[keywords] = "None"
-            result = result.strip() #remove leading/ending spaces
-            regular = re.compile(r'[-+]?[0-9]+\.?[0-9]*$')   # match numbers
-            if regular.match(result) != None:
-                result = float(result)
+            if len(result) > 1:
+                # convert it to num list
+                numlist = []
+                for num in result:
+                    if num.isdigit():
+                        numlist.append(num)
+                result = numlist
+                print "val list: " 
+                print result
+            else:
+                result = result.strip() #remove leading/ending spaces
+                regular = re.compile(r'[-+]?[0-9]+\.?[0-9]*$')   # match numbers
+                if regular.match(result) != None:
+                    result = float(result)
         return result
     
-    def set_batching_result(self, data_with_2line):
-        print "set, ", data_with_2line
-        if len(data_with_2line) > 1:
-            self.batching_result[data_with_2line[0]] = data_with_2line[1]
+    def set_batching_result(self, result, rtype = "STRING"):
+        print "set, ", result
+        if len(result) > 1:
+            if rtype == "STRING":
+                self.batching_result[result[0]] = result[1]
+            elif rtype == "ARRAY":
+                self.batching_result[result[0]] = result[1:len(result)]
         
     def batching(self, port, cmd, check_mode):
         #print "thread batching starts...\n"
@@ -492,92 +505,110 @@ class CaliTest:
         
     def set_console_text(self, cmd=None):
         ###gtk.threads_enter()
-        if cmd == "_CLEAR":
-            #start, end = self.TextBufferOfLog.get_bounds()
-            #gobject.idle_add(self.TextBufferOfLog.delete, start, end)
-            self.on_ButtonSend_clicked(0, "_clear")
-        elif cmd == "_CURRENTTIME":
-            self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
-        elif cmd == "_ERROR":
-            self.set_check_status(1)
-        elif cmd == "_GETERRORCODE":
-            data_with_2line = ('_GETERRORCODE ' + str(self.get_check_status())).split()
-            self.set_batching_result(data_with_2line)
-        elif cmd == "_YES":
-            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_yes')
-        elif cmd == "_NO":
-            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_no')
-        elif cmd == '_SCAN':
-            #self.on_ButtonSend_clicked(0, '_scan')
-            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan')
-        elif cmd == '_SCANEC':
-            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'EC')
-        elif cmd == '_SCANPH':
-            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'PH')
-        elif cmd == "_BARCODE":
-            self.serial_number = (self.EntryOfSerialNumber.get_text()).strip()
-            #if not self.serial_number.isdigit():
-            if len(self.serial_number) < 1:
-                self.serial_number = "1234567890"
-            data_with_2line = ('_BARCODE ' + self.serial_number).split()
-            self.set_batching_result(data_with_2line)
-        elif cmd.startswith("_BARCODELEN="):
-            sn_len = cmd.split('=')[1]
-            if sn_len.isdigit():
-                self.sn_len = int(sn_len)
-        elif cmd == '_MSP430':
-            self.on_ButtonSend_clicked(0, '_msp430')
-        elif cmd == '_PORTCOUNT':
-            data_with_2line = ('_PORTCOUNT ' + str(len(self.ser))).split()
-            self.set_batching_result(data_with_2line)
-        elif cmd.startswith("_UARTOPEN"):            
-            paras = cmd.lstrip('_UARTOPEN').strip()
-            if len(paras) > 0:
-                port = None
-                baudrate = 9600
-                parity = "N"
-                check = "AUTO"
-                
-                paras = paras.split(',')
-                for par in paras:
-                    arg = par.split('=')
-                    if len(arg) > 1:
-                        if arg[0] == "PORT":
-                            port = arg[1].strip()
-                        elif arg[0].startswith("BAUD"):
-                            baudrate = int(arg[1].strip())
-                        elif arg[0].startswith("PARI"):
-                            parity = arg[1].strip()
-                        elif arg[0] == "CHECK":
-                            check = arg[1].strip()
-                            
-                print port, baudrate, parity, check
-                if port != None:
-                    uart_conn_result = self.set_uart_text(port, baudrate, check, None, parity)
-                    if uart_conn_result == 0:
-                        data_with_2line = ('_UARTOPEN ' + str(port)).split()
-                        self.set_batching_result(data_with_2line)
-                
-                
-        elif cmd.startswith('_UARTCLOSE'):
-            port = cmd.lstrip('_UARTCLOSE').strip()
-            if port in self.ser:
-                if self.ser[port][0] != None:   # and self.ser[port][0].isOpen():
-                    self.mutex.acquire()    # to avoid mis-judging in thread receiving - ser.inWaiting()
-                    self.ser[port][0].close()
-                    self.ser[port] = None, 0
-                    self.mutex.release()
-                
-        else:
+        if cmd == None or cmd == "":
+            return
+        if cmd.startswith('_'):
+            if cmd == "_CLEAR":
+                #start, end = self.TextBufferOfLog.get_bounds()
+                #gobject.idle_add(self.TextBufferOfLog.delete, start, end)
+                self.on_ButtonSend_clicked(0, "_clear")
+            elif cmd == "_CURRENTTIME":
+                self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
+            elif cmd == "_ERROR":
+                self.set_check_status(1)
+            elif cmd == "_GETERRORCODE":
+                data_with_2line = ('_GETERRORCODE ' + str(self.get_check_status())).split()
+                self.set_batching_result(data_with_2line)
+            elif cmd == "_YES":
+                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_yes')
+            elif cmd == "_NO":
+                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_no')
+            elif cmd == '_SCAN':
+                #self.on_ButtonSend_clicked(0, '_scan')
+                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan')
+            elif cmd == '_SCANEC':
+                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'EC')
+            elif cmd == '_SCANPH':
+                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'PH')
+            elif cmd == "_BARCODE":
+                self.serial_number = (self.EntryOfSerialNumber.get_text()).strip()
+                #if not self.serial_number.isdigit():
+                if len(self.serial_number) < 1:
+                    self.serial_number = "1234567890"
+                data_with_2line = ('_BARCODE ' + self.serial_number).split()
+                self.set_batching_result(data_with_2line)
+            elif cmd.startswith("_BARCODELEN="):
+                sn_len = cmd.split('=')[1]
+                if sn_len.isdigit():
+                    self.sn_len = int(sn_len)
+            elif cmd == '_MSP430':
+                self.on_ButtonSend_clicked(0, '_msp430')
+            elif cmd == '_PORTCOUNT':
+                data_with_2line = ('_PORTCOUNT ' + str(len(self.ser))).split()
+                self.set_batching_result(data_with_2line)
+            elif cmd.startswith("_UARTOPEN"):            
+                paras = cmd.lstrip('_UARTOPEN').strip()
+                if len(paras) > 0:
+                    port = None
+                    baudrate = 9600
+                    parity = "N"
+                    check = "AUTO"
+                    
+                    paras = paras.split(',')
+                    for par in paras:
+                        arg = par.split('=')
+                        if len(arg) > 1:
+                            if arg[0] == "PORT":
+                                port = arg[1].strip()
+                            elif arg[0].startswith("BAUD"):
+                                baudrate = int(arg[1].strip())
+                            elif arg[0].startswith("PARI"):
+                                parity = arg[1].strip()
+                            elif arg[0] == "CHECK":
+                                check = arg[1].strip()
+                                
+                    print port, baudrate, parity, check
+                    if port != None:
+                        uart_conn_result = self.set_uart_text(port, baudrate, check, None, parity)
+                        if uart_conn_result == 0:
+                            data_with_2line = ('_UARTOPEN ' + str(port)).split()
+                            self.set_batching_result(data_with_2line)
+                    
+                    
+            elif cmd.startswith('_UARTCLOSE'):
+                port = cmd.lstrip('_UARTCLOSE').strip()
+                if port in self.ser:
+                    if self.ser[port][0] != None:   # and self.ser[port][0].isOpen():
+                        self.mutex.acquire()    # to avoid mis-judging in thread receiving - ser.inWaiting()
+                        self.ser[port][0].close()
+                        self.ser[port] = None, 0
+                        self.mutex.release()
+            elif cmd == '_TESTARRAY':   
+                replied_oct_digit = '01 02 03 04 05'
+                data_with_multiline = ('_TESTARRAY ' + replied_oct_digit).split()
+                self.set_batching_result(data_with_multiline, "ARRAY")
+            elif cmd == '_TESTARRAY2':   
+                replied_hex_str = '11 12 13 a4 a5'
+                data_with_multiline = replied_hex_str.split()
+                data_with_multiline_oct = [str(int(x, 16)) for x in data_with_multiline]
+                data_with_multiline = ['_TESTARRAY2'] + data_with_multiline_oct    
+                #data_with_multiline = ('_TESTARRAY2 ' + '11 12 13 a4 a5').split()
+                self.set_batching_result(data_with_multiline, "ARRAY")
+                 
+        else:   # end startswith "_"
             # check if it is a uart port
-            port, command = cmd.split()
-            if port in self.ser:
-                baudrate = self.ser[port][1]
-                uart_conn_result = self.set_uart_text(port, baudrate, str(command))
-            else:
-                #otherwise, just print it on the Console window
-                cmd = cmd.decode(chardet.detect(cmd)['encoding'])  # decode() means decode the wanted format to unicode format.
-                self.insert_into_console(cmd)
+            cmdlist = cmd.split()
+            if len(cmdlist) > 1:
+                port = cmdlist[0]
+                command = cmdlist[1]
+                if port in self.ser:
+                    baudrate = self.ser[port][1]
+                    uart_conn_result = self.set_uart_text(port, baudrate, str(command))
+                    return
+        
+            #otherwise, just print it on the Console window
+            cmd = cmd.decode(chardet.detect(cmd)['encoding'])  # decode() means decode the wanted format to unicode format.
+            self.insert_into_console(cmd)
         ###gtk.threads_leave()
     
     def insert_into_console(self, cmd=None):

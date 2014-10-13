@@ -24,142 +24,144 @@ Rule 18    command -> OUT expr EQUALS plist
 Rule 19    command -> DELAY expr
 Rule 20    command -> LETSTR variable EQUALS plist
 Rule 21    command -> READDATA variable EQUALS plist
-Rule 22    command -> CHECK plist
-Rule 23    command -> PRINT error
-Rule 24    optend -> COMMA
-Rule 25    optend -> SEMI
-Rule 26    optend -> <empty>
-Rule 27    command -> PRINT
-Rule 28    command -> GOTO INTEGER
-Rule 29    command -> GOTO error
-Rule 30    command -> IF relexpr THEN INTEGER
-Rule 31    command -> IF error THEN INTEGER
-Rule 32    command -> IF relexpr THEN error
-Rule 33    command -> FOR ID EQUALS expr TO expr optstep
-Rule 34    command -> FOR ID EQUALS error TO expr optstep
-Rule 35    command -> FOR ID EQUALS expr TO error optstep
-Rule 36    command -> FOR ID EQUALS expr TO expr STEP error
-Rule 37    optstep -> STEP expr
-Rule 38    optstep -> empty
-Rule 39    command -> NEXT ID
-Rule 40    command -> NEXT error
-Rule 41    command -> END
-Rule 42    command -> REM
-Rule 43    command -> STOP
-Rule 44    command -> DEF ID LPAREN ID RPAREN EQUALS expr
-Rule 45    command -> DEF ID LPAREN ID RPAREN EQUALS error
-Rule 46    command -> DEF ID LPAREN error RPAREN EQUALS expr
-Rule 47    command -> GOSUB INTEGER
-Rule 48    command -> GOSUB error
-Rule 49    command -> RETURN
-Rule 50    command -> DIM dimlist
-Rule 51    command -> DIM error
-Rule 52    dimlist -> dimlist COMMA dimitem
-Rule 53    dimlist -> dimitem
-Rule 54    dimitem -> ID LPAREN INTEGER RPAREN
-Rule 55    dimitem -> ID LPAREN INTEGER COMMA INTEGER RPAREN
-Rule 56    expr -> expr PLUS expr
-Rule 57    expr -> expr MINUS expr
-Rule 58    expr -> expr TIMES expr
-Rule 59    expr -> expr DIVIDE expr
-Rule 60    expr -> expr POWER expr
-Rule 61    expr -> INTEGER
-Rule 62    expr -> FLOAT
-Rule 63    expr -> variable
-Rule 64    expr -> LPAREN expr RPAREN
-Rule 65    expr -> MINUS expr
-Rule 66    relexpr -> expr LT expr
-Rule 67    relexpr -> expr LE expr
-Rule 68    relexpr -> expr GT expr
-Rule 69    relexpr -> expr GE expr
-Rule 70    relexpr -> expr EQUALS expr
-Rule 71    relexpr -> expr NE expr
-Rule 72    variable -> ID
-Rule 73    variable -> ID LPAREN expr RPAREN
-Rule 74    variable -> ID LPAREN expr COMMA expr RPAREN
-Rule 75    varlist -> varlist COMMA variable
-Rule 76    varlist -> variable
-Rule 77    numlist -> numlist COMMA number
-Rule 78    numlist -> number
-Rule 79    number -> INTEGER
-Rule 80    number -> FLOAT
-Rule 81    number -> MINUS INTEGER
-Rule 82    number -> MINUS FLOAT
-Rule 83    plist -> plist COMMA pitem
-Rule 84    plist -> pitem
-Rule 85    pitem -> STRING
-Rule 86    pitem -> STRING expr
-Rule 87    pitem -> expr
-Rule 88    empty -> <empty>
+Rule 22    command -> READSTR variable EQUALS plist
+Rule 23    command -> CHECK plist
+Rule 24    command -> PRINT error
+Rule 25    optend -> COMMA
+Rule 26    optend -> SEMI
+Rule 27    optend -> <empty>
+Rule 28    command -> PRINT
+Rule 29    command -> GOTO INTEGER
+Rule 30    command -> GOTO error
+Rule 31    command -> IF relexpr THEN INTEGER
+Rule 32    command -> IF error THEN INTEGER
+Rule 33    command -> IF relexpr THEN error
+Rule 34    command -> FOR ID EQUALS expr TO expr optstep
+Rule 35    command -> FOR ID EQUALS error TO expr optstep
+Rule 36    command -> FOR ID EQUALS expr TO error optstep
+Rule 37    command -> FOR ID EQUALS expr TO expr STEP error
+Rule 38    optstep -> STEP expr
+Rule 39    optstep -> empty
+Rule 40    command -> NEXT ID
+Rule 41    command -> NEXT error
+Rule 42    command -> END
+Rule 43    command -> REM
+Rule 44    command -> STOP
+Rule 45    command -> DEF ID LPAREN ID RPAREN EQUALS expr
+Rule 46    command -> DEF ID LPAREN ID RPAREN EQUALS error
+Rule 47    command -> DEF ID LPAREN error RPAREN EQUALS expr
+Rule 48    command -> GOSUB INTEGER
+Rule 49    command -> GOSUB error
+Rule 50    command -> RETURN
+Rule 51    command -> DIM dimlist
+Rule 52    command -> DIM error
+Rule 53    dimlist -> dimlist COMMA dimitem
+Rule 54    dimlist -> dimitem
+Rule 55    dimitem -> ID LPAREN INTEGER RPAREN
+Rule 56    dimitem -> ID LPAREN INTEGER COMMA INTEGER RPAREN
+Rule 57    expr -> expr PLUS expr
+Rule 58    expr -> expr MINUS expr
+Rule 59    expr -> expr TIMES expr
+Rule 60    expr -> expr DIVIDE expr
+Rule 61    expr -> expr POWER expr
+Rule 62    expr -> INTEGER
+Rule 63    expr -> FLOAT
+Rule 64    expr -> variable
+Rule 65    expr -> LPAREN expr RPAREN
+Rule 66    expr -> MINUS expr
+Rule 67    relexpr -> expr LT expr
+Rule 68    relexpr -> expr LE expr
+Rule 69    relexpr -> expr GT expr
+Rule 70    relexpr -> expr GE expr
+Rule 71    relexpr -> expr EQUALS expr
+Rule 72    relexpr -> expr NE expr
+Rule 73    variable -> ID
+Rule 74    variable -> ID LPAREN expr RPAREN
+Rule 75    variable -> ID LPAREN expr COMMA expr RPAREN
+Rule 76    varlist -> varlist COMMA variable
+Rule 77    varlist -> variable
+Rule 78    numlist -> numlist COMMA number
+Rule 79    numlist -> number
+Rule 80    number -> INTEGER
+Rule 81    number -> FLOAT
+Rule 82    number -> MINUS INTEGER
+Rule 83    number -> MINUS FLOAT
+Rule 84    plist -> plist COMMA pitem
+Rule 85    plist -> pitem
+Rule 86    pitem -> STRING
+Rule 87    pitem -> STRING expr
+Rule 88    pitem -> expr
+Rule 89    empty -> <empty>
 
 Terminals, with rules where they appear
 
-CHECK                : 22
-COMMA                : 24 52 55 74 75 77 83
+CHECK                : 23
+COMMA                : 25 53 56 75 76 78 84
 DATA                 : 15 16
-DEF                  : 44 45 46
+DEF                  : 45 46 47
 DELAY                : 19
-DIM                  : 50 51
-DIVIDE               : 59
-END                  : 41
-EQUALS               : 11 12 18 20 21 33 34 35 36 44 45 46 70
-FLOAT                : 62 80 82
-FOR                  : 33 34 35 36
-GE                   : 69
-GOSUB                : 47 48
-GOTO                 : 28 29
-GT                   : 68
-ID                   : 33 34 35 36 39 44 44 45 45 46 54 55 72 73 74
-IF                   : 30 31 32
-INTEGER              : 4 8 9 28 30 31 47 54 55 55 61 79 81
-LE                   : 67
+DIM                  : 51 52
+DIVIDE               : 60
+END                  : 42
+EQUALS               : 11 12 18 20 21 22 34 35 36 37 45 46 47 71
+FLOAT                : 63 81 83
+FOR                  : 34 35 36 37
+GE                   : 70
+GOSUB                : 48 49
+GOTO                 : 29 30
+GT                   : 69
+ID                   : 34 35 36 37 40 45 45 46 46 47 55 56 73 74 75
+IF                   : 31 32 33
+INTEGER              : 4 8 9 29 31 32 48 55 56 56 62 80 82
+LE                   : 68
 LET                  : 11 12
 LETSTR               : 20
 LIST                 : 6
-LPAREN               : 44 45 46 54 55 64 73 74
-LT                   : 66
-MINUS                : 57 65 81 82
-NE                   : 71
+LPAREN               : 45 46 47 55 56 65 74 75
+LT                   : 67
+MINUS                : 58 66 82 83
+NE                   : 72
 NEW                  : 7
 NEWLINE              : 4 5 6 7 8 9 10
-NEXT                 : 39 40
+NEXT                 : 40 41
 OUT                  : 18
-PLUS                 : 56
-POWER                : 60
-PRINT                : 17 23 27
+PLUS                 : 57
+POWER                : 61
+PRINT                : 17 24 28
 READ                 : 13 14
 READDATA             : 21
-REM                  : 42
-RETURN               : 49
-RPAREN               : 44 45 46 54 55 64 73 74
+READSTR              : 22
+REM                  : 43
+RETURN               : 50
+RPAREN               : 45 46 47 55 56 65 74 75
 RUN                  : 5
-SEMI                 : 25
-STEP                 : 36 37
-STOP                 : 43
-STRING               : 85 86
-THEN                 : 30 31 32
-TIMES                : 58
-TO                   : 33 34 35 36
-error                : 3 9 12 14 16 23 29 31 32 34 35 36 40 45 46 48 51
+SEMI                 : 26
+STEP                 : 37 38
+STOP                 : 44
+STRING               : 86 87
+THEN                 : 31 32 33
+TIMES                : 59
+TO                   : 34 35 36 37
+error                : 3 9 12 14 16 24 30 32 33 35 36 37 41 46 47 49 52
 
 Nonterminals, with rules where they appear
 
 command              : 4
-dimitem              : 52 53
-dimlist              : 50 52
-empty                : 38
-expr                 : 11 18 19 33 33 34 35 36 36 37 44 46 56 56 57 57 58 58 59 59 60 60 64 65 66 66 67 67 68 68 69 69 70 70 71 71 73 74 74 86 87
-number               : 77 78
-numlist              : 15 77
+dimitem              : 53 54
+dimlist              : 51 53
+empty                : 39
+expr                 : 11 18 19 34 34 35 36 37 37 38 45 47 57 57 58 58 59 59 60 60 61 61 65 66 67 67 68 68 69 69 70 70 71 71 72 72 74 75 75 87 88
+number               : 78 79
+numlist              : 15 78
 optend               : 17
-optstep              : 33 34 35
-pitem                : 83 84
-plist                : 17 18 20 21 22 83
+optstep              : 34 35 36
+pitem                : 84 85
+plist                : 17 18 20 21 22 23 84
 program              : 1 0
-relexpr              : 30 32
+relexpr              : 31 33
 statement            : 1 2
-variable             : 11 12 20 21 63 75 76
-varlist              : 13 75
+variable             : 11 12 20 21 22 64 76 77
+varlist              : 13 76
 
 Parsing method: LALR
 
@@ -280,56 +282,58 @@ state 8
     (19) command -> . DELAY expr
     (20) command -> . LETSTR variable EQUALS plist
     (21) command -> . READDATA variable EQUALS plist
-    (22) command -> . CHECK plist
-    (23) command -> . PRINT error
-    (27) command -> . PRINT
-    (28) command -> . GOTO INTEGER
-    (29) command -> . GOTO error
-    (30) command -> . IF relexpr THEN INTEGER
-    (31) command -> . IF error THEN INTEGER
-    (32) command -> . IF relexpr THEN error
-    (33) command -> . FOR ID EQUALS expr TO expr optstep
-    (34) command -> . FOR ID EQUALS error TO expr optstep
-    (35) command -> . FOR ID EQUALS expr TO error optstep
-    (36) command -> . FOR ID EQUALS expr TO expr STEP error
-    (39) command -> . NEXT ID
-    (40) command -> . NEXT error
-    (41) command -> . END
-    (42) command -> . REM
-    (43) command -> . STOP
-    (44) command -> . DEF ID LPAREN ID RPAREN EQUALS expr
-    (45) command -> . DEF ID LPAREN ID RPAREN EQUALS error
-    (46) command -> . DEF ID LPAREN error RPAREN EQUALS expr
-    (47) command -> . GOSUB INTEGER
-    (48) command -> . GOSUB error
-    (49) command -> . RETURN
-    (50) command -> . DIM dimlist
-    (51) command -> . DIM error
+    (22) command -> . READSTR variable EQUALS plist
+    (23) command -> . CHECK plist
+    (24) command -> . PRINT error
+    (28) command -> . PRINT
+    (29) command -> . GOTO INTEGER
+    (30) command -> . GOTO error
+    (31) command -> . IF relexpr THEN INTEGER
+    (32) command -> . IF error THEN INTEGER
+    (33) command -> . IF relexpr THEN error
+    (34) command -> . FOR ID EQUALS expr TO expr optstep
+    (35) command -> . FOR ID EQUALS error TO expr optstep
+    (36) command -> . FOR ID EQUALS expr TO error optstep
+    (37) command -> . FOR ID EQUALS expr TO expr STEP error
+    (40) command -> . NEXT ID
+    (41) command -> . NEXT error
+    (42) command -> . END
+    (43) command -> . REM
+    (44) command -> . STOP
+    (45) command -> . DEF ID LPAREN ID RPAREN EQUALS expr
+    (46) command -> . DEF ID LPAREN ID RPAREN EQUALS error
+    (47) command -> . DEF ID LPAREN error RPAREN EQUALS expr
+    (48) command -> . GOSUB INTEGER
+    (49) command -> . GOSUB error
+    (50) command -> . RETURN
+    (51) command -> . DIM dimlist
+    (52) command -> . DIM error
 
-    NEWLINE         shift and go to state 22
-    error           shift and go to state 35
-    LET             shift and go to state 33
+    NEWLINE         shift and go to state 23
+    error           shift and go to state 36
+    LET             shift and go to state 34
     READ            shift and go to state 15
-    DATA            shift and go to state 21
+    DATA            shift and go to state 22
     PRINT           shift and go to state 19
-    OUT             shift and go to state 27
+    OUT             shift and go to state 28
     DELAY           shift and go to state 17
-    LETSTR          shift and go to state 34
-    READDATA        shift and go to state 23
-    CHECK           shift and go to state 26
-    GOTO            shift and go to state 30
-    IF              shift and go to state 32
-    FOR             shift and go to state 31
-    NEXT            shift and go to state 24
-    END             shift and go to state 29
+    LETSTR          shift and go to state 35
+    READDATA        shift and go to state 24
+    READSTR         shift and go to state 32
+    CHECK           shift and go to state 27
+    GOTO            shift and go to state 31
+    IF              shift and go to state 33
+    FOR             shift and go to state 21
+    NEXT            shift and go to state 25
+    END             shift and go to state 30
     REM             shift and go to state 18
     STOP            shift and go to state 16
     DEF             shift and go to state 20
-    GOSUB           shift and go to state 28
+    GOSUB           shift and go to state 29
     RETURN          shift and go to state 13
     DIM             shift and go to state 14
 
-    command                        shift and go to state 25
+    command                        shift and go to state 26
 
 state 9
 
@@ -381,149 +385,159 @@ state 12
 
 state 13
 
-    (49) command -> RETURN .
+    (50) command -> RETURN .
 
-    NEWLINE         reduce using rule 49 (command -> RETURN .)
+    NEWLINE         reduce using rule 50 (command -> RETURN .)
 
 
 state 14
 
-    (50) command -> DIM . dimlist
-    (51) command -> DIM . error
-    (52) dimlist -> . dimlist COMMA dimitem
-    (53) dimlist -> . dimitem
-    (54) dimitem -> . ID LPAREN INTEGER RPAREN
-    (55) dimitem -> . ID LPAREN INTEGER COMMA INTEGER RPAREN
+    (51) command -> DIM . dimlist
+    (52) command -> DIM . error
+    (53) dimlist -> . dimlist COMMA dimitem
+    (54) dimlist -> . dimitem
+    (55) dimitem -> . ID LPAREN INTEGER RPAREN
+    (56) dimitem -> . ID LPAREN INTEGER COMMA INTEGER RPAREN
 
-    error           shift and go to state 38
-    ID              shift and go to state 39
+    error           shift and go to state 39
+    ID              shift and go to state 40
 
-    dimitem                        shift and go to state 36
-    dimlist                        shift and go to state 37
+    dimitem                        shift and go to state 37
+    dimlist                        shift and go to state 38
 
 state 15
 
     (13) command -> READ . varlist
     (14) command -> READ . error
-    (75) varlist -> . varlist COMMA variable
-    (76) varlist -> . variable
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (76) varlist -> . varlist COMMA variable
+    (77) varlist -> . variable
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    error           shift and go to state 41
-    ID              shift and go to state 43
+    error           shift and go to state 42
+    ID              shift and go to state 44
 
-    varlist                        shift and go to state 40
-    variable                       shift and go to state 42
+    varlist                        shift and go to state 41
+    variable                       shift and go to state 43
 
 state 16
 
-    (43) command -> STOP .
+    (44) command -> STOP .
 
-    NEWLINE         reduce using rule 43 (command -> STOP .)
+    NEWLINE         reduce using rule 44 (command -> STOP .)
 
 
 state 17
 
     (19) command -> DELAY . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 44
+    variable                       shift and go to state 48
+    expr                           shift and go to state 45
 
 state 18
 
-    (42) command -> REM .
+    (43) command -> REM .
 
-    NEWLINE         reduce using rule 42 (command -> REM .)
+    NEWLINE         reduce using rule 43 (command -> REM .)
 
 
 state 19
 
     (17) command -> PRINT . plist optend
-    (23) command -> PRINT . error
-    (27) command -> PRINT .
-    (83) plist -> . plist COMMA pitem
-    (84) plist -> . pitem
-    (85) pitem -> . STRING
-    (86) pitem -> . STRING expr
-    (87) pitem -> . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (24) command -> PRINT . error
+    (28) command -> PRINT .
+    (84) plist -> . plist COMMA pitem
+    (85) plist -> . pitem
+    (86) pitem -> . STRING
+    (87) pitem -> . STRING expr
+    (88) pitem -> . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    error           shift and go to state 53
-    NEWLINE         reduce using rule 27 (command -> PRINT .)
-    STRING          shift and go to state 51
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    error           shift and go to state 54
+    NEWLINE         reduce using rule 28 (command -> PRINT .)
+    STRING          shift and go to state 52
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    pitem                          shift and go to state 50
-    expr                           shift and go to state 52
-    plist                          shift and go to state 54
-    variable                       shift and go to state 47
+    pitem                          shift and go to state 51
+    expr                           shift and go to state 53
+    plist                          shift and go to state 55
+    variable                       shift and go to state 48
 
 state 20
 
-    (44) command -> DEF . ID LPAREN ID RPAREN EQUALS expr
-    (45) command -> DEF . ID LPAREN ID RPAREN EQUALS error
-    (46) command -> DEF . ID LPAREN error RPAREN EQUALS expr
+    (45) command -> DEF . ID LPAREN ID RPAREN EQUALS expr
+    (46) command -> DEF . ID LPAREN ID RPAREN EQUALS error
+    (47) command -> DEF . ID LPAREN error RPAREN EQUALS expr
 
-    ID              shift and go to state 55
+    ID              shift and go to state 56
 
 
 state 21
 
-    (15) command -> DATA . numlist
-    (16) command -> DATA . error
-    (77) numlist -> . numlist COMMA number
-    (78) numlist -> . number
-    (79) number -> . INTEGER
-    (80) number -> . FLOAT
-    (81) number -> . MINUS INTEGER
-    (82) number -> . MINUS FLOAT
+    (34) command -> FOR . ID EQUALS expr TO expr optstep
+    (35) command -> FOR . ID EQUALS error TO expr optstep
+    (36) command -> FOR . ID EQUALS expr TO error optstep
+    (37) command -> FOR . ID EQUALS expr TO expr STEP error
 
-    error           shift and go to state 58
-    INTEGER         shift and go to state 59
-    FLOAT           shift and go to state 56
-    MINUS           shift and go to state 60
+    ID              shift and go to state 57
 
-    number                         shift and go to state 57
-    numlist                        shift and go to state 61
 
 state 22
+
+    (15) command -> DATA . numlist
+    (16) command -> DATA . error
+    (78) numlist -> . numlist COMMA number
+    (79) numlist -> . number
+    (80) number -> . INTEGER
+    (81) number -> . FLOAT
+    (82) number -> . MINUS INTEGER
+    (83) number -> . MINUS FLOAT
+
+    error           shift and go to state 60
+    INTEGER         shift and go to state 61
+    FLOAT           shift and go to state 58
+    MINUS           shift and go to state 62
+
+    number                         shift and go to state 59
+    numlist                        shift and go to state 63
+
+state 23
 
     (8) statement -> INTEGER NEWLINE .
 
@@ -535,577 +549,588 @@ state 22
     $end            reduce using rule 8 (statement -> INTEGER NEWLINE .)
 
 
-state 23
-
-    (21) command -> READDATA . variable EQUALS plist
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
-
-    ID              shift and go to state 43
-
-    variable                       shift and go to state 62
-
 state 24
 
-    (39) command -> NEXT . ID
-    (40) command -> NEXT . error
+    (21) command -> READDATA . variable EQUALS plist
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    ID              shift and go to state 64
-    error           shift and go to state 63
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 64
 
 state 25
 
-    (4) statement -> INTEGER command . NEWLINE
+    (40) command -> NEXT . ID
+    (41) command -> NEXT . error
 
-    NEWLINE         shift and go to state 65
+    ID              shift and go to state 66
+    error           shift and go to state 65
 
 
 state 26
 
-    (22) command -> CHECK . plist
-    (83) plist -> . plist COMMA pitem
-    (84) plist -> . pitem
-    (85) pitem -> . STRING
-    (86) pitem -> . STRING expr
-    (87) pitem -> . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (4) statement -> INTEGER command . NEWLINE
 
-    STRING          shift and go to state 51
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    NEWLINE         shift and go to state 67
 
-    pitem                          shift and go to state 50
-    expr                           shift and go to state 52
-    variable                       shift and go to state 47
-    plist                          shift and go to state 66
 
 state 27
 
-    (18) command -> OUT . expr EQUALS plist
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (23) command -> CHECK . plist
+    (84) plist -> . plist COMMA pitem
+    (85) plist -> . pitem
+    (86) pitem -> . STRING
+    (87) pitem -> . STRING expr
+    (88) pitem -> . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    STRING          shift and go to state 52
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 67
+    pitem                          shift and go to state 51
+    expr                           shift and go to state 53
+    variable                       shift and go to state 48
+    plist                          shift and go to state 68
 
 state 28
 
-    (47) command -> GOSUB . INTEGER
-    (48) command -> GOSUB . error
+    (18) command -> OUT . expr EQUALS plist
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 69
-    error           shift and go to state 68
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    expr                           shift and go to state 69
 
 state 29
 
-    (41) command -> END .
+    (48) command -> GOSUB . INTEGER
+    (49) command -> GOSUB . error
 
-    NEWLINE         reduce using rule 41 (command -> END .)
+    INTEGER         shift and go to state 71
+    error           shift and go to state 70
 
 
 state 30
 
-    (28) command -> GOTO . INTEGER
-    (29) command -> GOTO . error
+    (42) command -> END .
 
-    INTEGER         shift and go to state 70
-    error           shift and go to state 71
+    NEWLINE         reduce using rule 42 (command -> END .)
 
 
 state 31
 
-    (33) command -> FOR . ID EQUALS expr TO expr optstep
-    (34) command -> FOR . ID EQUALS error TO expr optstep
-    (35) command -> FOR . ID EQUALS expr TO error optstep
-    (36) command -> FOR . ID EQUALS expr TO expr STEP error
+    (29) command -> GOTO . INTEGER
+    (30) command -> GOTO . error
 
-    ID              shift and go to state 72
+    INTEGER         shift and go to state 72
+    error           shift and go to state 73
 
 
 state 32
 
-    (30) command -> IF . relexpr THEN INTEGER
-    (31) command -> IF . error THEN INTEGER
-    (32) command -> IF . relexpr THEN error
-    (66) relexpr -> . expr LT expr
-    (67) relexpr -> . expr LE expr
-    (68) relexpr -> . expr GT expr
-    (69) relexpr -> . expr GE expr
-    (70) relexpr -> . expr EQUALS expr
-    (71) relexpr -> . expr NE expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (22) command -> READSTR . variable EQUALS plist
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    error           shift and go to state 75
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 74
-    relexpr                        shift and go to state 73
+    variable                       shift and go to state 74
 
 state 33
 
-    (11) command -> LET . variable EQUALS expr
-    (12) command -> LET . variable EQUALS error
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (31) command -> IF . relexpr THEN INTEGER
+    (32) command -> IF . error THEN INTEGER
+    (33) command -> IF . relexpr THEN error
+    (67) relexpr -> . expr LT expr
+    (68) relexpr -> . expr LE expr
+    (69) relexpr -> . expr GT expr
+    (70) relexpr -> . expr GE expr
+    (71) relexpr -> . expr EQUALS expr
+    (72) relexpr -> . expr NE expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    ID              shift and go to state 43
+    error           shift and go to state 77
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 76
+    variable                       shift and go to state 48
+    expr                           shift and go to state 76
+    relexpr                        shift and go to state 75
 
 state 34
 
-    (20) command -> LETSTR . variable EQUALS plist
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (11) command -> LET . variable EQUALS expr
+    (12) command -> LET . variable EQUALS error
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    ID              shift and go to state 43
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 77
+    variable                       shift and go to state 78
 
 state 35
 
-    (9) statement -> INTEGER error . NEWLINE
+    (20) command -> LETSTR . variable EQUALS plist
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    NEWLINE         shift and go to state 78
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 79
 
 state 36
 
-    (53) dimlist -> dimitem .
+    (9) statement -> INTEGER error . NEWLINE
 
-    COMMA           reduce using rule 53 (dimlist -> dimitem .)
-    NEWLINE         reduce using rule 53 (dimlist -> dimitem .)
+    NEWLINE         shift and go to state 80
 
 
 state 37
 
-    (50) command -> DIM dimlist .
-    (52) dimlist -> dimlist . COMMA dimitem
+    (54) dimlist -> dimitem .
 
-    NEWLINE         reduce using rule 50 (command -> DIM dimlist .)
-    COMMA           shift and go to state 79
+    COMMA           reduce using rule 54 (dimlist -> dimitem .)
+    NEWLINE         reduce using rule 54 (dimlist -> dimitem .)
 
 
 state 38
 
-    (51) command -> DIM error .
+    (51) command -> DIM dimlist .
+    (53) dimlist -> dimlist . COMMA dimitem
 
-    NEWLINE         reduce using rule 51 (command -> DIM error .)
+    NEWLINE         reduce using rule 51 (command -> DIM dimlist .)
+    COMMA           shift and go to state 81
 
 
 state 39
 
-    (54) dimitem -> ID . LPAREN INTEGER RPAREN
-    (55) dimitem -> ID . LPAREN INTEGER COMMA INTEGER RPAREN
+    (52) command -> DIM error .
 
-    LPAREN          shift and go to state 80
+    NEWLINE         reduce using rule 52 (command -> DIM error .)
 
 
 state 40
 
-    (13) command -> READ varlist .
-    (75) varlist -> varlist . COMMA variable
+    (55) dimitem -> ID . LPAREN INTEGER RPAREN
+    (56) dimitem -> ID . LPAREN INTEGER COMMA INTEGER RPAREN
 
-    NEWLINE         reduce using rule 13 (command -> READ varlist .)
-    COMMA           shift and go to state 81
+    LPAREN          shift and go to state 82
 
 
 state 41
+
+    (13) command -> READ varlist .
+    (76) varlist -> varlist . COMMA variable
+
+    NEWLINE         reduce using rule 13 (command -> READ varlist .)
+    COMMA           shift and go to state 83
+
+
+state 42
 
     (14) command -> READ error .
 
     NEWLINE         reduce using rule 14 (command -> READ error .)
 
 
-state 42
-
-    (76) varlist -> variable .
-
-    COMMA           reduce using rule 76 (varlist -> variable .)
-    NEWLINE         reduce using rule 76 (varlist -> variable .)
-
-
 state 43
 
-    (72) variable -> ID .
-    (73) variable -> ID . LPAREN expr RPAREN
-    (74) variable -> ID . LPAREN expr COMMA expr RPAREN
+    (77) varlist -> variable .
 
-    COMMA           reduce using rule 72 (variable -> ID .)
-    NEWLINE         reduce using rule 72 (variable -> ID .)
-    STEP            reduce using rule 72 (variable -> ID .)
-    PLUS            reduce using rule 72 (variable -> ID .)
-    MINUS           reduce using rule 72 (variable -> ID .)
-    TIMES           reduce using rule 72 (variable -> ID .)
-    DIVIDE          reduce using rule 72 (variable -> ID .)
-    POWER           reduce using rule 72 (variable -> ID .)
-    THEN            reduce using rule 72 (variable -> ID .)
-    LT              reduce using rule 72 (variable -> ID .)
-    LE              reduce using rule 72 (variable -> ID .)
-    GT              reduce using rule 72 (variable -> ID .)
-    GE              reduce using rule 72 (variable -> ID .)
-    EQUALS          reduce using rule 72 (variable -> ID .)
-    NE              reduce using rule 72 (variable -> ID .)
-    SEMI            reduce using rule 72 (variable -> ID .)
-    RPAREN          reduce using rule 72 (variable -> ID .)
-    TO              reduce using rule 72 (variable -> ID .)
-    LPAREN          shift and go to state 82
+    COMMA           reduce using rule 77 (varlist -> variable .)
+    NEWLINE         reduce using rule 77 (varlist -> variable .)
 
 
 state 44
 
-    (19) command -> DELAY expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (73) variable -> ID .
+    (74) variable -> ID . LPAREN expr RPAREN
+    (75) variable -> ID . LPAREN expr COMMA expr RPAREN
 
-    NEWLINE         reduce using rule 19 (command -> DELAY expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    COMMA           reduce using rule 73 (variable -> ID .)
+    NEWLINE         reduce using rule 73 (variable -> ID .)
+    PLUS            reduce using rule 73 (variable -> ID .)
+    MINUS           reduce using rule 73 (variable -> ID .)
+    TIMES           reduce using rule 73 (variable -> ID .)
+    DIVIDE          reduce using rule 73 (variable -> ID .)
+    POWER           reduce using rule 73 (variable -> ID .)
+    STEP            reduce using rule 73 (variable -> ID .)
+    THEN            reduce using rule 73 (variable -> ID .)
+    RPAREN          reduce using rule 73 (variable -> ID .)
+    EQUALS          reduce using rule 73 (variable -> ID .)
+    SEMI            reduce using rule 73 (variable -> ID .)
+    LT              reduce using rule 73 (variable -> ID .)
+    LE              reduce using rule 73 (variable -> ID .)
+    GT              reduce using rule 73 (variable -> ID .)
+    GE              reduce using rule 73 (variable -> ID .)
+    NE              reduce using rule 73 (variable -> ID .)
+    TO              reduce using rule 73 (variable -> ID .)
+    LPAREN          shift and go to state 84
 
 
 state 45
 
-    (62) expr -> FLOAT .
+    (19) command -> DELAY expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    PLUS            reduce using rule 62 (expr -> FLOAT .)
-    MINUS           reduce using rule 62 (expr -> FLOAT .)
-    TIMES           reduce using rule 62 (expr -> FLOAT .)
-    DIVIDE          reduce using rule 62 (expr -> FLOAT .)
-    POWER           reduce using rule 62 (expr -> FLOAT .)
-    NEWLINE         reduce using rule 62 (expr -> FLOAT .)
-    COMMA           reduce using rule 62 (expr -> FLOAT .)
-    SEMI            reduce using rule 62 (expr -> FLOAT .)
-    EQUALS          reduce using rule 62 (expr -> FLOAT .)
-    LT              reduce using rule 62 (expr -> FLOAT .)
-    LE              reduce using rule 62 (expr -> FLOAT .)
-    GT              reduce using rule 62 (expr -> FLOAT .)
-    GE              reduce using rule 62 (expr -> FLOAT .)
-    NE              reduce using rule 62 (expr -> FLOAT .)
-    RPAREN          reduce using rule 62 (expr -> FLOAT .)
-    TO              reduce using rule 62 (expr -> FLOAT .)
-    THEN            reduce using rule 62 (expr -> FLOAT .)
-    STEP            reduce using rule 62 (expr -> FLOAT .)
+    NEWLINE         reduce using rule 19 (command -> DELAY expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 46
 
-    (64) expr -> LPAREN . expr RPAREN
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (63) expr -> FLOAT .
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    PLUS            reduce using rule 63 (expr -> FLOAT .)
+    MINUS           reduce using rule 63 (expr -> FLOAT .)
+    TIMES           reduce using rule 63 (expr -> FLOAT .)
+    DIVIDE          reduce using rule 63 (expr -> FLOAT .)
+    POWER           reduce using rule 63 (expr -> FLOAT .)
+    NEWLINE         reduce using rule 63 (expr -> FLOAT .)
+    COMMA           reduce using rule 63 (expr -> FLOAT .)
+    SEMI            reduce using rule 63 (expr -> FLOAT .)
+    EQUALS          reduce using rule 63 (expr -> FLOAT .)
+    LT              reduce using rule 63 (expr -> FLOAT .)
+    LE              reduce using rule 63 (expr -> FLOAT .)
+    GT              reduce using rule 63 (expr -> FLOAT .)
+    GE              reduce using rule 63 (expr -> FLOAT .)
+    NE              reduce using rule 63 (expr -> FLOAT .)
+    RPAREN          reduce using rule 63 (expr -> FLOAT .)
+    TO              reduce using rule 63 (expr -> FLOAT .)
+    THEN            reduce using rule 63 (expr -> FLOAT .)
+    STEP            reduce using rule 63 (expr -> FLOAT .)
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 88
 
 state 47
 
-    (63) expr -> variable .
+    (65) expr -> LPAREN . expr RPAREN
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    PLUS            reduce using rule 63 (expr -> variable .)
-    MINUS           reduce using rule 63 (expr -> variable .)
-    TIMES           reduce using rule 63 (expr -> variable .)
-    DIVIDE          reduce using rule 63 (expr -> variable .)
-    POWER           reduce using rule 63 (expr -> variable .)
-    NEWLINE         reduce using rule 63 (expr -> variable .)
-    COMMA           reduce using rule 63 (expr -> variable .)
-    SEMI            reduce using rule 63 (expr -> variable .)
-    EQUALS          reduce using rule 63 (expr -> variable .)
-    LT              reduce using rule 63 (expr -> variable .)
-    LE              reduce using rule 63 (expr -> variable .)
-    GT              reduce using rule 63 (expr -> variable .)
-    GE              reduce using rule 63 (expr -> variable .)
-    NE              reduce using rule 63 (expr -> variable .)
-    RPAREN          reduce using rule 63 (expr -> variable .)
-    TO              reduce using rule 63 (expr -> variable .)
-    THEN            reduce using rule 63 (expr -> variable .)
-    STEP            reduce using rule 63 (expr -> variable .)
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    expr                           shift and go to state 90
 
 state 48
 
-    (61) expr -> INTEGER .
+    (64) expr -> variable .
 
-    PLUS            reduce using rule 61 (expr -> INTEGER .)
-    MINUS           reduce using rule 61 (expr -> INTEGER .)
-    TIMES           reduce using rule 61 (expr -> INTEGER .)
-    DIVIDE          reduce using rule 61 (expr -> INTEGER .)
-    POWER           reduce using rule 61 (expr -> INTEGER .)
-    NEWLINE         reduce using rule 61 (expr -> INTEGER .)
-    COMMA           reduce using rule 61 (expr -> INTEGER .)
-    SEMI            reduce using rule 61 (expr -> INTEGER .)
-    EQUALS          reduce using rule 61 (expr -> INTEGER .)
-    LT              reduce using rule 61 (expr -> INTEGER .)
-    LE              reduce using rule 61 (expr -> INTEGER .)
-    GT              reduce using rule 61 (expr -> INTEGER .)
-    GE              reduce using rule 61 (expr -> INTEGER .)
-    NE              reduce using rule 61 (expr -> INTEGER .)
-    RPAREN          reduce using rule 61 (expr -> INTEGER .)
-    TO              reduce using rule 61 (expr -> INTEGER .)
-    THEN            reduce using rule 61 (expr -> INTEGER .)
-    STEP            reduce using rule 61 (expr -> INTEGER .)
+    PLUS            reduce using rule 64 (expr -> variable .)
+    MINUS           reduce using rule 64 (expr -> variable .)
+    TIMES           reduce using rule 64 (expr -> variable .)
+    DIVIDE          reduce using rule 64 (expr -> variable .)
+    POWER           reduce using rule 64 (expr -> variable .)
+    NEWLINE         reduce using rule 64 (expr -> variable .)
+    COMMA           reduce using rule 64 (expr -> variable .)
+    SEMI            reduce using rule 64 (expr -> variable .)
+    EQUALS          reduce using rule 64 (expr -> variable .)
+    LT              reduce using rule 64 (expr -> variable .)
+    LE              reduce using rule 64 (expr -> variable .)
+    GT              reduce using rule 64 (expr -> variable .)
+    GE              reduce using rule 64 (expr -> variable .)
+    NE              reduce using rule 64 (expr -> variable .)
+    RPAREN          reduce using rule 64 (expr -> variable .)
+    TO              reduce using rule 64 (expr -> variable .)
+    THEN            reduce using rule 64 (expr -> variable .)
+    STEP            reduce using rule 64 (expr -> variable .)
 
 
 state 49
 
-    (65) expr -> MINUS . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (62) expr -> INTEGER .
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    PLUS            reduce using rule 62 (expr -> INTEGER .)
+    MINUS           reduce using rule 62 (expr -> INTEGER .)
+    TIMES           reduce using rule 62 (expr -> INTEGER .)
+    DIVIDE          reduce using rule 62 (expr -> INTEGER .)
+    POWER           reduce using rule 62 (expr -> INTEGER .)
+    NEWLINE         reduce using rule 62 (expr -> INTEGER .)
+    COMMA           reduce using rule 62 (expr -> INTEGER .)
+    SEMI            reduce using rule 62 (expr -> INTEGER .)
+    EQUALS          reduce using rule 62 (expr -> INTEGER .)
+    LT              reduce using rule 62 (expr -> INTEGER .)
+    LE              reduce using rule 62 (expr -> INTEGER .)
+    GT              reduce using rule 62 (expr -> INTEGER .)
+    GE              reduce using rule 62 (expr -> INTEGER .)
+    NE              reduce using rule 62 (expr -> INTEGER .)
+    RPAREN          reduce using rule 62 (expr -> INTEGER .)
+    TO              reduce using rule 62 (expr -> INTEGER .)
+    THEN            reduce using rule 62 (expr -> INTEGER .)
+    STEP            reduce using rule 62 (expr -> INTEGER .)
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 89
 
 state 50
 
-    (84) plist -> pitem .
+    (66) expr -> MINUS . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    COMMA           reduce using rule 84 (plist -> pitem .)
-    NEWLINE         reduce using rule 84 (plist -> pitem .)
-    SEMI            reduce using rule 84 (plist -> pitem .)
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    expr                           shift and go to state 91
 
 state 51
 
-    (85) pitem -> STRING .
-    (86) pitem -> STRING . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (85) plist -> pitem .
 
-    COMMA           reduce using rule 85 (pitem -> STRING .)
-    SEMI            reduce using rule 85 (pitem -> STRING .)
-    NEWLINE         reduce using rule 85 (pitem -> STRING .)
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    COMMA           reduce using rule 85 (plist -> pitem .)
+    NEWLINE         reduce using rule 85 (plist -> pitem .)
+    SEMI            reduce using rule 85 (plist -> pitem .)
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 90
 
 state 52
 
-    (87) pitem -> expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (86) pitem -> STRING .
+    (87) pitem -> STRING . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    COMMA           reduce using rule 87 (pitem -> expr .)
-    SEMI            reduce using rule 87 (pitem -> expr .)
-    NEWLINE         reduce using rule 87 (pitem -> expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    COMMA           reduce using rule 86 (pitem -> STRING .)
+    NEWLINE         reduce using rule 86 (pitem -> STRING .)
+    SEMI            reduce using rule 86 (pitem -> STRING .)
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    expr                           shift and go to state 92
 
 state 53
 
-    (23) command -> PRINT error .
+    (88) pitem -> expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    NEWLINE         reduce using rule 23 (command -> PRINT error .)
+    COMMA           reduce using rule 88 (pitem -> expr .)
+    NEWLINE         reduce using rule 88 (pitem -> expr .)
+    SEMI            reduce using rule 88 (pitem -> expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 54
 
-    (17) command -> PRINT plist . optend
-    (83) plist -> plist . COMMA pitem
-    (24) optend -> . COMMA
-    (25) optend -> . SEMI
-    (26) optend -> .
+    (24) command -> PRINT error .
 
-    COMMA           shift and go to state 92
-    SEMI            shift and go to state 91
-    NEWLINE         reduce using rule 26 (optend -> .)
+    NEWLINE         reduce using rule 24 (command -> PRINT error .)
 
-    optend                         shift and go to state 93
 
 state 55
 
-    (44) command -> DEF ID . LPAREN ID RPAREN EQUALS expr
-    (45) command -> DEF ID . LPAREN ID RPAREN EQUALS error
-    (46) command -> DEF ID . LPAREN error RPAREN EQUALS expr
+    (17) command -> PRINT plist . optend
+    (84) plist -> plist . COMMA pitem
+    (25) optend -> . COMMA
+    (26) optend -> . SEMI
+    (27) optend -> .
 
-    LPAREN          shift and go to state 94
+    COMMA           shift and go to state 94
+    SEMI            shift and go to state 93
+    NEWLINE         reduce using rule 27 (optend -> .)
 
+    optend                         shift and go to state 95
 
 state 56
 
-    (80) number -> FLOAT .
+    (45) command -> DEF ID . LPAREN ID RPAREN EQUALS expr
+    (46) command -> DEF ID . LPAREN ID RPAREN EQUALS error
+    (47) command -> DEF ID . LPAREN error RPAREN EQUALS expr
 
-    COMMA           reduce using rule 80 (number -> FLOAT .)
-    NEWLINE         reduce using rule 80 (number -> FLOAT .)
+    LPAREN          shift and go to state 96
 
 
 state 57
 
-    (78) numlist -> number .
+    (34) command -> FOR ID . EQUALS expr TO expr optstep
+    (35) command -> FOR ID . EQUALS error TO expr optstep
+    (36) command -> FOR ID . EQUALS expr TO error optstep
+    (37) command -> FOR ID . EQUALS expr TO expr STEP error
 
-    COMMA           reduce using rule 78 (numlist -> number .)
-    NEWLINE         reduce using rule 78 (numlist -> number .)
+    EQUALS          shift and go to state 97
 
 
 state 58
+
+    (81) number -> FLOAT .
+
+    COMMA           reduce using rule 81 (number -> FLOAT .)
+    NEWLINE         reduce using rule 81 (number -> FLOAT .)
+
+
+state 59
+
+    (79) numlist -> number .
+
+    COMMA           reduce using rule 79 (numlist -> number .)
+    NEWLINE         reduce using rule 79 (numlist -> number .)
+
+
+state 60
 
     (16) command -> DATA error .
 
     NEWLINE         reduce using rule 16 (command -> DATA error .)
 
 
-state 59
-
-    (79) number -> INTEGER .
-
-    COMMA           reduce using rule 79 (number -> INTEGER .)
-    NEWLINE         reduce using rule 79 (number -> INTEGER .)
-
-
-state 60
-
-    (81) number -> MINUS . INTEGER
-    (82) number -> MINUS . FLOAT
-
-    INTEGER         shift and go to state 95
-    FLOAT           shift and go to state 96
-
-
 state 61
 
-    (15) command -> DATA numlist .
-    (77) numlist -> numlist . COMMA number
+    (80) number -> INTEGER .
 
-    NEWLINE         reduce using rule 15 (command -> DATA numlist .)
-    COMMA           shift and go to state 97
+    COMMA           reduce using rule 80 (number -> INTEGER .)
+    NEWLINE         reduce using rule 80 (number -> INTEGER .)
 
 
 state 62
 
-    (21) command -> READDATA variable . EQUALS plist
+    (82) number -> MINUS . INTEGER
+    (83) number -> MINUS . FLOAT
 
-    EQUALS          shift and go to state 98
+    INTEGER         shift and go to state 98
+    FLOAT           shift and go to state 99
 
 
 state 63
 
-    (40) command -> NEXT error .
+    (15) command -> DATA numlist .
+    (78) numlist -> numlist . COMMA number
 
-    NEWLINE         reduce using rule 40 (command -> NEXT error .)
+    NEWLINE         reduce using rule 15 (command -> DATA numlist .)
+    COMMA           shift and go to state 100
 
 
 state 64
 
-    (39) command -> NEXT ID .
+    (21) command -> READDATA variable . EQUALS plist
 
-    NEWLINE         reduce using rule 39 (command -> NEXT ID .)
+    EQUALS          shift and go to state 101
 
 
 state 65
+
+    (41) command -> NEXT error .
+
+    NEWLINE         reduce using rule 41 (command -> NEXT error .)
+
+
+state 66
+
+    (40) command -> NEXT ID .
+
+    NEWLINE         reduce using rule 40 (command -> NEXT ID .)
+
+
+state 67
 
     (4) statement -> INTEGER command NEWLINE .
 
@@ -1117,128 +1142,125 @@ state 65
     $end            reduce using rule 4 (statement -> INTEGER command NEWLINE .)
 
 
-state 66
-
-    (22) command -> CHECK plist .
-    (83) plist -> plist . COMMA pitem
-
-    NEWLINE         reduce using rule 22 (command -> CHECK plist .)
-    COMMA           shift and go to state 99
-
-
-state 67
-
-    (18) command -> OUT expr . EQUALS plist
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
-
-    EQUALS          shift and go to state 100
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
-
-
 state 68
 
-    (48) command -> GOSUB error .
+    (23) command -> CHECK plist .
+    (84) plist -> plist . COMMA pitem
 
-    NEWLINE         reduce using rule 48 (command -> GOSUB error .)
+    NEWLINE         reduce using rule 23 (command -> CHECK plist .)
+    COMMA           shift and go to state 102
 
 
 state 69
 
-    (47) command -> GOSUB INTEGER .
+    (18) command -> OUT expr . EQUALS plist
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    NEWLINE         reduce using rule 47 (command -> GOSUB INTEGER .)
+    EQUALS          shift and go to state 103
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 70
 
-    (28) command -> GOTO INTEGER .
+    (49) command -> GOSUB error .
 
-    NEWLINE         reduce using rule 28 (command -> GOTO INTEGER .)
+    NEWLINE         reduce using rule 49 (command -> GOSUB error .)
 
 
 state 71
 
-    (29) command -> GOTO error .
+    (48) command -> GOSUB INTEGER .
 
-    NEWLINE         reduce using rule 29 (command -> GOTO error .)
+    NEWLINE         reduce using rule 48 (command -> GOSUB INTEGER .)
 
 
 state 72
 
-    (33) command -> FOR ID . EQUALS expr TO expr optstep
-    (34) command -> FOR ID . EQUALS error TO expr optstep
-    (35) command -> FOR ID . EQUALS expr TO error optstep
-    (36) command -> FOR ID . EQUALS expr TO expr STEP error
+    (29) command -> GOTO INTEGER .
 
-    EQUALS          shift and go to state 101
+    NEWLINE         reduce using rule 29 (command -> GOTO INTEGER .)
 
 
 state 73
 
-    (30) command -> IF relexpr . THEN INTEGER
-    (32) command -> IF relexpr . THEN error
+    (30) command -> GOTO error .
 
-    THEN            shift and go to state 102
+    NEWLINE         reduce using rule 30 (command -> GOTO error .)
 
 
 state 74
 
-    (66) relexpr -> expr . LT expr
-    (67) relexpr -> expr . LE expr
-    (68) relexpr -> expr . GT expr
-    (69) relexpr -> expr . GE expr
-    (70) relexpr -> expr . EQUALS expr
-    (71) relexpr -> expr . NE expr
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (22) command -> READSTR variable . EQUALS plist
 
-    LT              shift and go to state 107
-    LE              shift and go to state 103
-    GT              shift and go to state 108
-    GE              shift and go to state 104
-    EQUALS          shift and go to state 105
-    NE              shift and go to state 106
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    EQUALS          shift and go to state 104
 
 
 state 75
 
-    (31) command -> IF error . THEN INTEGER
+    (31) command -> IF relexpr . THEN INTEGER
+    (33) command -> IF relexpr . THEN error
 
-    THEN            shift and go to state 109
+    THEN            shift and go to state 105
 
 
 state 76
 
-    (11) command -> LET variable . EQUALS expr
-    (12) command -> LET variable . EQUALS error
+    (67) relexpr -> expr . LT expr
+    (68) relexpr -> expr . LE expr
+    (69) relexpr -> expr . GT expr
+    (70) relexpr -> expr . GE expr
+    (71) relexpr -> expr . EQUALS expr
+    (72) relexpr -> expr . NE expr
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    EQUALS          shift and go to state 110
+    LT              shift and go to state 110
+    LE              shift and go to state 106
+    GT              shift and go to state 111
+    GE              shift and go to state 107
+    EQUALS          shift and go to state 108
+    NE              shift and go to state 109
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 77
 
-    (20) command -> LETSTR variable . EQUALS plist
+    (32) command -> IF error . THEN INTEGER
 
-    EQUALS          shift and go to state 111
+    THEN            shift and go to state 112
 
 
 state 78
+
+    (11) command -> LET variable . EQUALS expr
+    (12) command -> LET variable . EQUALS error
+
+    EQUALS          shift and go to state 113
+
+
+state 79
+
+    (20) command -> LETSTR variable . EQUALS plist
+
+    EQUALS          shift and go to state 114
+
+
+state 80
 
     (9) statement -> INTEGER error NEWLINE .
 
@@ -1250,1636 +1272,1679 @@ state 78
     $end            reduce using rule 9 (statement -> INTEGER error NEWLINE .)
 
 
-state 79
-
-    (52) dimlist -> dimlist COMMA . dimitem
-    (54) dimitem -> . ID LPAREN INTEGER RPAREN
-    (55) dimitem -> . ID LPAREN INTEGER COMMA INTEGER RPAREN
-
-    ID              shift and go to state 39
-
-    dimitem                        shift and go to state 112
-
-state 80
-
-    (54) dimitem -> ID LPAREN . INTEGER RPAREN
-    (55) dimitem -> ID LPAREN . INTEGER COMMA INTEGER RPAREN
-
-    INTEGER         shift and go to state 113
-
-
 state 81
 
-    (75) varlist -> varlist COMMA . variable
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (53) dimlist -> dimlist COMMA . dimitem
+    (55) dimitem -> . ID LPAREN INTEGER RPAREN
+    (56) dimitem -> . ID LPAREN INTEGER COMMA INTEGER RPAREN
 
-    ID              shift and go to state 43
+    ID              shift and go to state 40
 
-    variable                       shift and go to state 114
+    dimitem                        shift and go to state 115
 
 state 82
 
-    (73) variable -> ID LPAREN . expr RPAREN
-    (74) variable -> ID LPAREN . expr COMMA expr RPAREN
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (55) dimitem -> ID LPAREN . INTEGER RPAREN
+    (56) dimitem -> ID LPAREN . INTEGER COMMA INTEGER RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 116
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 115
 
 state 83
 
-    (59) expr -> expr DIVIDE . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (76) varlist -> varlist COMMA . variable
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 116
+    variable                       shift and go to state 117
 
 state 84
 
-    (60) expr -> expr POWER . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (74) variable -> ID LPAREN . expr RPAREN
+    (75) variable -> ID LPAREN . expr COMMA expr RPAREN
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 117
+    variable                       shift and go to state 48
+    expr                           shift and go to state 118
 
 state 85
 
-    (58) expr -> expr TIMES . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (60) expr -> expr DIVIDE . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 118
+    variable                       shift and go to state 48
+    expr                           shift and go to state 119
 
 state 86
 
-    (56) expr -> expr PLUS . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (61) expr -> expr POWER . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 119
+    variable                       shift and go to state 48
+    expr                           shift and go to state 120
 
 state 87
 
-    (57) expr -> expr MINUS . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (59) expr -> expr TIMES . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 120
+    variable                       shift and go to state 48
+    expr                           shift and go to state 121
 
 state 88
 
-    (64) expr -> LPAREN expr . RPAREN
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (57) expr -> expr PLUS . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    RPAREN          shift and go to state 121
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    expr                           shift and go to state 122
 
 state 89
 
-    (65) expr -> MINUS expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (58) expr -> expr MINUS . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    PLUS            reduce using rule 65 (expr -> MINUS expr .)
-    MINUS           reduce using rule 65 (expr -> MINUS expr .)
-    TIMES           reduce using rule 65 (expr -> MINUS expr .)
-    DIVIDE          reduce using rule 65 (expr -> MINUS expr .)
-    POWER           reduce using rule 65 (expr -> MINUS expr .)
-    NEWLINE         reduce using rule 65 (expr -> MINUS expr .)
-    COMMA           reduce using rule 65 (expr -> MINUS expr .)
-    SEMI            reduce using rule 65 (expr -> MINUS expr .)
-    EQUALS          reduce using rule 65 (expr -> MINUS expr .)
-    LT              reduce using rule 65 (expr -> MINUS expr .)
-    LE              reduce using rule 65 (expr -> MINUS expr .)
-    GT              reduce using rule 65 (expr -> MINUS expr .)
-    GE              reduce using rule 65 (expr -> MINUS expr .)
-    NE              reduce using rule 65 (expr -> MINUS expr .)
-    RPAREN          reduce using rule 65 (expr -> MINUS expr .)
-    TO              reduce using rule 65 (expr -> MINUS expr .)
-    THEN            reduce using rule 65 (expr -> MINUS expr .)
-    STEP            reduce using rule 65 (expr -> MINUS expr .)
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-  ! PLUS            [ shift and go to state 86 ]
-  ! MINUS           [ shift and go to state 87 ]
-  ! TIMES           [ shift and go to state 85 ]
-  ! DIVIDE          [ shift and go to state 83 ]
-  ! POWER           [ shift and go to state 84 ]
-
+    variable                       shift and go to state 48
+    expr                           shift and go to state 123
 
 state 90
 
-    (86) pitem -> STRING expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (65) expr -> LPAREN expr . RPAREN
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    COMMA           reduce using rule 86 (pitem -> STRING expr .)
-    SEMI            reduce using rule 86 (pitem -> STRING expr .)
-    NEWLINE         reduce using rule 86 (pitem -> STRING expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    RPAREN          shift and go to state 124
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 91
 
-    (25) optend -> SEMI .
+    (66) expr -> MINUS expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    NEWLINE         reduce using rule 25 (optend -> SEMI .)
+    PLUS            reduce using rule 66 (expr -> MINUS expr .)
+    MINUS           reduce using rule 66 (expr -> MINUS expr .)
+    TIMES           reduce using rule 66 (expr -> MINUS expr .)
+    DIVIDE          reduce using rule 66 (expr -> MINUS expr .)
+    POWER           reduce using rule 66 (expr -> MINUS expr .)
+    NEWLINE         reduce using rule 66 (expr -> MINUS expr .)
+    COMMA           reduce using rule 66 (expr -> MINUS expr .)
+    SEMI            reduce using rule 66 (expr -> MINUS expr .)
+    EQUALS          reduce using rule 66 (expr -> MINUS expr .)
+    LT              reduce using rule 66 (expr -> MINUS expr .)
+    LE              reduce using rule 66 (expr -> MINUS expr .)
+    GT              reduce using rule 66 (expr -> MINUS expr .)
+    GE              reduce using rule 66 (expr -> MINUS expr .)
+    NE              reduce using rule 66 (expr -> MINUS expr .)
+    RPAREN          reduce using rule 66 (expr -> MINUS expr .)
+    TO              reduce using rule 66 (expr -> MINUS expr .)
+    THEN            reduce using rule 66 (expr -> MINUS expr .)
+    STEP            reduce using rule 66 (expr -> MINUS expr .)
+
+  ! PLUS            [ shift and go to state 88 ]
+  ! MINUS           [ shift and go to state 89 ]
+  ! TIMES           [ shift and go to state 87 ]
+  ! DIVIDE          [ shift and go to state 85 ]
+  ! POWER           [ shift and go to state 86 ]
 
 
 state 92
 
-    (83) plist -> plist COMMA . pitem
-    (24) optend -> COMMA .
-    (85) pitem -> . STRING
-    (86) pitem -> . STRING expr
-    (87) pitem -> . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (87) pitem -> STRING expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    NEWLINE         reduce using rule 24 (optend -> COMMA .)
-    STRING          shift and go to state 51
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    COMMA           reduce using rule 87 (pitem -> STRING expr .)
+    NEWLINE         reduce using rule 87 (pitem -> STRING expr .)
+    SEMI            reduce using rule 87 (pitem -> STRING expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
-    pitem                          shift and go to state 122
-    expr                           shift and go to state 52
-    variable                       shift and go to state 47
 
 state 93
+
+    (26) optend -> SEMI .
+
+    NEWLINE         reduce using rule 26 (optend -> SEMI .)
+
+
+state 94
+
+    (84) plist -> plist COMMA . pitem
+    (25) optend -> COMMA .
+    (86) pitem -> . STRING
+    (87) pitem -> . STRING expr
+    (88) pitem -> . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
+
+    NEWLINE         reduce using rule 25 (optend -> COMMA .)
+    STRING          shift and go to state 52
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
+
+    pitem                          shift and go to state 125
+    expr                           shift and go to state 53
+    variable                       shift and go to state 48
+
+state 95
 
     (17) command -> PRINT plist optend .
 
     NEWLINE         reduce using rule 17 (command -> PRINT plist optend .)
 
 
-state 94
-
-    (44) command -> DEF ID LPAREN . ID RPAREN EQUALS expr
-    (45) command -> DEF ID LPAREN . ID RPAREN EQUALS error
-    (46) command -> DEF ID LPAREN . error RPAREN EQUALS expr
-
-    ID              shift and go to state 124
-    error           shift and go to state 123
-
-
-state 95
-
-    (81) number -> MINUS INTEGER .
-
-    COMMA           reduce using rule 81 (number -> MINUS INTEGER .)
-    NEWLINE         reduce using rule 81 (number -> MINUS INTEGER .)
-
-
 state 96
 
-    (82) number -> MINUS FLOAT .
+    (45) command -> DEF ID LPAREN . ID RPAREN EQUALS expr
+    (46) command -> DEF ID LPAREN . ID RPAREN EQUALS error
+    (47) command -> DEF ID LPAREN . error RPAREN EQUALS expr
 
-    COMMA           reduce using rule 82 (number -> MINUS FLOAT .)
-    NEWLINE         reduce using rule 82 (number -> MINUS FLOAT .)
+    ID              shift and go to state 127
+    error           shift and go to state 126
 
 
 state 97
 
-    (77) numlist -> numlist COMMA . number
-    (79) number -> . INTEGER
-    (80) number -> . FLOAT
-    (81) number -> . MINUS INTEGER
-    (82) number -> . MINUS FLOAT
+    (34) command -> FOR ID EQUALS . expr TO expr optstep
+    (35) command -> FOR ID EQUALS . error TO expr optstep
+    (36) command -> FOR ID EQUALS . expr TO error optstep
+    (37) command -> FOR ID EQUALS . expr TO expr STEP error
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 59
-    FLOAT           shift and go to state 56
-    MINUS           shift and go to state 60
+    error           shift and go to state 129
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    number                         shift and go to state 125
+    variable                       shift and go to state 48
+    expr                           shift and go to state 128
 
 state 98
 
-    (21) command -> READDATA variable EQUALS . plist
-    (83) plist -> . plist COMMA pitem
-    (84) plist -> . pitem
-    (85) pitem -> . STRING
-    (86) pitem -> . STRING expr
-    (87) pitem -> . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (82) number -> MINUS INTEGER .
 
-    STRING          shift and go to state 51
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    COMMA           reduce using rule 82 (number -> MINUS INTEGER .)
+    NEWLINE         reduce using rule 82 (number -> MINUS INTEGER .)
 
-    variable                       shift and go to state 47
-    pitem                          shift and go to state 50
-    plist                          shift and go to state 126
-    expr                           shift and go to state 52
 
 state 99
 
-    (83) plist -> plist COMMA . pitem
-    (85) pitem -> . STRING
-    (86) pitem -> . STRING expr
-    (87) pitem -> . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (83) number -> MINUS FLOAT .
 
-    STRING          shift and go to state 51
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    COMMA           reduce using rule 83 (number -> MINUS FLOAT .)
+    NEWLINE         reduce using rule 83 (number -> MINUS FLOAT .)
 
-    pitem                          shift and go to state 122
-    expr                           shift and go to state 52
-    variable                       shift and go to state 47
 
 state 100
 
-    (18) command -> OUT expr EQUALS . plist
-    (83) plist -> . plist COMMA pitem
-    (84) plist -> . pitem
-    (85) pitem -> . STRING
-    (86) pitem -> . STRING expr
-    (87) pitem -> . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (78) numlist -> numlist COMMA . number
+    (80) number -> . INTEGER
+    (81) number -> . FLOAT
+    (82) number -> . MINUS INTEGER
+    (83) number -> . MINUS FLOAT
 
-    STRING          shift and go to state 51
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 61
+    FLOAT           shift and go to state 58
+    MINUS           shift and go to state 62
 
-    pitem                          shift and go to state 50
-    expr                           shift and go to state 52
-    variable                       shift and go to state 47
-    plist                          shift and go to state 127
+    number                         shift and go to state 130
 
 state 101
 
-    (33) command -> FOR ID EQUALS . expr TO expr optstep
-    (34) command -> FOR ID EQUALS . error TO expr optstep
-    (35) command -> FOR ID EQUALS . expr TO error optstep
-    (36) command -> FOR ID EQUALS . expr TO expr STEP error
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (21) command -> READDATA variable EQUALS . plist
+    (84) plist -> . plist COMMA pitem
+    (85) plist -> . pitem
+    (86) pitem -> . STRING
+    (87) pitem -> . STRING expr
+    (88) pitem -> . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    error           shift and go to state 129
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    STRING          shift and go to state 52
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 128
+    variable                       shift and go to state 48
+    pitem                          shift and go to state 51
+    plist                          shift and go to state 131
+    expr                           shift and go to state 53
 
 state 102
 
-    (30) command -> IF relexpr THEN . INTEGER
-    (32) command -> IF relexpr THEN . error
+    (84) plist -> plist COMMA . pitem
+    (86) pitem -> . STRING
+    (87) pitem -> . STRING expr
+    (88) pitem -> . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 130
-    error           shift and go to state 131
+    STRING          shift and go to state 52
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    pitem                          shift and go to state 125
+    expr                           shift and go to state 53
+    variable                       shift and go to state 48
 
 state 103
 
-    (67) relexpr -> expr LE . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (18) command -> OUT expr EQUALS . plist
+    (84) plist -> . plist COMMA pitem
+    (85) plist -> . pitem
+    (86) pitem -> . STRING
+    (87) pitem -> . STRING expr
+    (88) pitem -> . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    STRING          shift and go to state 52
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 132
+    pitem                          shift and go to state 51
+    expr                           shift and go to state 53
+    variable                       shift and go to state 48
+    plist                          shift and go to state 132
 
 state 104
 
-    (69) relexpr -> expr GE . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (22) command -> READSTR variable EQUALS . plist
+    (84) plist -> . plist COMMA pitem
+    (85) plist -> . pitem
+    (86) pitem -> . STRING
+    (87) pitem -> . STRING expr
+    (88) pitem -> . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    STRING          shift and go to state 52
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 133
+    variable                       shift and go to state 48
+    pitem                          shift and go to state 51
+    plist                          shift and go to state 133
+    expr                           shift and go to state 53
 
 state 105
 
-    (70) relexpr -> expr EQUALS . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (31) command -> IF relexpr THEN . INTEGER
+    (33) command -> IF relexpr THEN . error
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 134
+    error           shift and go to state 135
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 134
 
 state 106
 
-    (71) relexpr -> expr NE . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (68) relexpr -> expr LE . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 135
+    variable                       shift and go to state 48
+    expr                           shift and go to state 136
 
 state 107
 
-    (66) relexpr -> expr LT . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (70) relexpr -> expr GE . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 136
+    variable                       shift and go to state 48
+    expr                           shift and go to state 137
 
 state 108
 
-    (68) relexpr -> expr GT . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (71) relexpr -> expr EQUALS . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 137
+    variable                       shift and go to state 48
+    expr                           shift and go to state 138
 
 state 109
 
-    (31) command -> IF error THEN . INTEGER
+    (72) relexpr -> expr NE . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 138
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    expr                           shift and go to state 139
 
 state 110
 
-    (11) command -> LET variable EQUALS . expr
-    (12) command -> LET variable EQUALS . error
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (67) relexpr -> expr LT . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    error           shift and go to state 140
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 139
+    variable                       shift and go to state 48
+    expr                           shift and go to state 140
 
 state 111
 
-    (20) command -> LETSTR variable EQUALS . plist
-    (83) plist -> . plist COMMA pitem
-    (84) plist -> . pitem
-    (85) pitem -> . STRING
-    (86) pitem -> . STRING expr
-    (87) pitem -> . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (69) relexpr -> expr GT . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    STRING          shift and go to state 51
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    pitem                          shift and go to state 50
-    plist                          shift and go to state 141
-    expr                           shift and go to state 52
+    variable                       shift and go to state 48
+    expr                           shift and go to state 141
 
 state 112
 
-    (52) dimlist -> dimlist COMMA dimitem .
+    (32) command -> IF error THEN . INTEGER
 
-    COMMA           reduce using rule 52 (dimlist -> dimlist COMMA dimitem .)
-    NEWLINE         reduce using rule 52 (dimlist -> dimlist COMMA dimitem .)
+    INTEGER         shift and go to state 142
 
 
 state 113
 
-    (54) dimitem -> ID LPAREN INTEGER . RPAREN
-    (55) dimitem -> ID LPAREN INTEGER . COMMA INTEGER RPAREN
+    (11) command -> LET variable EQUALS . expr
+    (12) command -> LET variable EQUALS . error
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    RPAREN          shift and go to state 143
-    COMMA           shift and go to state 142
+    error           shift and go to state 144
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    expr                           shift and go to state 143
 
 state 114
 
-    (75) varlist -> varlist COMMA variable .
+    (20) command -> LETSTR variable EQUALS . plist
+    (84) plist -> . plist COMMA pitem
+    (85) plist -> . pitem
+    (86) pitem -> . STRING
+    (87) pitem -> . STRING expr
+    (88) pitem -> . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    COMMA           reduce using rule 75 (varlist -> varlist COMMA variable .)
-    NEWLINE         reduce using rule 75 (varlist -> varlist COMMA variable .)
+    STRING          shift and go to state 52
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    pitem                          shift and go to state 51
+    plist                          shift and go to state 145
+    expr                           shift and go to state 53
 
 state 115
 
-    (73) variable -> ID LPAREN expr . RPAREN
-    (74) variable -> ID LPAREN expr . COMMA expr RPAREN
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (53) dimlist -> dimlist COMMA dimitem .
 
-    RPAREN          shift and go to state 144
-    COMMA           shift and go to state 145
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    COMMA           reduce using rule 53 (dimlist -> dimlist COMMA dimitem .)
+    NEWLINE         reduce using rule 53 (dimlist -> dimlist COMMA dimitem .)
 
 
 state 116
 
-    (59) expr -> expr DIVIDE expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (55) dimitem -> ID LPAREN INTEGER . RPAREN
+    (56) dimitem -> ID LPAREN INTEGER . COMMA INTEGER RPAREN
 
-    PLUS            reduce using rule 59 (expr -> expr DIVIDE expr .)
-    MINUS           reduce using rule 59 (expr -> expr DIVIDE expr .)
-    TIMES           reduce using rule 59 (expr -> expr DIVIDE expr .)
-    DIVIDE          reduce using rule 59 (expr -> expr DIVIDE expr .)
-    NEWLINE         reduce using rule 59 (expr -> expr DIVIDE expr .)
-    COMMA           reduce using rule 59 (expr -> expr DIVIDE expr .)
-    SEMI            reduce using rule 59 (expr -> expr DIVIDE expr .)
-    EQUALS          reduce using rule 59 (expr -> expr DIVIDE expr .)
-    LT              reduce using rule 59 (expr -> expr DIVIDE expr .)
-    LE              reduce using rule 59 (expr -> expr DIVIDE expr .)
-    GT              reduce using rule 59 (expr -> expr DIVIDE expr .)
-    GE              reduce using rule 59 (expr -> expr DIVIDE expr .)
-    NE              reduce using rule 59 (expr -> expr DIVIDE expr .)
-    RPAREN          reduce using rule 59 (expr -> expr DIVIDE expr .)
-    TO              reduce using rule 59 (expr -> expr DIVIDE expr .)
-    THEN            reduce using rule 59 (expr -> expr DIVIDE expr .)
-    STEP            reduce using rule 59 (expr -> expr DIVIDE expr .)
-    POWER           shift and go to state 84
-
-  ! POWER           [ reduce using rule 59 (expr -> expr DIVIDE expr .) ]
-  ! PLUS            [ shift and go to state 86 ]
-  ! MINUS           [ shift and go to state 87 ]
-  ! TIMES           [ shift and go to state 85 ]
-  ! DIVIDE          [ shift and go to state 83 ]
+    RPAREN          shift and go to state 147
+    COMMA           shift and go to state 146
 
 
 state 117
 
-    (60) expr -> expr POWER expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (76) varlist -> varlist COMMA variable .
 
-    PLUS            reduce using rule 60 (expr -> expr POWER expr .)
-    MINUS           reduce using rule 60 (expr -> expr POWER expr .)
-    TIMES           reduce using rule 60 (expr -> expr POWER expr .)
-    DIVIDE          reduce using rule 60 (expr -> expr POWER expr .)
-    POWER           reduce using rule 60 (expr -> expr POWER expr .)
-    NEWLINE         reduce using rule 60 (expr -> expr POWER expr .)
-    COMMA           reduce using rule 60 (expr -> expr POWER expr .)
-    SEMI            reduce using rule 60 (expr -> expr POWER expr .)
-    EQUALS          reduce using rule 60 (expr -> expr POWER expr .)
-    LT              reduce using rule 60 (expr -> expr POWER expr .)
-    LE              reduce using rule 60 (expr -> expr POWER expr .)
-    GT              reduce using rule 60 (expr -> expr POWER expr .)
-    GE              reduce using rule 60 (expr -> expr POWER expr .)
-    NE              reduce using rule 60 (expr -> expr POWER expr .)
-    RPAREN          reduce using rule 60 (expr -> expr POWER expr .)
-    TO              reduce using rule 60 (expr -> expr POWER expr .)
-    THEN            reduce using rule 60 (expr -> expr POWER expr .)
-    STEP            reduce using rule 60 (expr -> expr POWER expr .)
-
-  ! PLUS            [ shift and go to state 86 ]
-  ! MINUS           [ shift and go to state 87 ]
-  ! TIMES           [ shift and go to state 85 ]
-  ! DIVIDE          [ shift and go to state 83 ]
-  ! POWER           [ shift and go to state 84 ]
+    COMMA           reduce using rule 76 (varlist -> varlist COMMA variable .)
+    NEWLINE         reduce using rule 76 (varlist -> varlist COMMA variable .)
 
 
 state 118
 
-    (58) expr -> expr TIMES expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (74) variable -> ID LPAREN expr . RPAREN
+    (75) variable -> ID LPAREN expr . COMMA expr RPAREN
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    PLUS            reduce using rule 58 (expr -> expr TIMES expr .)
-    MINUS           reduce using rule 58 (expr -> expr TIMES expr .)
-    TIMES           reduce using rule 58 (expr -> expr TIMES expr .)
-    DIVIDE          reduce using rule 58 (expr -> expr TIMES expr .)
-    NEWLINE         reduce using rule 58 (expr -> expr TIMES expr .)
-    COMMA           reduce using rule 58 (expr -> expr TIMES expr .)
-    SEMI            reduce using rule 58 (expr -> expr TIMES expr .)
-    EQUALS          reduce using rule 58 (expr -> expr TIMES expr .)
-    LT              reduce using rule 58 (expr -> expr TIMES expr .)
-    LE              reduce using rule 58 (expr -> expr TIMES expr .)
-    GT              reduce using rule 58 (expr -> expr TIMES expr .)
-    GE              reduce using rule 58 (expr -> expr TIMES expr .)
-    NE              reduce using rule 58 (expr -> expr TIMES expr .)
-    RPAREN          reduce using rule 58 (expr -> expr TIMES expr .)
-    TO              reduce using rule 58 (expr -> expr TIMES expr .)
-    THEN            reduce using rule 58 (expr -> expr TIMES expr .)
-    STEP            reduce using rule 58 (expr -> expr TIMES expr .)
-    POWER           shift and go to state 84
-
-  ! POWER           [ reduce using rule 58 (expr -> expr TIMES expr .) ]
-  ! PLUS            [ shift and go to state 86 ]
-  ! MINUS           [ shift and go to state 87 ]
-  ! TIMES           [ shift and go to state 85 ]
-  ! DIVIDE          [ shift and go to state 83 ]
+    RPAREN          shift and go to state 148
+    COMMA           shift and go to state 149
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 119
 
-    (56) expr -> expr PLUS expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (60) expr -> expr DIVIDE expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    PLUS            reduce using rule 56 (expr -> expr PLUS expr .)
-    MINUS           reduce using rule 56 (expr -> expr PLUS expr .)
-    NEWLINE         reduce using rule 56 (expr -> expr PLUS expr .)
-    COMMA           reduce using rule 56 (expr -> expr PLUS expr .)
-    SEMI            reduce using rule 56 (expr -> expr PLUS expr .)
-    EQUALS          reduce using rule 56 (expr -> expr PLUS expr .)
-    LT              reduce using rule 56 (expr -> expr PLUS expr .)
-    LE              reduce using rule 56 (expr -> expr PLUS expr .)
-    GT              reduce using rule 56 (expr -> expr PLUS expr .)
-    GE              reduce using rule 56 (expr -> expr PLUS expr .)
-    NE              reduce using rule 56 (expr -> expr PLUS expr .)
-    RPAREN          reduce using rule 56 (expr -> expr PLUS expr .)
-    TO              reduce using rule 56 (expr -> expr PLUS expr .)
-    THEN            reduce using rule 56 (expr -> expr PLUS expr .)
-    STEP            reduce using rule 56 (expr -> expr PLUS expr .)
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    PLUS            reduce using rule 60 (expr -> expr DIVIDE expr .)
+    MINUS           reduce using rule 60 (expr -> expr DIVIDE expr .)
+    TIMES           reduce using rule 60 (expr -> expr DIVIDE expr .)
+    DIVIDE          reduce using rule 60 (expr -> expr DIVIDE expr .)
+    NEWLINE         reduce using rule 60 (expr -> expr DIVIDE expr .)
+    COMMA           reduce using rule 60 (expr -> expr DIVIDE expr .)
+    SEMI            reduce using rule 60 (expr -> expr DIVIDE expr .)
+    EQUALS          reduce using rule 60 (expr -> expr DIVIDE expr .)
+    LT              reduce using rule 60 (expr -> expr DIVIDE expr .)
+    LE              reduce using rule 60 (expr -> expr DIVIDE expr .)
+    GT              reduce using rule 60 (expr -> expr DIVIDE expr .)
+    GE              reduce using rule 60 (expr -> expr DIVIDE expr .)
+    NE              reduce using rule 60 (expr -> expr DIVIDE expr .)
+    RPAREN          reduce using rule 60 (expr -> expr DIVIDE expr .)
+    TO              reduce using rule 60 (expr -> expr DIVIDE expr .)
+    THEN            reduce using rule 60 (expr -> expr DIVIDE expr .)
+    STEP            reduce using rule 60 (expr -> expr DIVIDE expr .)
+    POWER           shift and go to state 86
 
-  ! TIMES           [ reduce using rule 56 (expr -> expr PLUS expr .) ]
-  ! DIVIDE          [ reduce using rule 56 (expr -> expr PLUS expr .) ]
-  ! POWER           [ reduce using rule 56 (expr -> expr PLUS expr .) ]
-  ! PLUS            [ shift and go to state 86 ]
-  ! MINUS           [ shift and go to state 87 ]
+  ! POWER           [ reduce using rule 60 (expr -> expr DIVIDE expr .) ]
+  ! PLUS            [ shift and go to state 88 ]
+  ! MINUS           [ shift and go to state 89 ]
+  ! TIMES           [ shift and go to state 87 ]
+  ! DIVIDE          [ shift and go to state 85 ]
 
 
 state 120
 
-    (57) expr -> expr MINUS expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (61) expr -> expr POWER expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    PLUS            reduce using rule 57 (expr -> expr MINUS expr .)
-    MINUS           reduce using rule 57 (expr -> expr MINUS expr .)
-    NEWLINE         reduce using rule 57 (expr -> expr MINUS expr .)
-    COMMA           reduce using rule 57 (expr -> expr MINUS expr .)
-    SEMI            reduce using rule 57 (expr -> expr MINUS expr .)
-    EQUALS          reduce using rule 57 (expr -> expr MINUS expr .)
-    LT              reduce using rule 57 (expr -> expr MINUS expr .)
-    LE              reduce using rule 57 (expr -> expr MINUS expr .)
-    GT              reduce using rule 57 (expr -> expr MINUS expr .)
-    GE              reduce using rule 57 (expr -> expr MINUS expr .)
-    NE              reduce using rule 57 (expr -> expr MINUS expr .)
-    RPAREN          reduce using rule 57 (expr -> expr MINUS expr .)
-    TO              reduce using rule 57 (expr -> expr MINUS expr .)
-    THEN            reduce using rule 57 (expr -> expr MINUS expr .)
-    STEP            reduce using rule 57 (expr -> expr MINUS expr .)
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    PLUS            reduce using rule 61 (expr -> expr POWER expr .)
+    MINUS           reduce using rule 61 (expr -> expr POWER expr .)
+    TIMES           reduce using rule 61 (expr -> expr POWER expr .)
+    DIVIDE          reduce using rule 61 (expr -> expr POWER expr .)
+    POWER           reduce using rule 61 (expr -> expr POWER expr .)
+    NEWLINE         reduce using rule 61 (expr -> expr POWER expr .)
+    COMMA           reduce using rule 61 (expr -> expr POWER expr .)
+    SEMI            reduce using rule 61 (expr -> expr POWER expr .)
+    EQUALS          reduce using rule 61 (expr -> expr POWER expr .)
+    LT              reduce using rule 61 (expr -> expr POWER expr .)
+    LE              reduce using rule 61 (expr -> expr POWER expr .)
+    GT              reduce using rule 61 (expr -> expr POWER expr .)
+    GE              reduce using rule 61 (expr -> expr POWER expr .)
+    NE              reduce using rule 61 (expr -> expr POWER expr .)
+    RPAREN          reduce using rule 61 (expr -> expr POWER expr .)
+    TO              reduce using rule 61 (expr -> expr POWER expr .)
+    THEN            reduce using rule 61 (expr -> expr POWER expr .)
+    STEP            reduce using rule 61 (expr -> expr POWER expr .)
 
-  ! TIMES           [ reduce using rule 57 (expr -> expr MINUS expr .) ]
-  ! DIVIDE          [ reduce using rule 57 (expr -> expr MINUS expr .) ]
-  ! POWER           [ reduce using rule 57 (expr -> expr MINUS expr .) ]
-  ! PLUS            [ shift and go to state 86 ]
-  ! MINUS           [ shift and go to state 87 ]
+  ! PLUS            [ shift and go to state 88 ]
+  ! MINUS           [ shift and go to state 89 ]
+  ! TIMES           [ shift and go to state 87 ]
+  ! DIVIDE          [ shift and go to state 85 ]
+  ! POWER           [ shift and go to state 86 ]
 
 
 state 121
 
-    (64) expr -> LPAREN expr RPAREN .
+    (59) expr -> expr TIMES expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    PLUS            reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    MINUS           reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    TIMES           reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    DIVIDE          reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    POWER           reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    NEWLINE         reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    COMMA           reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    SEMI            reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    EQUALS          reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    LT              reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    LE              reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    GT              reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    GE              reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    NE              reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    RPAREN          reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    TO              reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    THEN            reduce using rule 64 (expr -> LPAREN expr RPAREN .)
-    STEP            reduce using rule 64 (expr -> LPAREN expr RPAREN .)
+    PLUS            reduce using rule 59 (expr -> expr TIMES expr .)
+    MINUS           reduce using rule 59 (expr -> expr TIMES expr .)
+    TIMES           reduce using rule 59 (expr -> expr TIMES expr .)
+    DIVIDE          reduce using rule 59 (expr -> expr TIMES expr .)
+    NEWLINE         reduce using rule 59 (expr -> expr TIMES expr .)
+    COMMA           reduce using rule 59 (expr -> expr TIMES expr .)
+    SEMI            reduce using rule 59 (expr -> expr TIMES expr .)
+    EQUALS          reduce using rule 59 (expr -> expr TIMES expr .)
+    LT              reduce using rule 59 (expr -> expr TIMES expr .)
+    LE              reduce using rule 59 (expr -> expr TIMES expr .)
+    GT              reduce using rule 59 (expr -> expr TIMES expr .)
+    GE              reduce using rule 59 (expr -> expr TIMES expr .)
+    NE              reduce using rule 59 (expr -> expr TIMES expr .)
+    RPAREN          reduce using rule 59 (expr -> expr TIMES expr .)
+    TO              reduce using rule 59 (expr -> expr TIMES expr .)
+    THEN            reduce using rule 59 (expr -> expr TIMES expr .)
+    STEP            reduce using rule 59 (expr -> expr TIMES expr .)
+    POWER           shift and go to state 86
+
+  ! POWER           [ reduce using rule 59 (expr -> expr TIMES expr .) ]
+  ! PLUS            [ shift and go to state 88 ]
+  ! MINUS           [ shift and go to state 89 ]
+  ! TIMES           [ shift and go to state 87 ]
+  ! DIVIDE          [ shift and go to state 85 ]
 
 
 state 122
 
-    (83) plist -> plist COMMA pitem .
+    (57) expr -> expr PLUS expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    COMMA           reduce using rule 83 (plist -> plist COMMA pitem .)
-    NEWLINE         reduce using rule 83 (plist -> plist COMMA pitem .)
-    SEMI            reduce using rule 83 (plist -> plist COMMA pitem .)
+    PLUS            reduce using rule 57 (expr -> expr PLUS expr .)
+    MINUS           reduce using rule 57 (expr -> expr PLUS expr .)
+    NEWLINE         reduce using rule 57 (expr -> expr PLUS expr .)
+    COMMA           reduce using rule 57 (expr -> expr PLUS expr .)
+    SEMI            reduce using rule 57 (expr -> expr PLUS expr .)
+    EQUALS          reduce using rule 57 (expr -> expr PLUS expr .)
+    LT              reduce using rule 57 (expr -> expr PLUS expr .)
+    LE              reduce using rule 57 (expr -> expr PLUS expr .)
+    GT              reduce using rule 57 (expr -> expr PLUS expr .)
+    GE              reduce using rule 57 (expr -> expr PLUS expr .)
+    NE              reduce using rule 57 (expr -> expr PLUS expr .)
+    RPAREN          reduce using rule 57 (expr -> expr PLUS expr .)
+    TO              reduce using rule 57 (expr -> expr PLUS expr .)
+    THEN            reduce using rule 57 (expr -> expr PLUS expr .)
+    STEP            reduce using rule 57 (expr -> expr PLUS expr .)
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
+
+  ! TIMES           [ reduce using rule 57 (expr -> expr PLUS expr .) ]
+  ! DIVIDE          [ reduce using rule 57 (expr -> expr PLUS expr .) ]
+  ! POWER           [ reduce using rule 57 (expr -> expr PLUS expr .) ]
+  ! PLUS            [ shift and go to state 88 ]
+  ! MINUS           [ shift and go to state 89 ]
 
 
 state 123
 
-    (46) command -> DEF ID LPAREN error . RPAREN EQUALS expr
+    (58) expr -> expr MINUS expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    RPAREN          shift and go to state 146
+    PLUS            reduce using rule 58 (expr -> expr MINUS expr .)
+    MINUS           reduce using rule 58 (expr -> expr MINUS expr .)
+    NEWLINE         reduce using rule 58 (expr -> expr MINUS expr .)
+    COMMA           reduce using rule 58 (expr -> expr MINUS expr .)
+    SEMI            reduce using rule 58 (expr -> expr MINUS expr .)
+    EQUALS          reduce using rule 58 (expr -> expr MINUS expr .)
+    LT              reduce using rule 58 (expr -> expr MINUS expr .)
+    LE              reduce using rule 58 (expr -> expr MINUS expr .)
+    GT              reduce using rule 58 (expr -> expr MINUS expr .)
+    GE              reduce using rule 58 (expr -> expr MINUS expr .)
+    NE              reduce using rule 58 (expr -> expr MINUS expr .)
+    RPAREN          reduce using rule 58 (expr -> expr MINUS expr .)
+    TO              reduce using rule 58 (expr -> expr MINUS expr .)
+    THEN            reduce using rule 58 (expr -> expr MINUS expr .)
+    STEP            reduce using rule 58 (expr -> expr MINUS expr .)
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
+
+  ! TIMES           [ reduce using rule 58 (expr -> expr MINUS expr .) ]
+  ! DIVIDE          [ reduce using rule 58 (expr -> expr MINUS expr .) ]
+  ! POWER           [ reduce using rule 58 (expr -> expr MINUS expr .) ]
+  ! PLUS            [ shift and go to state 88 ]
+  ! MINUS           [ shift and go to state 89 ]
 
 
 state 124
 
-    (44) command -> DEF ID LPAREN ID . RPAREN EQUALS expr
-    (45) command -> DEF ID LPAREN ID . RPAREN EQUALS error
+    (65) expr -> LPAREN expr RPAREN .
 
-    RPAREN          shift and go to state 147
+    PLUS            reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    TIMES           reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    POWER           reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    NEWLINE         reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    COMMA           reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    SEMI            reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    EQUALS          reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    LT              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    LE              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    GT              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    GE              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    NE              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    TO              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    THEN            reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    STEP            reduce using rule 65 (expr -> LPAREN expr RPAREN .)
 
 
 state 125
 
-    (77) numlist -> numlist COMMA number .
+    (84) plist -> plist COMMA pitem .
 
-    COMMA           reduce using rule 77 (numlist -> numlist COMMA number .)
-    NEWLINE         reduce using rule 77 (numlist -> numlist COMMA number .)
+    COMMA           reduce using rule 84 (plist -> plist COMMA pitem .)
+    NEWLINE         reduce using rule 84 (plist -> plist COMMA pitem .)
+    SEMI            reduce using rule 84 (plist -> plist COMMA pitem .)
 
 
 state 126
 
-    (21) command -> READDATA variable EQUALS plist .
-    (83) plist -> plist . COMMA pitem
+    (47) command -> DEF ID LPAREN error . RPAREN EQUALS expr
 
-    NEWLINE         reduce using rule 21 (command -> READDATA variable EQUALS plist .)
-    COMMA           shift and go to state 99
+    RPAREN          shift and go to state 150
 
 
 state 127
 
-    (18) command -> OUT expr EQUALS plist .
-    (83) plist -> plist . COMMA pitem
+    (45) command -> DEF ID LPAREN ID . RPAREN EQUALS expr
+    (46) command -> DEF ID LPAREN ID . RPAREN EQUALS error
 
-    NEWLINE         reduce using rule 18 (command -> OUT expr EQUALS plist .)
-    COMMA           shift and go to state 99
+    RPAREN          shift and go to state 151
 
 
 state 128
 
-    (33) command -> FOR ID EQUALS expr . TO expr optstep
-    (35) command -> FOR ID EQUALS expr . TO error optstep
-    (36) command -> FOR ID EQUALS expr . TO expr STEP error
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (34) command -> FOR ID EQUALS expr . TO expr optstep
+    (36) command -> FOR ID EQUALS expr . TO error optstep
+    (37) command -> FOR ID EQUALS expr . TO expr STEP error
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    TO              shift and go to state 148
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    TO              shift and go to state 152
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 129
 
-    (34) command -> FOR ID EQUALS error . TO expr optstep
+    (35) command -> FOR ID EQUALS error . TO expr optstep
 
-    TO              shift and go to state 149
+    TO              shift and go to state 153
 
 
 state 130
 
-    (30) command -> IF relexpr THEN INTEGER .
+    (78) numlist -> numlist COMMA number .
 
-    NEWLINE         reduce using rule 30 (command -> IF relexpr THEN INTEGER .)
+    COMMA           reduce using rule 78 (numlist -> numlist COMMA number .)
+    NEWLINE         reduce using rule 78 (numlist -> numlist COMMA number .)
 
 
 state 131
 
-    (32) command -> IF relexpr THEN error .
+    (21) command -> READDATA variable EQUALS plist .
+    (84) plist -> plist . COMMA pitem
 
-    NEWLINE         reduce using rule 32 (command -> IF relexpr THEN error .)
+    NEWLINE         reduce using rule 21 (command -> READDATA variable EQUALS plist .)
+    COMMA           shift and go to state 102
 
 
 state 132
 
-    (67) relexpr -> expr LE expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (18) command -> OUT expr EQUALS plist .
+    (84) plist -> plist . COMMA pitem
 
-    THEN            reduce using rule 67 (relexpr -> expr LE expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    NEWLINE         reduce using rule 18 (command -> OUT expr EQUALS plist .)
+    COMMA           shift and go to state 102
 
 
 state 133
 
-    (69) relexpr -> expr GE expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (22) command -> READSTR variable EQUALS plist .
+    (84) plist -> plist . COMMA pitem
 
-    THEN            reduce using rule 69 (relexpr -> expr GE expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    NEWLINE         reduce using rule 22 (command -> READSTR variable EQUALS plist .)
+    COMMA           shift and go to state 102
 
 
 state 134
 
-    (70) relexpr -> expr EQUALS expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (31) command -> IF relexpr THEN INTEGER .
 
-    THEN            reduce using rule 70 (relexpr -> expr EQUALS expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    NEWLINE         reduce using rule 31 (command -> IF relexpr THEN INTEGER .)
 
 
 state 135
 
-    (71) relexpr -> expr NE expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (33) command -> IF relexpr THEN error .
 
-    THEN            reduce using rule 71 (relexpr -> expr NE expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    NEWLINE         reduce using rule 33 (command -> IF relexpr THEN error .)
 
 
 state 136
 
-    (66) relexpr -> expr LT expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (68) relexpr -> expr LE expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    THEN            reduce using rule 66 (relexpr -> expr LT expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    THEN            reduce using rule 68 (relexpr -> expr LE expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 137
 
-    (68) relexpr -> expr GT expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (70) relexpr -> expr GE expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    THEN            reduce using rule 68 (relexpr -> expr GT expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    THEN            reduce using rule 70 (relexpr -> expr GE expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 138
 
-    (31) command -> IF error THEN INTEGER .
+    (71) relexpr -> expr EQUALS expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    NEWLINE         reduce using rule 31 (command -> IF error THEN INTEGER .)
+    THEN            reduce using rule 71 (relexpr -> expr EQUALS expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 139
 
-    (11) command -> LET variable EQUALS expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (72) relexpr -> expr NE expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    NEWLINE         reduce using rule 11 (command -> LET variable EQUALS expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    THEN            reduce using rule 72 (relexpr -> expr NE expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 140
+
+    (67) relexpr -> expr LT expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
+
+    THEN            reduce using rule 67 (relexpr -> expr LT expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
+
+
+state 141
+
+    (69) relexpr -> expr GT expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
+
+    THEN            reduce using rule 69 (relexpr -> expr GT expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
+
+
+state 142
+
+    (32) command -> IF error THEN INTEGER .
+
+    NEWLINE         reduce using rule 32 (command -> IF error THEN INTEGER .)
+
+
+state 143
+
+    (11) command -> LET variable EQUALS expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
+
+    NEWLINE         reduce using rule 11 (command -> LET variable EQUALS expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
+
+
+state 144
 
     (12) command -> LET variable EQUALS error .
 
     NEWLINE         reduce using rule 12 (command -> LET variable EQUALS error .)
 
 
-state 141
-
-    (20) command -> LETSTR variable EQUALS plist .
-    (83) plist -> plist . COMMA pitem
-
-    NEWLINE         reduce using rule 20 (command -> LETSTR variable EQUALS plist .)
-    COMMA           shift and go to state 99
-
-
-state 142
-
-    (55) dimitem -> ID LPAREN INTEGER COMMA . INTEGER RPAREN
-
-    INTEGER         shift and go to state 150
-
-
-state 143
-
-    (54) dimitem -> ID LPAREN INTEGER RPAREN .
-
-    COMMA           reduce using rule 54 (dimitem -> ID LPAREN INTEGER RPAREN .)
-    NEWLINE         reduce using rule 54 (dimitem -> ID LPAREN INTEGER RPAREN .)
-
-
-state 144
-
-    (73) variable -> ID LPAREN expr RPAREN .
-
-    COMMA           reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    NEWLINE         reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    STEP            reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    PLUS            reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    MINUS           reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    TIMES           reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    DIVIDE          reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    POWER           reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    THEN            reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    LT              reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    LE              reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    GT              reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    GE              reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    EQUALS          reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    NE              reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    SEMI            reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    RPAREN          reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-    TO              reduce using rule 73 (variable -> ID LPAREN expr RPAREN .)
-
-
 state 145
 
-    (74) variable -> ID LPAREN expr COMMA . expr RPAREN
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (20) command -> LETSTR variable EQUALS plist .
+    (84) plist -> plist . COMMA pitem
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    NEWLINE         reduce using rule 20 (command -> LETSTR variable EQUALS plist .)
+    COMMA           shift and go to state 102
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 151
 
 state 146
 
-    (46) command -> DEF ID LPAREN error RPAREN . EQUALS expr
+    (56) dimitem -> ID LPAREN INTEGER COMMA . INTEGER RPAREN
 
-    EQUALS          shift and go to state 152
+    INTEGER         shift and go to state 154
 
 
 state 147
 
-    (44) command -> DEF ID LPAREN ID RPAREN . EQUALS expr
-    (45) command -> DEF ID LPAREN ID RPAREN . EQUALS error
+    (55) dimitem -> ID LPAREN INTEGER RPAREN .
 
-    EQUALS          shift and go to state 153
+    COMMA           reduce using rule 55 (dimitem -> ID LPAREN INTEGER RPAREN .)
+    NEWLINE         reduce using rule 55 (dimitem -> ID LPAREN INTEGER RPAREN .)
 
 
 state 148
 
-    (33) command -> FOR ID EQUALS expr TO . expr optstep
-    (35) command -> FOR ID EQUALS expr TO . error optstep
-    (36) command -> FOR ID EQUALS expr TO . expr STEP error
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (74) variable -> ID LPAREN expr RPAREN .
 
-    error           shift and go to state 155
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    COMMA           reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    NEWLINE         reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    PLUS            reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    MINUS           reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    TIMES           reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    POWER           reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    STEP            reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    THEN            reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    EQUALS          reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    SEMI            reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    LT              reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    LE              reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    GT              reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    GE              reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    NE              reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
+    TO              reduce using rule 74 (variable -> ID LPAREN expr RPAREN .)
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 154
 
 state 149
 
-    (34) command -> FOR ID EQUALS error TO . expr optstep
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (75) variable -> ID LPAREN expr COMMA . expr RPAREN
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 156
+    variable                       shift and go to state 48
+    expr                           shift and go to state 155
 
 state 150
 
-    (55) dimitem -> ID LPAREN INTEGER COMMA INTEGER . RPAREN
+    (47) command -> DEF ID LPAREN error RPAREN . EQUALS expr
 
-    RPAREN          shift and go to state 157
+    EQUALS          shift and go to state 156
 
 
 state 151
 
-    (74) variable -> ID LPAREN expr COMMA expr . RPAREN
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (45) command -> DEF ID LPAREN ID RPAREN . EQUALS expr
+    (46) command -> DEF ID LPAREN ID RPAREN . EQUALS error
 
-    RPAREN          shift and go to state 158
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    EQUALS          shift and go to state 157
 
 
 state 152
 
-    (46) command -> DEF ID LPAREN error RPAREN EQUALS . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (34) command -> FOR ID EQUALS expr TO . expr optstep
+    (36) command -> FOR ID EQUALS expr TO . error optstep
+    (37) command -> FOR ID EQUALS expr TO . expr STEP error
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    error           shift and go to state 159
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 159
+    variable                       shift and go to state 48
+    expr                           shift and go to state 158
 
 state 153
 
-    (44) command -> DEF ID LPAREN ID RPAREN EQUALS . expr
-    (45) command -> DEF ID LPAREN ID RPAREN EQUALS . error
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (35) command -> FOR ID EQUALS error TO . expr optstep
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    error           shift and go to state 161
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    variable                       shift and go to state 47
+    variable                       shift and go to state 48
     expr                           shift and go to state 160
 
 state 154
 
-    (33) command -> FOR ID EQUALS expr TO expr . optstep
-    (36) command -> FOR ID EQUALS expr TO expr . STEP error
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
-    (37) optstep -> . STEP expr
-    (38) optstep -> . empty
-    (88) empty -> .
+    (56) dimitem -> ID LPAREN INTEGER COMMA INTEGER . RPAREN
 
-    STEP            shift and go to state 162
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
-    NEWLINE         reduce using rule 88 (empty -> .)
+    RPAREN          shift and go to state 161
 
-    empty                          shift and go to state 164
-    optstep                        shift and go to state 163
 
 state 155
 
-    (35) command -> FOR ID EQUALS expr TO error . optstep
-    (37) optstep -> . STEP expr
-    (38) optstep -> . empty
-    (88) empty -> .
+    (75) variable -> ID LPAREN expr COMMA expr . RPAREN
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    STEP            shift and go to state 165
-    NEWLINE         reduce using rule 88 (empty -> .)
+    RPAREN          shift and go to state 162
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
-    empty                          shift and go to state 164
-    optstep                        shift and go to state 166
 
 state 156
 
-    (34) command -> FOR ID EQUALS error TO expr . optstep
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
-    (37) optstep -> . STEP expr
-    (38) optstep -> . empty
-    (88) empty -> .
+    (47) command -> DEF ID LPAREN error RPAREN EQUALS . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
-    STEP            shift and go to state 165
-    NEWLINE         reduce using rule 88 (empty -> .)
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
-    empty                          shift and go to state 164
-    optstep                        shift and go to state 167
+    variable                       shift and go to state 48
+    expr                           shift and go to state 163
 
 state 157
 
-    (55) dimitem -> ID LPAREN INTEGER COMMA INTEGER RPAREN .
+    (45) command -> DEF ID LPAREN ID RPAREN EQUALS . expr
+    (46) command -> DEF ID LPAREN ID RPAREN EQUALS . error
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    COMMA           reduce using rule 55 (dimitem -> ID LPAREN INTEGER COMMA INTEGER RPAREN .)
-    NEWLINE         reduce using rule 55 (dimitem -> ID LPAREN INTEGER COMMA INTEGER RPAREN .)
+    error           shift and go to state 165
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    expr                           shift and go to state 164
 
 state 158
 
-    (74) variable -> ID LPAREN expr COMMA expr RPAREN .
+    (34) command -> FOR ID EQUALS expr TO expr . optstep
+    (37) command -> FOR ID EQUALS expr TO expr . STEP error
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
+    (38) optstep -> . STEP expr
+    (39) optstep -> . empty
+    (89) empty -> .
 
-    COMMA           reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    NEWLINE         reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    STEP            reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    PLUS            reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    MINUS           reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    TIMES           reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    DIVIDE          reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    POWER           reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    THEN            reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    LT              reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    LE              reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    GT              reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    GE              reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    EQUALS          reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    NE              reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    SEMI            reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    RPAREN          reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
-    TO              reduce using rule 74 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    STEP            shift and go to state 166
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
+    NEWLINE         reduce using rule 89 (empty -> .)
 
+    empty                          shift and go to state 168
+    optstep                        shift and go to state 167
 
 state 159
 
-    (46) command -> DEF ID LPAREN error RPAREN EQUALS expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (36) command -> FOR ID EQUALS expr TO error . optstep
+    (38) optstep -> . STEP expr
+    (39) optstep -> . empty
+    (89) empty -> .
 
-    NEWLINE         reduce using rule 46 (command -> DEF ID LPAREN error RPAREN EQUALS expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    STEP            shift and go to state 169
+    NEWLINE         reduce using rule 89 (empty -> .)
 
+    empty                          shift and go to state 168
+    optstep                        shift and go to state 170
 
 state 160
 
-    (44) command -> DEF ID LPAREN ID RPAREN EQUALS expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (35) command -> FOR ID EQUALS error TO expr . optstep
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
+    (38) optstep -> . STEP expr
+    (39) optstep -> . empty
+    (89) empty -> .
 
-    NEWLINE         reduce using rule 44 (command -> DEF ID LPAREN ID RPAREN EQUALS expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
+    STEP            shift and go to state 169
+    NEWLINE         reduce using rule 89 (empty -> .)
 
+    empty                          shift and go to state 168
+    optstep                        shift and go to state 171
 
 state 161
 
-    (45) command -> DEF ID LPAREN ID RPAREN EQUALS error .
+    (56) dimitem -> ID LPAREN INTEGER COMMA INTEGER RPAREN .
 
-    NEWLINE         reduce using rule 45 (command -> DEF ID LPAREN ID RPAREN EQUALS error .)
+    COMMA           reduce using rule 56 (dimitem -> ID LPAREN INTEGER COMMA INTEGER RPAREN .)
+    NEWLINE         reduce using rule 56 (dimitem -> ID LPAREN INTEGER COMMA INTEGER RPAREN .)
 
 
 state 162
 
-    (36) command -> FOR ID EQUALS expr TO expr STEP . error
-    (37) optstep -> STEP . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (75) variable -> ID LPAREN expr COMMA expr RPAREN .
 
-    error           shift and go to state 169
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    COMMA           reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    NEWLINE         reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    PLUS            reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    MINUS           reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    TIMES           reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    DIVIDE          reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    POWER           reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    STEP            reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    THEN            reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    RPAREN          reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    EQUALS          reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    SEMI            reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    LT              reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    LE              reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    GT              reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    GE              reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    NE              reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
+    TO              reduce using rule 75 (variable -> ID LPAREN expr COMMA expr RPAREN .)
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 168
 
 state 163
 
-    (33) command -> FOR ID EQUALS expr TO expr optstep .
+    (47) command -> DEF ID LPAREN error RPAREN EQUALS expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    NEWLINE         reduce using rule 33 (command -> FOR ID EQUALS expr TO expr optstep .)
+    NEWLINE         reduce using rule 47 (command -> DEF ID LPAREN error RPAREN EQUALS expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 164
 
-    (38) optstep -> empty .
+    (45) command -> DEF ID LPAREN ID RPAREN EQUALS expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
 
-    NEWLINE         reduce using rule 38 (optstep -> empty .)
+    NEWLINE         reduce using rule 45 (command -> DEF ID LPAREN ID RPAREN EQUALS expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
 
 
 state 165
 
-    (37) optstep -> STEP . expr
-    (56) expr -> . expr PLUS expr
-    (57) expr -> . expr MINUS expr
-    (58) expr -> . expr TIMES expr
-    (59) expr -> . expr DIVIDE expr
-    (60) expr -> . expr POWER expr
-    (61) expr -> . INTEGER
-    (62) expr -> . FLOAT
-    (63) expr -> . variable
-    (64) expr -> . LPAREN expr RPAREN
-    (65) expr -> . MINUS expr
-    (72) variable -> . ID
-    (73) variable -> . ID LPAREN expr RPAREN
-    (74) variable -> . ID LPAREN expr COMMA expr RPAREN
+    (46) command -> DEF ID LPAREN ID RPAREN EQUALS error .
 
-    INTEGER         shift and go to state 48
-    FLOAT           shift and go to state 45
-    LPAREN          shift and go to state 46
-    MINUS           shift and go to state 49
-    ID              shift and go to state 43
+    NEWLINE         reduce using rule 46 (command -> DEF ID LPAREN ID RPAREN EQUALS error .)
 
-    variable                       shift and go to state 47
-    expr                           shift and go to state 168
 
 state 166
 
-    (35) command -> FOR ID EQUALS expr TO error optstep .
+    (37) command -> FOR ID EQUALS expr TO expr STEP . error
+    (38) optstep -> STEP . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    NEWLINE         reduce using rule 35 (command -> FOR ID EQUALS expr TO error optstep .)
+    error           shift and go to state 173
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
 
+    variable                       shift and go to state 48
+    expr                           shift and go to state 172
 
 state 167
 
-    (34) command -> FOR ID EQUALS error TO expr optstep .
+    (34) command -> FOR ID EQUALS expr TO expr optstep .
 
-    NEWLINE         reduce using rule 34 (command -> FOR ID EQUALS error TO expr optstep .)
+    NEWLINE         reduce using rule 34 (command -> FOR ID EQUALS expr TO expr optstep .)
 
 
 state 168
 
-    (37) optstep -> STEP expr .
-    (56) expr -> expr . PLUS expr
-    (57) expr -> expr . MINUS expr
-    (58) expr -> expr . TIMES expr
-    (59) expr -> expr . DIVIDE expr
-    (60) expr -> expr . POWER expr
+    (39) optstep -> empty .
 
-    NEWLINE         reduce using rule 37 (optstep -> STEP expr .)
-    PLUS            shift and go to state 86
-    MINUS           shift and go to state 87
-    TIMES           shift and go to state 85
-    DIVIDE          shift and go to state 83
-    POWER           shift and go to state 84
+    NEWLINE         reduce using rule 39 (optstep -> empty .)
 
 
 state 169
 
-    (36) command -> FOR ID EQUALS expr TO expr STEP error .
+    (38) optstep -> STEP . expr
+    (57) expr -> . expr PLUS expr
+    (58) expr -> . expr MINUS expr
+    (59) expr -> . expr TIMES expr
+    (60) expr -> . expr DIVIDE expr
+    (61) expr -> . expr POWER expr
+    (62) expr -> . INTEGER
+    (63) expr -> . FLOAT
+    (64) expr -> . variable
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (73) variable -> . ID
+    (74) variable -> . ID LPAREN expr RPAREN
+    (75) variable -> . ID LPAREN expr COMMA expr RPAREN
 
-    NEWLINE         reduce using rule 36 (command -> FOR ID EQUALS expr TO expr STEP error .)
+    INTEGER         shift and go to state 49
+    FLOAT           shift and go to state 46
+    LPAREN          shift and go to state 47
+    MINUS           shift and go to state 50
+    ID              shift and go to state 44
+
+    variable                       shift and go to state 48
+    expr                           shift and go to state 172
+
+state 170
+
+    (36) command -> FOR ID EQUALS expr TO error optstep .
+
+    NEWLINE         reduce using rule 36 (command -> FOR ID EQUALS expr TO error optstep .)
+
+
+state 171
+
+    (35) command -> FOR ID EQUALS error TO expr optstep .
+
+    NEWLINE         reduce using rule 35 (command -> FOR ID EQUALS error TO expr optstep .)
+
+
+state 172
+
+    (38) optstep -> STEP expr .
+    (57) expr -> expr . PLUS expr
+    (58) expr -> expr . MINUS expr
+    (59) expr -> expr . TIMES expr
+    (60) expr -> expr . DIVIDE expr
+    (61) expr -> expr . POWER expr
+
+    NEWLINE         reduce using rule 38 (optstep -> STEP expr .)
+    PLUS            shift and go to state 88
+    MINUS           shift and go to state 89
+    TIMES           shift and go to state 87
+    DIVIDE          shift and go to state 85
+    POWER           shift and go to state 86
+
+
+state 173
+
+    (37) command -> FOR ID EQUALS expr TO expr STEP error .
+
+    NEWLINE         reduce using rule 37 (command -> FOR ID EQUALS expr TO expr STEP error .)
 
