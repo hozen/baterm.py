@@ -267,6 +267,7 @@
                                         <property name="cursor_visible">False</property>
                                         <property name="buffer">textbuffer1</property>
                                         <signal name="size-allocate" handler="on_TextViewOfLog_size_allocate" swapped="no"/>
+                                        <signal name="scroll-event" handler="on_TextViewOfLog_scroll_event" swapped="no"/>
                                       </object>
                                     </child>
                                   </object>

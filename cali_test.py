@@ -126,9 +126,18 @@ class CaliTest:
             self.EntryOfCommand.grab_focus()
         
     def on_TextViewOfLog_size_allocate(self, widget, event, data=None):
+        if self.auto_scroll:
+            adj = self.ScrolledWindowOfLog.get_vadjustment()
+            #adj.set_value(adj.upper - adj.page_size)
+            gobject.idle_add(adj.set_value, (adj.upper - adj.page_size))
+    
+    def on_TextViewOfLog_scroll_event(self, widget, event):
         adj = self.ScrolledWindowOfLog.get_vadjustment()
-        #adj.set_value(adj.upper - adj.page_size)
-        gobject.idle_add(adj.set_value, (adj.upper - adj.page_size))
+        print adj.value, adj.upper-adj.page_size
+        if abs(adj.value-(adj.upper-adj.page_size)) < 0.1:
+            self.auto_scroll = True
+        else:
+            self.auto_scroll = False
         
     def on_FileChooserButton_file_set(self, widget):
         file = self.FileChooserButton.get_filename()
@@ -804,6 +813,7 @@ class CaliTest:
         self.window = builder.get_object("window")
         
         self.TextBufferOfLog = builder.get_object("textbuffer1")
+        self.auto_scroll = True
         self.EntryOfCommand = builder.get_object("EntryOfCommand")
         self.EntryOfSerialNumber = builder.get_object("EntryOfSerialNumber")
         self.serial_number = 777
