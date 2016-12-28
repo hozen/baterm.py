@@ -60,7 +60,7 @@ class GtkPrinter:
 
         # draw the title
         CERT_LINE_NUMBER += 3
-        CERT_TITLE = "CERTIFICATE OF ANALYSIS"
+        CERT_TITLE = "Manufacturer’s test certificate"
         self.cairo_context.set_source_rgb(0, 0, 0)
         self.cairo_context.select_font_face("Georgia", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
         self.cairo_context.set_font_size(CERT_FONT_SIZE_OF_TITLE)
@@ -193,7 +193,7 @@ class GtkPrinter:
          
                 
         # draw the tester
-        CERT_NAME = "Tester: "
+        CERT_NAME = "Tester code: "
         CERT_NAME_VALUE = self.tester
         self.cairo_context.move_to(CERT_LEFT_CORNER_X * 2, context.get_height() - 2 * CERT_LEFT_CORNER_Y)
         self.cairo_context.set_font_size(CERT_FONT_SIZE_OF_ITEM)        

@@ -193,7 +193,6 @@ class BasicInterpreter:
     # Run it
     def run(self):
         self.vars   = { }            # All variables
-        self.curarr = [ ]            # Current 1 array only
         self.lists  = { }            # List variables
         self.tables = { }            # Tables
         self.loops  = [ ]            # Currently active loops
@@ -233,7 +232,7 @@ class BasicInterpreter:
                 #print "ply end"    
                 break           # We're done                        
                 
-            elif op == 'OUT':   # todo : it's better to use Console as the only comm tunnel between script and gui.
+            elif op == 'OUT':
                 text = ""      
                 port = self.eval(instr[1])
                 portvar = instr[1][1][0]
@@ -262,29 +261,25 @@ class BasicInterpreter:
                 elif portvar == "FLASH":
                     self.cali.flash_msp430(str(cmd))
                 else:
-                    self.cali.set_console_text(port + " " + str(cmd))
-                    
-#                    if not self.vars.has_key("CHECK"):
-#                        self.vars['CHECK'] = "AUTO"
-#                    if not self.vars.has_key("MCUBAUD"):
-#                        self.vars["MCUBAUD"] = 9600
-#                    if not self.vars.has_key("DEVICEBAUD"):
-#                        self.vars["DEVICEBAUD"] = 9600
-#
-#                    self.cali.ack_to_plying = 1
-#                    if portvar == "MCUPORT":
-#                        uart_conn_result = self.cali.set_uart_text(port, self.vars['MCUBAUD'], self.vars['CHECK'], str(cmd))
-#                    elif portvar == "DEVICEPORT":
-#                        uart_conn_result = self.cali.set_uart_text(port, self.vars['DEVICEBAUD'], self.vars['CHECK'], str(cmd))
-#                    else:
-#                        uart_conn_result = 1
-#                    if uart_conn_result == 1:
-#                        self.pc = pc_of_end - 1
-#                    else:
-#                        while True:                            
-#                            if self.cali.ack_to_plying == 0 or self.cali.get_check_status() != 0:
-#                                break
-#                            time.sleep(0.01)
+                    if not self.vars.has_key("CHECK"):
+                        self.vars['CHECK'] = "AUTO"
+                    if not self.vars.has_key("MCUBAUD"):
+                        self.vars["MCUBAUD"] = 9600
+                    if not self.vars.has_key("DEVICEBAUD"):
+                        self.vars["DEVICEBAUD"] = 9600
+
+                    self.cali.ack_to_plying = 1
+                    if portvar == "MCUPORT":
+                        uart_conn_result = self.cali.set_uart_text(port, self.vars['MCUBAUD'], str(cmd), self.vars['CHECK'])
+                    else:
+                        uart_conn_result = self.cali.set_uart_text(port, self.vars['DEVICEBAUD'], str(cmd), self.vars['CHECK'])
+                    if uart_conn_result == 1:
+                        self.pc = pc_of_end - 1
+                    else:
+                        while True:                            
+                            if self.cali.ack_to_plying == 0 or self.cali.get_check_status() != 0:
+                                break
+                            time.sleep(0.01)
 
             elif op == 'DELAY':
                 cmd = self.eval(instr[1])
@@ -323,6 +318,7 @@ class BasicInterpreter:
                          out += str(eval)
                 cmd = out
                 self.vars[var] = cmd
+            
             elif op == 'READDATA':
                 print instr
                 var = instr[1][0]
@@ -339,14 +335,8 @@ class BasicInterpreter:
                 cmd = out
                 #for label, val in instr[2]:
                 #    value = label        
-                #self.vars[var] = self.cali.get_batching_result(cmd)
-                value = self.cali.get_batching_result(cmd)
-                if type(value) is list:
-                    self.curarr = value
-                    self.vars[var] = value[0]
-                else:                                        
-                    self.vars[var] = value
-                                
+                self.vars[var] = self.cali.get_batching_result(cmd)
+                
             elif op == 'CHECK':
                 for label, val in instr[1]:
                     method = label
@@ -370,17 +360,12 @@ class BasicInterpreter:
                           if label: out += " "
                           eval = self.eval(val)
                           out += str(eval)
-                 #sys.stdout.write(out)
-                 self.cali.set_console_text(str(out))
-
+                 sys.stdout.write(out)
                  end = instr[2]
                  if not (end == ',' or end == ';'): 
-                     #sys.stdout.write("\n")
-                     self.cali.set_console_text("\n")
-                 #if end == ',': sys.stdout.write(" "*(15-(len(out) % 15)))
-                 #if end == ';': sys.stdout.write(" "*(3-(len(out) % 3)))
-                 if end == ',': self.cali.set_console_text(" "*(15-(len(out) % 15)))
-                 if end == ';': self.cali.set_console_text(" "*(3-(len(out) % 3)))
+                     sys.stdout.write("\n")
+                 if end == ',': sys.stdout.write(" "*(15-(len(out) % 15)))
+                 if end == ';': sys.stdout.write(" "*(3-(len(out) % 3)))
                      
             # LET statement
             elif op == 'LET':
@@ -390,7 +375,6 @@ class BasicInterpreter:
 
             # READ statement
             elif op == 'READ':
-                 #print "read instr" 
                  #print instr
                  #print self.data
                  for target in instr[1]:
@@ -400,12 +384,7 @@ class BasicInterpreter:
                           self.dc += 1
                       else:
                           # No more data.  Program ends
-                          # todo : if use DATA 1 2 3 4 in script, need to check if it conflits
-                          if len(self.curarr) > 0:
-                              value = ('NUM', self.curarr.pop(0))
-                              self.assign(target, value)
-                          # todo : end
-                          #return
+                          return
             elif op == 'IF':
                  relop = instr[1]
                  newline = instr[2]

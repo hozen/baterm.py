@@ -12,7 +12,7 @@ import time
 import datetime
 import re
 import os
-import chardet
+#import chardet
 
 #import basiclex
 #import basparse
@@ -79,7 +79,7 @@ class CaliTest:
             self.on_ButtonNo_clicked(0, None)
         elif key == "Return":
             self.on_ButtonSend_clicked(0, None)
-        
+
     def on_ToggleButtonOfDebug_toggled(self, widget, data=None):
         self.FrameOfDebug.set_visible(not self.FrameOfDebug.get_visible())
         self.HboxOfPassFail.set_visible(not self.HboxOfPassFail.get_visible())   
@@ -126,18 +126,9 @@ class CaliTest:
             self.EntryOfCommand.grab_focus()
         
     def on_TextViewOfLog_size_allocate(self, widget, event, data=None):
-        if self.auto_scroll:
-            adj = self.ScrolledWindowOfLog.get_vadjustment()
-            #adj.set_value(adj.upper - adj.page_size)
-            gobject.idle_add(adj.set_value, (adj.upper - adj.page_size))
-    
-    def on_TextViewOfLog_scroll_event(self, widget, event):
         adj = self.ScrolledWindowOfLog.get_vadjustment()
-        print adj.value, adj.upper-adj.page_size
-        if abs(adj.value-(adj.upper-adj.page_size)) < 0.1:
-            self.auto_scroll = True
-        else:
-            self.auto_scroll = False
+        #adj.set_value(adj.upper - adj.page_size)
+        gobject.idle_add(adj.set_value, (adj.upper - adj.page_size))
         
     def on_FileChooserButton_file_set(self, widget):
         file = self.FileChooserButton.get_filename()
@@ -156,8 +147,8 @@ class CaliTest:
        
         if not cmd.isspace() and cmd != '':
             cmd = cmd.split()
+            cmd[0] = cmd[0].lower()
             if cmd[0].startswith('_'):  # local and mcu's command
-                cmd[0] = cmd[0].lower()
                 if cmd[0] == '_clear':
                     #if self.ThreadOfPly == None or not self.ThreadOfPly.is_alive():    # avoid accessing the shared resource: CONSOLE
                     start, end = self.TextBufferOfLog.get_bounds()
@@ -223,17 +214,8 @@ class CaliTest:
                     if len(cmd) > 1:
                         if os.path.isfile(cmd[1]):
                             if self.ThreadOfReceiving == None or not self.ThreadOfReceiving.is_alive():
-                                # Entering BASIC standalone mode
-                                #self.insert_into_console("Please check the UART connection and restart the program.\n")
-                                self.insert_into_console("PLY processing with file " + cmd[1] + "\n")
-                                self.cmds = cmd[1]
-                                self.ply_mode = 1
-                                if self.ThreadOfPly == None or not self.ThreadOfPly.is_alive():
-                                    self.ThreadOfPly = Thread(target=self.plying, args=(0, self.ply_mode,))
-                                    self.ThreadOfPly.start()
-                                    time.sleep(0.1)
-                                    self.ThreadOfPly.join()
-                                #self.set_check_status(1)
+                                self.insert_into_console("Please check the UART connection and restart the program.\n")
+                                self.set_check_status(1)
                             else:
                                 self.insert_into_console("PLY processing with file " + cmd[1] + "\n")
                                 self.cmds = cmd[1]
@@ -294,7 +276,6 @@ class CaliTest:
                         line += self.ser[port][0].read(left)   
                         if line != '' :
                             ###gtk.threads_enter()
-                            line = line.decode(chardet.detect(line)['encoding'])
                             self.insert_into_console(line)
                             ###gtk.threads_leave()
                         line = ''
@@ -307,40 +288,27 @@ class CaliTest:
             time.sleep(0.01)    # avoid too much cpu resource cost
             
     def get_batching_result(self, keywords):
-        print 'key', keywords
-        print "val", self.batching_result
+        print 'get', keywords
+        print "in", self.batching_result
         #keywords = keywords.upper()
         result = "None"
         if keywords in self.batching_result:
             result = self.batching_result[keywords]
             #del self.batching_result[keywords]    #may cause glibc "double free" bug.
             self.batching_result[keywords] = "None"
-            if len(result) > 1:
-                # convert it to num list
-                numlist = []
-                for num in result:
-                    if num.isdigit():
-                        numlist.append(num)
-                result = numlist
-                print "val list: " 
-                print result
-            else:
-                result = result.strip() #remove leading/ending spaces
-                regular = re.compile(r'[-+]?[0-9]+\.?[0-9]*$')   # match numbers
-                if regular.match(result) != None:
-                    result = float(result)
+            result = result.strip() #remove leading/ending spaces
+            regular = re.compile(r'[-+]?[0-9]+\.?[0-9]*$')   # match numbers
+            if regular.match(result) != None:
+                result = float(result)
         return result
     
-    def set_batching_result(self, result, rtype = "STRING"):
-        print "set, ", result
-        if len(result) > 1:
-            if rtype == "STRING":
-                self.batching_result[result[0]] = result[1]
-            elif rtype == "ARRAY":
-                self.batching_result[result[0]] = result[1:len(result)]
+    def set_batching_result(self, data_with_2line):
+        print "set, ", data_with_2line
+        if len(data_with_2line) > 1:
+            self.batching_result[data_with_2line[0]] = data_with_2line[1]
         
     def batching(self, port, cmd, check_mode):
-        #print "thread batching starts...\n"
+        print "thread batching starts...\n"
 
         self.ser[port][0].flushInput()
         self.ser[port][0].flushOutput()
@@ -354,9 +322,8 @@ class CaliTest:
                 ch = self.ser[port][0].read(1)                
                 if ch.isdigit() or self.batch_is_timeout == 1:
                     break
-        #time.sleep(0.5)
+        time.sleep(0.5)
         if check_mode == "MANUAL":
-            time.sleep(0.5) # no wait when "NOCHECK"
             ch = self.ser[port][0].read(1)
         text = ''
         line = cmd + " "
@@ -381,18 +348,15 @@ class CaliTest:
             self.insert_into_console(cmd + text)
             #gtk.threads_leave()            
             #line = line + ch + ' '  
-        if check_mode == "NOCHECK":
-            self.set_check_status(0)
-            self.ack_to_plying = 0
-        else:
-            left = self.ser[port][0].inWaiting()
-            if left > 0:
-                line += self.ser[port][0].read(left)   
-                #if check_mode != "AUTO":
-                self.insert_into_console('\n Read from slave:' + line)
-                self.set_batching_result(line.split())
+        #else:
+        left = self.ser[port][0].inWaiting()
+        if left > 0:
+            line += self.ser[port][0].read(left)   
+            #if check_mode != "AUTO":
+            self.insert_into_console('\n Read from slave:' + line)
+            self.set_batching_result(line.split())
         self.ser[port][0].flushInput()
-        #print "thread batching stopped.\n"
+        print "thread batching stopped.\n"
 
     def plying(self, port=0, method=0):   # 0: line by line 1: Lex-Yacc method    
 
@@ -514,117 +478,55 @@ class CaliTest:
         
     def set_console_text(self, cmd=None):
         ###gtk.threads_enter()
-        if cmd == None or cmd == "":
-            return
-        if cmd.startswith('_'):
-            if cmd == "_CLEAR":
-                #start, end = self.TextBufferOfLog.get_bounds()
-                #gobject.idle_add(self.TextBufferOfLog.delete, start, end)
-                self.on_ButtonSend_clicked(0, "_clear")
-            elif cmd == "_CURRENTTIME":
-                self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
-            elif cmd == "_ERROR":
-                self.set_check_status(1)
-            elif cmd == "_GETERRORCODE":
-                data_with_2line = ('_GETERRORCODE ' + str(self.get_check_status())).split()
-                self.set_batching_result(data_with_2line)
-            elif cmd == "_YES":
-                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_yes')
-            elif cmd == "_NO":
-                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_no')
-            elif cmd == '_SCAN':
-                #self.on_ButtonSend_clicked(0, '_scan')
-                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan')
-            elif cmd == '_SCANEC':
-                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'EC')
-            elif cmd == '_SCANPH':
-                gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'PH')
-            elif cmd == "_BARCODE":
-                self.serial_number = (self.EntryOfSerialNumber.get_text()).strip()
-                #if not self.serial_number.isdigit():
-                if len(self.serial_number) < 1:
-                    self.serial_number = "1234567890"
-                data_with_2line = ('_BARCODE ' + self.serial_number).split()
-                self.set_batching_result(data_with_2line)
-            elif cmd.startswith("_BARCODELEN="):
-                sn_len = cmd.split('=')[1]
-                if sn_len.isdigit():
-                    self.sn_len = int(sn_len)
-            elif cmd == '_MSP430':
-                self.on_ButtonSend_clicked(0, '_msp430')
-            elif cmd == '_PORTCOUNT':
-                data_with_2line = ('_PORTCOUNT ' + str(len(self.ser))).split()
-                self.set_batching_result(data_with_2line)
-            elif cmd.startswith("_UARTOPEN"):            
-                paras = cmd.lstrip('_UARTOPEN').strip()
-                if len(paras) > 0:
-                    port = None
-                    baudrate = 9600
-                    parity = "N"
-                    check = "AUTO"
-                    
-                    paras = paras.split(',')
-                    for par in paras:
-                        arg = par.split('=')
-                        if len(arg) > 1:
-                            if arg[0] == "PORT":
-                                port = arg[1].strip()
-                            elif arg[0].startswith("BAUD"):
-                                baudrate = int(arg[1].strip())
-                            elif arg[0].startswith("PARI"):
-                                parity = arg[1].strip()
-                            elif arg[0] == "CHECK":
-                                check = arg[1].strip()
-                                
-                    print port, baudrate, parity, check
-                    if port != None:
-                        uart_conn_result = self.set_uart_text(port, baudrate, check, None, parity)
-                        if uart_conn_result == 0:
-                            data_with_2line = ('_UARTOPEN ' + str(port)).split()
-                            self.set_batching_result(data_with_2line)
-                    
-                    
-            elif cmd.startswith('_UARTCLOSE'):
-                port = cmd.lstrip('_UARTCLOSE').strip()
-                if port in self.ser:
-                    if self.ser[port][0] != None:   # and self.ser[port][0].isOpen():
-                        self.mutex.acquire()    # to avoid mis-judging in thread receiving - ser.inWaiting()
-                        self.ser[port][0].close()
-                        self.ser[port] = None, 0
-                        self.mutex.release()
-            elif cmd == '_TESTARRAY':   
-                replied_oct_digit = '01 02 03 04 05'
-                data_with_multiline = ('_TESTARRAY ' + replied_oct_digit).split()
-                self.set_batching_result(data_with_multiline, "ARRAY")
-            elif cmd == '_TESTARRAY2':   
-                replied_hex_str = '11 12 13 a4 a5'
-                data_with_multiline = replied_hex_str.split()
-                data_with_multiline_oct = [str(int(x, 16)) for x in data_with_multiline]
-                data_with_multiline = ['_TESTARRAY2'] + data_with_multiline_oct    
-                #data_with_multiline = ('_TESTARRAY2 ' + '11 12 13 a4 a5').split()
-                self.set_batching_result(data_with_multiline, "ARRAY")
-                 
-        else:   # end startswith "_"
-            # check if it is a uart port
-            cmdlist = cmd.split()
-            if len(cmdlist) > 1:
-                port = cmdlist[0]
-                command = cmdlist[1]
-                if port in self.ser:
-                    baudrate = self.ser[port][1]
-                    uart_conn_result = self.set_uart_text(port, baudrate, str(command))
-                    return
-        
-            #otherwise, just print it on the Console window
+        if cmd == "_CLEAR":
+            #start, end = self.TextBufferOfLog.get_bounds()
+            #gobject.idle_add(self.TextBufferOfLog.delete, start, end)
+            self.on_ButtonSend_clicked(0, "_clear")
+        elif cmd == "_CURRENTTIME":
+            self.insert_into_console((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n'))
+        elif cmd == "_ERROR":
+            self.set_check_status(1)
+        elif cmd == "_GETERRORCODE":
+            data_with_2line = ('_GETERRORCODE ' + str(self.get_check_status())).split()
+            self.set_batching_result(data_with_2line)
+        elif cmd == "_YES":
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_yes')
+        elif cmd == "_NO":
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_no')
+        elif cmd == '_SCAN':
+            #self.on_ButtonSend_clicked(0, '_scan')
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan')
+        elif cmd == '_SCANEC':
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'EC')
+        elif cmd == '_SCANPH':
+            gobject.idle_add(self.on_ButtonSend_clicked, 0, '_scan', 'PH')
+        elif cmd == "_BARCODE":
+            self.serial_number = (self.EntryOfSerialNumber.get_text()).strip()
+            #if not self.serial_number.isdigit():
+            if len(self.serial_number) < 1:
+                self.serial_number = "1234567890"
+            data_with_2line = ('_BARCODE ' + self.serial_number).split()
+            self.set_batching_result(data_with_2line)
+        elif cmd.startswith("_BARCODELEN="):
+            sn_len = cmd.split('=')[1]
+            if sn_len.isdigit():
+                self.sn_len = int(sn_len)
+        elif cmd == '_MSP430':
+            self.on_ButtonSend_clicked(0, '_msp430')
+        elif cmd == '_PORTCOUNT':
+            data_with_2line = ('_PORTCOUNT ' + str(len(self.ser))).split()
+            self.set_batching_result(data_with_2line)
+        else:
+            import chardet
             cmd = cmd.decode(chardet.detect(cmd)['encoding'])  # decode() means decode the wanted format to unicode format.
-            self.insert_into_console(cmd)
+            self.insert_into_console(cmd + "\n")
         ###gtk.threads_leave()
     
     def insert_into_console(self, cmd=None):
         if cmd != None:
             gobject.idle_add(self.TextBufferOfLog.insert_at_cursor, cmd)
             
-    def set_uart_text(self, port, rates, check_mode="AUTO", cmd=None, parity='N'):
+    def set_uart_text(self, port, rates, cmd, check_mode):
         try:
             comport = self.ser[port]
         except KeyError:
@@ -633,29 +535,28 @@ class CaliTest:
             return 1
         
         if comport[0] == None or not comport[0].isOpen():
-            self.serial_connect(port, rates, parity)
+            self.serial_connect(port, rates)
         elif comport[1] != rates:
             self.serial_close_all()
-            self.serial_connect(port, rates, parity)
+            self.serial_connect(port, rates)
         
 #        if check_mode == "AUTO": # auto check
-        if cmd != None: # in case a new uart connection request without command transferring.
-            for i in range(1,3):
-                if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
-                    print "batching times:", i
-                    self.ThreadOfBatch = Thread(target=self.batching, args=(port, cmd, check_mode))
-                    self.ThreadOfBatch.start()
-                    time.sleep(0.1)
-                    self.ThreadOfBatch.join(2) 
-                    if self.ThreadOfBatch.is_alive():
-                        self.batch_is_timeout = 1
-                        time.sleep(2)
-                    else:
-                        break
+        for i in range(1,3):
+            if self.ThreadOfBatch == None or not self.ThreadOfBatch.is_alive():
+                print "batching times:", i
+                self.ThreadOfBatch = Thread(target=self.batching, args=(port, cmd, check_mode))
+                self.ThreadOfBatch.start()
+                time.sleep(0.1)
+                self.ThreadOfBatch.join(2) 
+                if self.ThreadOfBatch.is_alive():
+                    self.batch_is_timeout = 1
+                    time.sleep(2)
                 else:
-                    print "thread batch is in use.."
-    #        else: # manually check
-    #            self.ser[port][0].write(cmd + "\n")
+                    break
+            else:
+                print "thread batch is in use.."
+#        else: # manually check
+#            self.ser[port][0].write(cmd + "\n")
         return 0
     
     def set_tutorial(self, src):
@@ -769,9 +670,9 @@ class CaliTest:
             
         self.ComboBoxOfUart.set_active(0)
         
-    def serial_connect(self, port, rates, parity="N"):
+    def serial_connect(self, port, rates):
         try: 
-            self.ser[port] = serial.Serial(port, rates, parity=parity, timeout=1), rates
+            self.ser[port] = serial.Serial(port, rates, timeout=1), rates
         except serial.serialutil.SerialException:
             self.ser[port] = None, 0
             #self.ser_is_alive = 0
@@ -794,7 +695,7 @@ class CaliTest:
                        
     def __init__(self):
         import sys
-        self.running_mode = 'serial'
+        self.running_mode = 'calibration'
         if len(sys.argv) > 1:
             self.running_mode = sys.argv[1]
         
@@ -807,13 +708,20 @@ class CaliTest:
         self.ButtonNo = builder.get_object("ButtonNo")
         self.ButtonYes1 = builder.get_object("ButtonYes1")
         self.ButtonNo1 = builder.get_object("ButtonNo1")
-        self.ButtonPrinting = builder.get_object("ButtonPrinting")    
+        self.ButtonPrinting = builder.get_object("ButtonPrinting")
+        self.ButtonYes.child.modify_font(pango.FontDescription("sans 48"))
+        self.ButtonNo.child.modify_font(pango.FontDescription("sans 48"))
+        self.ButtonYes1.child.modify_font(pango.FontDescription("sans 48"))
+        self.ButtonNo1.child.modify_font(pango.FontDescription("sans 48"))
+        self.LabelOfInstruction = builder.get_object("LabelOfInstruction")
+        self.LabelOfInstruction.modify_font(pango.FontDescription("sans 30"))
+    
         self.ListStoreOfUart = builder.get_object("liststore2")
         self.ComboBoxOfUart = builder.get_object("ComboBoxOfUart")
         self.window = builder.get_object("window")
         
+    
         self.TextBufferOfLog = builder.get_object("textbuffer1")
-        self.auto_scroll = True
         self.EntryOfCommand = builder.get_object("EntryOfCommand")
         self.EntryOfSerialNumber = builder.get_object("EntryOfSerialNumber")
         self.serial_number = 777
@@ -831,6 +739,8 @@ class CaliTest:
             passfail_hbox = builder.get_object('HboxOfPassFail')
             debug_frame = builder.get_object('FrameOfDebug')
             status_hbox = builder.get_object('hbox5')
+            self.tutorial_frame.set_visible(0)
+            passfail_hbox.set_visible(0)
             debug_frame.set_visible(1)
             status_hbox.set_visible(0)
         elif self.running_mode == 'debug':
