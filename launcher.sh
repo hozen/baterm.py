@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd /home/pi/calibration/cali03
+cd ~/baterm.py
 python cali_test.pyc
 
 

@@ -118,6 +118,10 @@ def p_command_out(p):
     '''command : OUT expr EQUALS plist'''
     p[0] = ('OUT', p[2], p[4])
 
+def p_command_batchfct(p):
+    '''command : BATCH expr EQUALS plist'''
+    p[0] = ('BATCH', p[2], p[4])
+
 def p_command_delay(p):
     '''command : DELAY expr'''    
     p[0] = ('DELAY', p[2])

@@ -198,11 +198,8 @@ class GtkPrinter:
         self.cairo_context.move_to(CERT_LEFT_CORNER_X * 2, context.get_height() - 2 * CERT_LEFT_CORNER_Y)
         self.cairo_context.set_font_size(CERT_FONT_SIZE_OF_ITEM)        
         self.cairo_context.show_text(CERT_NAME)     
-        x, y = self.cairo_context.get_current_point()  
-        if CERT_NAME_VALUE == '':
-            self.print_underline(start_x = x, start_y = y, len = 10)
-        else: 
-            self.print_with_underline(start_x = x, start_y = y, content = CERT_NAME_VALUE)
+        x, y = self.cairo_context.get_current_point()   
+        self.print_with_underline(start_x = x, start_y = y, content = CERT_NAME_VALUE)
         
         # print to file for backup
         directory = './certification/'
@@ -297,10 +294,4 @@ class GtkPrinter:
         self.cairo_context.move_to(start_x + self.get_width_of_char("XX") / 2, start_y)
         self.cairo_context.show_text(content)
     
-    def print_underline(self, start_x, start_y, len):
-        self.cairo_context.move_to(start_x, start_y + self.get_height_of_char("X") / 4)
-        self.cairo_context.line_to(start_x + len * self.get_width_of_char("X"), start_y + self.get_height_of_char("X") / 4)
-        self.cairo_context.stroke()
-
-
     

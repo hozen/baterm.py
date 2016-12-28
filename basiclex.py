@@ -5,7 +5,7 @@ from ply import *
 keywords = (
     'LET','READ','DATA','PRINT','GOTO','IF','THEN','FOR','NEXT','TO','STEP',
     'END','STOP','DEF','GOSUB','DIM','REM','RETURN','RUN','LIST','NEW',
-    'OUT','DELAY','LETSTR','CHECK','READDATA',
+    'OUT','DELAY','LETSTR','CHECK','READDATA','BATCH',
 )
 
 # list of token names. always required.
